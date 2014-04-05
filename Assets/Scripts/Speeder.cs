@@ -12,9 +12,7 @@ public class Speeder : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 tmp = transform.localPosition;
-		tmp.y = tmp.y +  v * Time.deltaTime;
-		transform.localPosition = tmp;
+		GetComponent<InGamePosition>().y += v * Time.deltaTime;
 	}
 
 }

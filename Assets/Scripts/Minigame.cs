@@ -3,107 +3,88 @@ using System.Collections.Generic;
 
 public class Minigame : MonoBehaviour {
 
-	private float StreetHeight;
+	public float CarSpeed = 4;
+	private int lastCarWasAt = 0;
 
 	private GameObject Car;
-	private List<GameObject> Streets = new List<GameObject>();
+	private Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 	private GameObject FurthestStreet;
 
 	// Use this for initialization
 	void Start () {
-		StreetHeight = Resources.Load<Sprite>("Images/street").bounds.size.y * 0.75f;
+		Sprite sprite = Resources.Load<Sprite>("Images/street");
+		InGamePosition.tileH = sprite.bounds.size.y;
+		InGamePosition.tileW = sprite.bounds.size.x / 3;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		int removedCount = RemoveStreetsOutsideCamera();
-		AddStreets(removedCount);
-	}
 
-	private void AddStreets(int howMany)
-	{
-		//adding on top 
-		if (FurthestStreet != null){
-			for(int i=0; i < howMany; i++){
-				GameObject tmp = CreateStreet(FurthestStreet.transform.position.y + StreetHeight);
-				Streets.Add(tmp);
-				FurthestStreet = tmp;
+		//car should be always in the middle of the road
+		if (Car != null){
+			int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
+			if (carIsAt != lastCarWasAt){
+				lastCarWasAt = carIsAt;
+				int minStreet = 100;
+				int maxStreet = -100;
+				foreach(KeyValuePair<int, GameObject> street in Streets){
+					if (street.Key < minStreet){
+						minStreet = street.Key;
+					}
+					if (street.Key > maxStreet){
+						maxStreet = street.Key;
+					}
+				}
+		
+				float streetsMiddle = (maxStreet - minStreet)/2 + minStreet;
+				Debug.Log("car is at:  " + carIsAt +", middle: " + streetsMiddle + ", min: " + minStreet+ ", max: " + maxStreet);
+				if (Mathf.Abs(streetsMiddle - carIsAt) > 1){
+					Destroy(Streets[minStreet]);
+					Streets.Remove(minStreet);
+					Streets.Add(maxStreet+1, CreateStreet(maxStreet+1));
+				}
 			}
 		}
-	}
+			}
 
 	public void StartRace(){
 
-		//y on screen is Screen.height on top and 0 on bottom.
-		for(float yOnScreen = 2*Screen.height; yOnScreen > 0; ){
-			float yInWorld = Camera.main.ScreenToWorldPoint(new Vector3(0, yOnScreen, Mathf.Abs( Camera.main.transform.position.z))).y;
-			GameObject tmp = CreateStreet(yInWorld);
-			if (FurthestStreet == null){
-				FurthestStreet = tmp;
-			}
-			float streetTop = tmp.transform.position.y;
-			Vector3 point = new Vector3(0, streetTop - StreetHeight, 0);
-			float screenPointStreetBottom = Camera.main.WorldToScreenPoint(point).y;
-			yOnScreen = screenPointStreetBottom;
-
-			Streets.Add(tmp);
+		for(int i=0; i < 16; i ++){
+			Streets.Add(i, CreateStreet(i));
 		}
 
-		Car = new GameObject();
-		SpriteRenderer carRenderer = Car.AddComponent<SpriteRenderer>();
-		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
-		carRenderer.sortingLayerName = "Layer2";
-
-		Vector3 tmp2 = Car.transform.position;
-		float scale = StreetHeight / carRenderer.bounds.size.y ;
-		Car.transform.localScale = new Vector3(scale, scale);
-		tmp2.x -= carRenderer.bounds.size.x/2;
-		Car.transform.position = tmp2;
-
-		Speeder speeder = Car.AddComponent<Speeder>();
-		speeder.v = 5;
-
-		Car.AddComponent<InGamePosition>();
+		Car = CreateCar(0, 8, CarSpeed);
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
 	}
 
-	private GameObject CreateStreet(float y){
+	private GameObject CreateCar(float inGameX, float inGameY, float speed){
+		GameObject car = new GameObject();
+		SpriteRenderer carRenderer = car.AddComponent<SpriteRenderer>();
+		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
+		carRenderer.sortingLayerName = "Layer2";
+
+		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
+		car.transform.localScale = new Vector3(scale, scale);
+
+		Speeder speeder = car.AddComponent<Speeder>();
+		speeder.v = 1; //speed;
+
+		InGamePosition tmp = car.AddComponent<InGamePosition>();
+		tmp.x = inGameX;
+		tmp.y = inGameY;
+		return car;
+	}
+
+	private GameObject CreateStreet(float inGameY){
 		GameObject g = new GameObject(); 
 		SpriteRenderer streetRenderer = g.AddComponent<SpriteRenderer>();
 		streetRenderer.sprite = Resources.Load<Sprite>("Images/street");
 		streetRenderer.sortingLayerName = "Layer1";
-		Vector3 tmpPos = g.transform.localPosition;
-		tmpPos.y = y;
-		float scale = StreetHeight / streetRenderer.bounds.size.y;
-		tmpPos.x = - streetRenderer.bounds.size.x * scale /2;
-		g.transform.localPosition = tmpPos;
-		g.transform.localScale = new Vector3(scale, scale);
 
-		g.AddComponent<InGamePosition>();
+		InGamePosition tmp = g.AddComponent<InGamePosition>();
+		tmp.x = 0;
+		tmp.y = inGameY;
 		return g;
     }
     
-    public int RemoveStreetsOutsideCamera(){
-		int removedCount = 0;
-
-		for(int i=Streets.Count-1; i >= 0; i--){
-			GameObject street = Streets[i];
-
-			float streetTop = Screen.height - Camera.main.WorldToScreenPoint(street.transform.position).y;
-			float screenHeight = Screen.height;
-
-			if ( streetTop > screenHeight){
-				//if you remove one, you have to add one
-				removedCount ++;
-				if (street == FurthestStreet){
-					throw new UnityException("You seriously removed furthest street? Why?");
-				}
-				Destroy(street);
-				Streets.RemoveAt(i);
-
-			}
-		}
-		return removedCount;
-	}
-
 }

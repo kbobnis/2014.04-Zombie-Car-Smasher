@@ -4,6 +4,8 @@ public class InGamePosition : MonoBehaviour {
 
 
 	public float x, y;
+
+	public static float tileW, tileH;
 	// Use this for initialization
 	void Start () {
 	}
@@ -14,7 +16,7 @@ public class InGamePosition : MonoBehaviour {
 	}
 
 	private void UpdatePosition(){
-		transform.position = new Vector3(x, y, 0);
+		transform.position = new Vector3(x*tileW, y*tileH, 0);
 	}
 
 }
