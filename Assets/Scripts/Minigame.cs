@@ -23,10 +23,15 @@ public class Minigame : MonoBehaviour {
 		for(int i=0; i < 16; i ++){
 			Streets.Add(i, CreateStreet(i));
 		}
-		
-		Car = CreateCar(0, 8, CarSpeed);
+
+		Car = new GameObject();
+		Car tmp = Car.AddComponent<Car>();
+		tmp.Prepare(0, 8, CarSpeed);
+
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
 		Camera.main.GetComponent<FollowGM>().Offset.y = 0;
+
+
 	}
 
 	private GameObject CreateStreet(int inGameY){
@@ -42,13 +47,27 @@ public class Minigame : MonoBehaviour {
 		if (Car == null){
 			return ;
 		}
+
+
 		//car should be always in the middle of the road
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
 		if (carIsAt != lastCarWasAt){
+
+
 			lastCarWasAt = carIsAt;
 			int minStreet = int.MaxValue;
 			int maxStreet = int.MinValue;
 			foreach(KeyValuePair<int, GameObject> street in Streets){
+				//check car collision with obstacles
+				if (Mathf.Abs( Car.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.5){
+					Street tmp = street.Value.GetComponent<Street>();
+					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
+						if (tile.Value.GetComponent<Tile>().TileContent != TileContent.NONE && tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x){
+							Car.GetComponent<Speeder>().v = 0;
+						}
+				    }
+				}
+
 				if (street.Key < minStreet){
 					minStreet = street.Key;
 				}
@@ -85,22 +104,4 @@ public class Minigame : MonoBehaviour {
 		}
 	}
 
-	private GameObject CreateCar(float inGameX, float inGameY, float speed){
-		GameObject car = new GameObject();
-		SpriteRenderer carRenderer = car.AddComponent<SpriteRenderer>();
-		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
-		carRenderer.sortingLayerName = "Layer3";
-
-		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
-		car.transform.localScale = new Vector3(scale, scale);
-
-		Speeder speeder = car.AddComponent<Speeder>();
-		speeder.v = speed;
-
-		InGamePosition tmp = car.AddComponent<InGamePosition>();
-		tmp.x = inGameX;
-		tmp.y = inGameY;
-		return car;
-	}
-    
 }

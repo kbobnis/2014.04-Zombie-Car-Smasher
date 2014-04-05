@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Street : MonoBehaviour {
 
-	private List<GameObject> Tiles = new List<GameObject>();
+	public Dictionary<int, GameObject> Tiles = new Dictionary<int, GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +32,7 @@ public class Street : MonoBehaviour {
 			Tile tmp2 = Tile.AddComponent<Tile>();
 			tmp2.InitMe(WallChance, HoleChance, gameObject, i, inGameY);
 
-			Tiles.Add(Tile);
+			Tiles.Add(i, Tile);
 		}
 	}
 

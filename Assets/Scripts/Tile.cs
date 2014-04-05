@@ -19,24 +19,24 @@ public class Tile : MonoBehaviour
 
 	// Update is called once per frame
 	void Update () {
+
 	}
 
 	public void InitMe(float wallChance, float holeChance, GameObject parent, int i, int inGameY){
 		TileContent = TileContent.NONE;
-		float sumOfChances = wallChance + holeChance;
 		float ticket = Random.Range(0f, 1f);
-		Debug.Log ("ticket was: " + ticket );
+		//Debug.Log ("ticket was: " + ticket );
 		SpriteRenderer r = null;
 		if (ticket < wallChance ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/wall");
-			Debug.Log("created wall");
+			//Debug.Log("created wall");
 		} else if (ticket < wallChance + holeChance){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/hole");
-			Debug.Log("created hole");
+			//Debug.Log("created hole");
 		}
 		transform.localScale = new Vector3(1, 1, 1);
 		transform.parent = parent.transform;
