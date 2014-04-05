@@ -13,7 +13,7 @@ public class MainLogic : MonoBehaviour {
 	}
 
 	public void WantToStartGame(){
-		GetComponent<Minigame>().StartRace();
+		GetComponent<Minigame>().PrepareRace() ;
 	}
 
 

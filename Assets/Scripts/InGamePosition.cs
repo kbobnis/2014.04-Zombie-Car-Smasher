@@ -12,11 +12,11 @@ public class InGamePosition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		UpdatePosition();
+		transform.position = UpdatePosition();
 	}
 
-	private void UpdatePosition(){
-		transform.position = new Vector3(x*tileW, y*tileH, 0);
+	public Vector3 UpdatePosition(){
+		return new Vector3(x*tileW, y*tileH, transform.position.z);
 	}
 
 }

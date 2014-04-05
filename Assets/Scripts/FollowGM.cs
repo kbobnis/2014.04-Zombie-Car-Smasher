@@ -4,6 +4,7 @@ using System.Collections;
 public class FollowGM : MonoBehaviour {
 
 	public GameObject FollowWhom;
+	public Vector3 Offset = new Vector3();
 	// Use this for initialization
 	void Start () {
 	
@@ -12,11 +13,8 @@ public class FollowGM : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (FollowWhom != null){
-			Vector3 tmp = FollowWhom.transform.position;
-			Vector3 tmp2 = transform.position;
-
-			float gmHeight = FollowWhom.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
-			transform.position = new Vector3(tmp2.x, tmp.y + gmHeight/2, tmp2.z);
+			float y = FollowWhom.GetComponent<InGamePosition>().y;
+			GetComponent<InGamePosition>().y = y + Offset.y;
 		}
 	}
 }
