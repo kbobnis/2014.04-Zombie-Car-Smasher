@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------
 using UnityEngine;
 
-public class Jumper : MonoBehaviour {
+public class Jumper : CarBuff {
 
 	public float JumpSpeed ;
 	public float JumpCost;
 	public float JumpHeight;
 
-	public void Jump(){
+	public override void DoAction(){
 		//you can not
 		if (GetComponent<InGamePosition>().z == 0 && GetComponent<Fuel>().Amount >= JumpCost){
 			GetComponent<InGamePosition>().z = -1 * JumpHeight;
@@ -15,8 +15,12 @@ public class Jumper : MonoBehaviour {
 		}
 	}
 
-	public bool CanJump(){
+	public override bool CanDoAction(){
 		return GetComponent<InGamePosition>().z == 0 && GetComponent<Fuel>().Amount >= JumpCost;
+	}
+
+	public override string GetActionName(){
+		return "Jump";
 	}
 
 	void Update(){

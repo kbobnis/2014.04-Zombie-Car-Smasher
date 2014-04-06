@@ -62,15 +62,31 @@ public class Tile : MonoBehaviour
 		igp.y = inGameY;
 	}
 
-	public void CarIsOn(){
+	public void GMIsOn(GameObject g){
 		//if crashed
-		if (TileContent == TileContent.HOLE || TileContent == TileContent.WALL){
-			Minigame.Me.GameOver("Crashed");
+		if (TileContent == TileContent.HOLE && g.GetComponent<Flyier>() == null){
+			g.GetComponent<ActionReceiver>().FellIntoHole();
+		}
+
+		if (TileContent == TileContent.WALL ){
+			if (g.GetComponent<Destroyer>() != null){
+				gameObject.GetComponent<SpriteRenderer>().enabled = false;
+				TileContent  = TileContent.NONE;
+				Destroy(g);
+			} else {
+				g.GetComponent<ActionReceiver>().CrashedIntoWall();
+			}
 		}
 
 		if (TileContent == TileContent.BUFF_OIL){
-			Minigame.Me.Car.GetComponent<Fuel>().Amount += BuffOilValue;
-			GetComponent<SpriteRenderer>().enabled = false;
+
+			if (g.GetComponent<Destroyer>() != null){
+				gameObject.GetComponent<SpriteRenderer>().enabled = false;
+				TileContent  = TileContent.NONE;
+			} else {
+				Minigame.Me.Car.GetComponent<Fuel>().Amount += BuffOilValue;
+				GetComponent<SpriteRenderer>().enabled = false;
+			}
 		}
 	}
 }

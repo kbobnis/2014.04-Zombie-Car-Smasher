@@ -10,7 +10,7 @@ public class Minigame : MonoBehaviour {
 	private bool IsGameOver = false;
 	private string GameOverReason = "No reason";
 	public GameObject Car;
-	private Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
+	public Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 
 	public static Minigame Me;
 
@@ -101,7 +101,7 @@ public class Minigame : MonoBehaviour {
 					Street tmp = street.Value.GetComponent<Street>();
 					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
 						if (tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
-							tile.Value.GetComponent<Tile>().CarIsOn();
+							tile.Value.GetComponent<Tile>().GMIsOn(Car);
 						}
 				    }
 				}
@@ -146,8 +146,8 @@ public class Minigame : MonoBehaviour {
 			if(carX <= 0 && GUI.Button(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right")){
 				Car.GetComponent<InGamePosition>().x ++;
 			}
-			if (Car.GetComponent<Jumper>().CanJump() && GUI.Button(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), "Jump")){
-				Car.GetComponent<Jumper>().Jump();
+			if (Car.GetComponent<CarBuff>().CanDoAction() && GUI.Button(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), Car.GetComponent<CarBuff>().GetActionName())){
+				Car.GetComponent<CarBuff>().DoAction();
 			}
 		}
 		GUI.Label (new Rect (oneTenthW, oneTenthH, Screen.width, Screen.height), "Distance: " + Distance);//, bigFontLeft);

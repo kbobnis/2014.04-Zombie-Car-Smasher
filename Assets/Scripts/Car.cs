@@ -20,15 +20,31 @@ public class Car : MonoBehaviour {
 		tmp.y = gamePosY;
 		tmp.x = gamePosX;
 
-		Jumper jumper = gameObject.AddComponent<Jumper>();
-		jumper.JumpSpeed = 5;
-		jumper.JumpCost = 4;
-		jumper.JumpHeight = 1.5f;
+		//Jumper jumper = gameObject.AddComponent<Jumper>();
+		//jumper.JumpSpeed = 5;
+		//jumper.JumpCost = 4;
+		//jumper.JumpHeight = 1.5f;
+
+		Shooter shooter = gameObject.AddComponent<Shooter>();
+		shooter.ShootCost = 5;
 
 		Fuel fuel = gameObject.AddComponent<Fuel>();
 		fuel.MaxAmount = 100;
 		fuel.Amount = 70;
 
+		gameObject.AddComponent<ActionReceiver>();
 	}
+
+	public void Update(){
+		foreach(Fate fate in gameObject.GetComponent<ActionReceiver>().Fates){
+			if (fate == Fate.FELL_INTO_HOLE){
+				Minigame.Me.GameOver("Fell into hole");
+			}
+			if (fate == Fate.CRASHED_INTO_WALL){
+				Minigame.Me.GameOver("Crashed into wall");
+			}
+		}
+	}
+
 }
 
