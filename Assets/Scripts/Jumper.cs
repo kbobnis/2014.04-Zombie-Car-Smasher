@@ -6,7 +6,14 @@ public class Jumper : MonoBehaviour {
 	public float JumpSpeed = 1;
 
 	public void Jump(){
-		GetComponent<InGamePosition>().z = -2;
+		//you can not
+		if (GetComponent<InGamePosition>().z == 0){
+			GetComponent<InGamePosition>().z = -2;
+		}
+	}
+
+	public bool CanJump(){
+		return GetComponent<InGamePosition>().z == 0;
 	}
 
 	void Update(){
