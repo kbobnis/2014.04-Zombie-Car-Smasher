@@ -19,7 +19,13 @@ public class SplashScreen : MonoBehaviour {
 
 	void OnGUI(){
 		if (showingSplash){
-			DrawElement("Images/buffCar", 0.1, 0.1, 0.8, 0.8);
+			Texture texture = Resources.Load("Images/intro", typeof(Texture)) as Texture;
+			float scale = (float)Screen.height / (float)texture.height;
+			int height =  Mathf.RoundToInt( scale * texture.height);
+			int width = Mathf.RoundToInt( scale * texture.width);
+			int x = (Screen.width - width) / 2;
+
+			GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
 			if(GUI.Button(new Rect(PercentW(0.2), PercentH(0.7), PercentW(0.6), PercentH(0.2)), "Start game")){
 				showingSplash = false;

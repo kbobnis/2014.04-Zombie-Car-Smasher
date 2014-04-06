@@ -11,7 +11,6 @@ public class Minigame : MonoBehaviour {
 	private bool GameOver = false;
 	private GameObject Car;
 	private Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
-	private GameObject FurthestStreet;
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +19,7 @@ public class Minigame : MonoBehaviour {
 		InGamePosition.tileW = sprite.bounds.size.x/3;
 	}
 
-	public void PrepareRace(){
+	public void UnloadResources(){
 		//remove all previous objects 
 		foreach(KeyValuePair<int, GameObject> tmp2 in Streets){
 			UnloadStreet(tmp2.Value);
@@ -29,9 +28,12 @@ public class Minigame : MonoBehaviour {
 		//remove car
 		Destroy(Car);
 		Car = null;
-		FurthestStreet = null;
 		GameOver = false;
 		lastCarWasAt = 0;
+	}
+
+	public void PrepareRace(){
+		UnloadResources();
 
 		for(int i=0; i < 16; i ++){
 			Streets.Add(i, CreateStreet(i));
@@ -125,7 +127,7 @@ public class Minigame : MonoBehaviour {
 		}
 
 		if (GameOver){
-			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), "Game Over, repeat")){
+			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), "Game Over,\n repeat")){
 				PrepareRace();
 			}
 		}
