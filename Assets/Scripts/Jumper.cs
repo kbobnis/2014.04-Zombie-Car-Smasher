@@ -3,17 +3,20 @@ using UnityEngine;
 
 public class Jumper : MonoBehaviour {
 
-	public float JumpSpeed = 1;
+	public float JumpSpeed ;
+	public float JumpCost;
+	public float JumpHeight;
 
 	public void Jump(){
 		//you can not
-		if (GetComponent<InGamePosition>().z == 0){
-			GetComponent<InGamePosition>().z = -2;
+		if (GetComponent<InGamePosition>().z == 0 && GetComponent<Fuel>().Amount >= JumpCost){
+			GetComponent<InGamePosition>().z = -1 * JumpHeight;
+			GetComponent<Fuel>().Amount -= JumpCost;
 		}
 	}
 
 	public bool CanJump(){
-		return GetComponent<InGamePosition>().z == 0;
+		return GetComponent<InGamePosition>().z == 0 && GetComponent<Fuel>().Amount >= JumpCost;
 	}
 
 	void Update(){

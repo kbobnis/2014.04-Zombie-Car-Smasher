@@ -9,7 +9,8 @@ public class Minigame : MonoBehaviour {
 
 	private int lastCarWasAt = 0;
 	private int Distance =0;
-	private bool GameOver = false;
+	private bool IsGameOver = false;
+	private string GameOverReason = "No reason";
 	private GameObject Car;
 	private Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 
@@ -34,7 +35,7 @@ public class Minigame : MonoBehaviour {
 		//remove car
 		Destroy(Car);
 		Car = null;
-		GameOver = false;
+		IsGameOver = false;
 		lastCarWasAt = 0;
 		Distance = 0;
 	}
@@ -65,12 +66,22 @@ public class Minigame : MonoBehaviour {
 		return g;
 	}
 
+	private void GameOver(string reason){
+		IsGameOver = true;
+		Car.GetComponent<Speeder>().v = 0;
+		GameOverReason = reason;
+	}
+
 
 	// Update is called once per frame
 	void Update () {
 		if (Car == null){
 			return ;
 		}
+		if (Car.GetComponent<Fuel>().Amount <= 0){
+			GameOver("No more fuel");
+		}
+
 
 		//car should be always in the middle of the road
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
@@ -85,8 +96,7 @@ public class Minigame : MonoBehaviour {
 					Street tmp = street.Value.GetComponent<Street>();
 					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
 						if (tile.Value.GetComponent<Tile>().TileContent != TileContent.NONE && tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
-							Car.GetComponent<Speeder>().v = 0;
-							GameOver = true;
+							GameOver("Crashed");
 						}
 				    }
 				}
@@ -100,7 +110,6 @@ public class Minigame : MonoBehaviour {
 			}
 	
 			float streetsMiddle = (maxStreet - minStreet)/2 + minStreet;
-			//Debug.Log("car is at:  " + carIsAt +", middle: " + streetsMiddle + ", min: " + minStreet+ ", max: " + maxStreet);
 			if (Mathf.Abs(streetsMiddle - carIsAt) > 1){
 
 				UnloadStreet(Streets[minStreet]);
@@ -139,8 +148,8 @@ public class Minigame : MonoBehaviour {
 		GUI.Label (new Rect (oneTenthW, oneTenthH, Screen.width, Screen.height), "Distance: " + Distance);//, bigFontLeft);
 
 
-		if (GameOver){
-			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), "Game Over,\n repeat")){
+		if (IsGameOver){
+			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), "Game Over,\n " + GameOverReason + "\n One more time")){
 				PrepareRace();
 			}
 		}

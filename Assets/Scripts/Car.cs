@@ -14,12 +14,20 @@ public class Car : MonoBehaviour {
 		
 		Speeder speeder = gameObject.AddComponent<Speeder>();
 		speeder.v = carSpeed;
+		speeder.RideCost = 1f;
 		
 		InGamePosition tmp = gameObject.AddComponent<InGamePosition>();
 		tmp.y = gamePosY;
 		tmp.x = gamePosX;
 
-		gameObject.AddComponent<Jumper>();
+		Jumper jumper = gameObject.AddComponent<Jumper>();
+		jumper.JumpSpeed = 5;
+		jumper.JumpCost = 4;
+		jumper.JumpHeight = 1.5f;
+
+		Fuel fuel = gameObject.AddComponent<Fuel>();
+		fuel.MaxAmount = 100;
+		fuel.Amount = 70;
 
 	}
 }
