@@ -28,13 +28,21 @@ public class Street : MonoBehaviour {
 		
 		//left, center, right
 		for(int i=-1; i < 2; i++){
-			GameObject Tile = Instantiate(new GameObject()) as GameObject;
+			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
 			tmp2.InitMe(WallChance, HoleChance, gameObject, i, inGameY);
 
 			Tiles.Add(i, Tile);
 		}
 	}
+
+	public void UnloadResources(){
+		foreach(KeyValuePair<int, GameObject> Tile in Tiles){
+			Destroy(Tile.Value);
+		}
+		Tiles.Clear();
+	}
+
 
 	
 

@@ -11,7 +11,6 @@ public enum TileContent{
 public class Tile : MonoBehaviour 
 {
 	public TileContent TileContent;
-	private static Random Random = new Random();
 
 	// Use this for initialization
 	void Start () {

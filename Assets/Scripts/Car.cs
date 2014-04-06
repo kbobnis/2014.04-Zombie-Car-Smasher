@@ -17,6 +17,8 @@ public class Car : MonoBehaviour {
 		tmp.y = gamePosY;
 		tmp.x = gamePosX;
 
+		gameObject.AddComponent<Jumper>();
+
 	}
 }
 

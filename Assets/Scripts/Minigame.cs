@@ -62,7 +62,7 @@ public class Minigame : MonoBehaviour {
 				if (Mathf.Abs( Car.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.5){
 					Street tmp = street.Value.GetComponent<Street>();
 					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
-						if (tile.Value.GetComponent<Tile>().TileContent != TileContent.NONE && tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x){
+						if (tile.Value.GetComponent<Tile>().TileContent != TileContent.NONE && tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
 							Car.GetComponent<Speeder>().v = 0;
 						}
 				    }
@@ -80,6 +80,7 @@ public class Minigame : MonoBehaviour {
 			//Debug.Log("car is at:  " + carIsAt +", middle: " + streetsMiddle + ", min: " + minStreet+ ", max: " + maxStreet);
 			if (Mathf.Abs(streetsMiddle - carIsAt) > 1){
 
+				Streets[minStreet].GetComponent<Street>().UnloadResources();
 				Destroy(Streets[minStreet]);
 				Streets.Remove(minStreet);
 				Streets.Add(maxStreet+1, CreateStreet(maxStreet+1));
@@ -100,7 +101,9 @@ public class Minigame : MonoBehaviour {
 			if(carX <= 0 && GUI.Button(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right")){
 				Car.GetComponent<InGamePosition>().x ++;
 			}
-			GUI.Button(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), "Jump");
+			if (GUI.Button(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), "Jump")){
+				Car.GetComponent<Jumper>().Jump();
+			}
 		}
 	}
 
