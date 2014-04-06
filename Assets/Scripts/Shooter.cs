@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Shooter : CarBuff {
 	
 	public float ShootCost;
-	private float ShootSpeed = 50;
+	private float ShootSpeed = 10;
 
 	public override void DoAction(){
 
@@ -26,11 +26,11 @@ public class Shooter : CarBuff {
 
 		Speeder speeder = g.AddComponent<Speeder>(); //to have speed
 		speeder.v = ShootSpeed;
-		speeder.RideCost = 100;
+		speeder.RideCost = 1;
 		speeder.DestroyWhenEmpty = true;
 
 		//for speeder to work
-		g.AddComponent<Fuel>().Amount = 100; //to have fuel for speeder
+		g.AddComponent<Fuel>().Amount = 1; //to have fuel for speeder
 
 		g.AddComponent<Destroyer>(); //to destroy obstacles
 		g.AddComponent<Flyier>(); //to not fall into holes

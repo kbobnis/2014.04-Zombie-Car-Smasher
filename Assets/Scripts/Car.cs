@@ -46,5 +46,12 @@ public class Car : MonoBehaviour {
 		}
 	}
 
+	void OnGUI(){
+		Fuel fuel = GetComponent<Fuel>();
+		GuiHelper.DrawElement ("images/fuel", 0.01, 0.01, 0.98, 0.05, 0.98 * fuel.Amount / fuel.MaxAmount, 0.05); 
+		GuiHelper.DrawElement ("images/border", 0.01, 0.01, 0.98, 0.05);
+
+	}
+
 }
 

@@ -83,10 +83,14 @@ public class Tile : MonoBehaviour
 			if (g.GetComponent<Destroyer>() != null){
 				gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				TileContent  = TileContent.NONE;
+				Destroy(g);
 			} else {
 				Minigame.Me.Car.GetComponent<Fuel>().Amount += BuffOilValue;
 				GetComponent<SpriteRenderer>().enabled = false;
+				TileContent = TileContent.NONE;
 			}
+
+
 		}
 	}
 }

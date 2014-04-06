@@ -16,11 +16,5 @@ public class Fuel : MonoBehaviour {
 		}
 	}
 
-	void OnGUI () {
-
-		GuiHelper.DrawElement ("images/fuel", 0.01, 0.01, 0.98, 0.05, 0.98 * Amount / MaxAmount, 0.05); 
-		GuiHelper.DrawElement ("images/border", 0.01, 0.01, 0.98, 0.05);
-
-	}
 
 }

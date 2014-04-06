@@ -96,15 +96,6 @@ public class Minigame : MonoBehaviour {
 			int minStreet = int.MaxValue;
 			int maxStreet = int.MinValue;
 			foreach(KeyValuePair<int, GameObject> street in Streets){
-				//check car collision with obstacles
-				if (Mathf.Abs( Car.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.5){
-					Street tmp = street.Value.GetComponent<Street>();
-					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
-						if (tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
-							tile.Value.GetComponent<Tile>().GMIsOn(Car);
-						}
-				    }
-				}
 
 				if (street.Key < minStreet){
 					minStreet = street.Key;
