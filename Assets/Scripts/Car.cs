@@ -1,14 +1,14 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
-	public void Prepare(int gamePosX, int gamePosY, float carSpeed){
+	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float shooterProbability, float jumperProbability){
+
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
 		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
 		carRenderer.sortingLayerName = "Layer3";
-		carRenderer.receiveShadows = true;
-		carRenderer.castShadows = true;
-		
+
 		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
 		gameObject.transform.localScale = new Vector3(scale, scale);
 		
@@ -20,27 +20,36 @@ public class Car : MonoBehaviour {
 		tmp.y = gamePosY;
 		tmp.x = gamePosX;
 
-		//Jumper jumper = gameObject.AddComponent<Jumper>();
-		//jumper.JumpSpeed = 5;
-		//jumper.JumpCost = 4;
-		//jumper.JumpHeight = 1.5f;
+		float ticket = Random.Range(0, shooterProbability + jumperProbability);
 
-		Shooter shooter = gameObject.AddComponent<Shooter>();
-		shooter.ShootCost = 5;
+		if (ticket <= jumperProbability){
+			Jumper jumper = gameObject.AddComponent<Jumper>();
+			jumper.JumpDistance = 2;
+			jumper.JumpCost = 4;
+		}
+		else if (ticket <= jumperProbability + shooterProbability){
+			Shooter shooter = gameObject.AddComponent<Shooter>();
+			shooter.ShootCost = 5;
+		}
 
-		Fuel fuel = gameObject.AddComponent<Fuel>();
+		Fuel fuel = gameObject.AddComponent<Fuel>(); //for shooter
 		fuel.MaxAmount = 100;
 		fuel.Amount = 70;
 
 		gameObject.AddComponent<ActionReceiver>();
+
+		//Animator carAnimator = Resources.Load<Animator>("Images/carAnimator");
+
+		Animator animator = gameObject.AddComponent<Animator>();
+		animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Images/carAnimator");
 	}
 
 	public void Update(){
-		foreach(Fate fate in gameObject.GetComponent<ActionReceiver>().Fates){
-			if (fate == Fate.FELL_INTO_HOLE){
+		foreach(KeyValuePair<Fate, bool> keyValue in gameObject.GetComponent<ActionReceiver>().Fates){
+			if (keyValue.Key == Fate.FELL_INTO_HOLE ){
 				Minigame.Me.GameOver("Fell into hole");
 			}
-			if (fate == Fate.CRASHED_INTO_WALL){
+			if (keyValue.Key == Fate.CRASHED_INTO_WALL){
 				Minigame.Me.GameOver("Crashed into wall");
 			}
 		}

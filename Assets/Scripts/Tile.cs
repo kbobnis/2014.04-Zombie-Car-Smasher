@@ -73,7 +73,7 @@ public class Tile : MonoBehaviour
 				gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				TileContent  = TileContent.NONE;
 				Destroy(g);
-			} else {
+			} else if (g.GetComponent<Flyier>() == null){
 				g.GetComponent<ActionReceiver>().CrashedIntoWall();
 			}
 		}

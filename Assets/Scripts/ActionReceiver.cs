@@ -10,14 +10,18 @@ public enum Fate
 
 public class ActionReceiver : MonoBehaviour
 {
-	public List<Fate> Fates = new List<Fate>();
+	public Dictionary<Fate, bool> Fates = new Dictionary<Fate, bool>();
 
 	public void FellIntoHole(){
-		Fates.Add(Fate.FELL_INTO_HOLE);
+		if (!Fates.ContainsKey(Fate.FELL_INTO_HOLE)){
+			Fates.Add(Fate.FELL_INTO_HOLE, true);
+		}
 	}
 
 	public void CrashedIntoWall(){
-		Fates.Add(Fate.CRASHED_INTO_WALL);
+		if (!Fates.ContainsKey(Fate.CRASHED_INTO_WALL)){
+			Fates.Add(Fate.CRASHED_INTO_WALL, true);
+		}
 	}
 
 }

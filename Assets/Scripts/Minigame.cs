@@ -4,12 +4,15 @@ using System.Collections.Generic;
 public class Minigame : MonoBehaviour {
 
 	public float CarSpeed;
+	public float ShooterProbability;
+	public float JumperProbability;
+
+	public GameObject Car;
 
 	private int lastCarWasAt = 0;
 	private int Distance =0;
 	private bool IsGameOver = false;
 	private string GameOverReason = "No reason";
-	public GameObject Car;
 	public Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 
 	public static Minigame Me;
@@ -56,7 +59,7 @@ public class Minigame : MonoBehaviour {
 		Car = new GameObject();
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
-		tmp.Prepare(0, 0, CarSpeed);
+		tmp.Prepare(0, 0, CarSpeed, ShooterProbability, JumperProbability);
 
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
 		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
