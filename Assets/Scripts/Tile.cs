@@ -3,7 +3,8 @@ using UnityEngine;
 public enum TileContent{
 	WALL, 
 	HOLE,
-	NONE
+	NONE,
+	BUFF_OIL
 }
 
 
@@ -11,6 +12,11 @@ public enum TileContent{
 public class Tile : MonoBehaviour 
 {
 	public TileContent TileContent;
+
+	public static float WallChance;
+	public static float HoleChance;
+	public static float BuffFuelChance;
+	public static float BuffOilValue;
 
 	// Use this for initialization
 	void Start () {
@@ -21,22 +27,27 @@ public class Tile : MonoBehaviour
 
 	}
 
-	public void InitMe(float wallChance, float holeChance, GameObject parent, int i, int inGameY){
+	public void InitMe(GameObject parent, int i, int inGameY){
 		TileContent = TileContent.NONE;
 		float ticket = Random.Range(0f, 1f);
 		//Debug.Log ("ticket was: " + ticket );
 		SpriteRenderer r = null;
-		if (ticket < wallChance ){
+		if (ticket < WallChance ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/wall");
 			//Debug.Log("created wall");
-		} else if (ticket < wallChance + holeChance){
+		} else if (ticket < WallChance + HoleChance){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/hole");
 			//Debug.Log("created hole");
+		} else if (ticket < WallChance + HoleChance + BuffFuelChance){
+			TileContent = TileContent.BUFF_OIL;
+			r = gameObject.AddComponent<SpriteRenderer>();
+			r.sprite = Resources.Load<Sprite>("Images/oil");
 		}
+
 		transform.localScale = new Vector3(1, 1, 1);
 		transform.parent = parent.transform;
 		if (r != null){
@@ -50,7 +61,20 @@ public class Tile : MonoBehaviour
 		igp.x = i;
 		igp.y = inGameY;
 	}
-	
 
+	public void CarIsOn(){
+		//if crashed
+		if (TileContent == TileContent.HOLE || TileContent == TileContent.WALL){
+			Minigame.Me.GameOver("Crashed");
+		}
 
+		if (TileContent == TileContent.BUFF_OIL){
+			Minigame.Me.Car.GetComponent<Fuel>().Amount += BuffOilValue;
+			GetComponent<SpriteRenderer>().enabled = false;
+		}
+	}
 }
+
+
+
+

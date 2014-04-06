@@ -4,20 +4,21 @@ using System.Collections.Generic;
 public class Minigame : MonoBehaviour {
 
 	public float CarSpeed;
-	public float WallChance;
-	public float HoleChance;
 
 	private int lastCarWasAt = 0;
 	private int Distance =0;
 	private bool IsGameOver = false;
 	private string GameOverReason = "No reason";
-	private GameObject Car;
+	public GameObject Car;
 	private Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
+
+	public static Minigame Me;
 
 	private GUIStyle bigFontLeft = new GUIStyle();
 
 	// Use this for initialization
 	void Start () {
+		Me = this;
 		bigFontLeft.fontSize = 25 * Screen.width / 1900;
 		bigFontLeft.normal.textColor = new Color (255/255f, 255/255f, 255/255f);
 
@@ -43,6 +44,11 @@ public class Minigame : MonoBehaviour {
 	public void PrepareRace(){
 		UnloadResources();
 
+		Tile.WallChance = 0.05f;
+		Tile.HoleChance = 0.08f;
+		Tile.BuffFuelChance = 0.01f;
+		Tile.BuffOilValue = 10;
+
 		for(int i=-8; i < 8; i ++){
 			Streets.Add(i, CreateStreet(i));
 		}
@@ -53,8 +59,7 @@ public class Minigame : MonoBehaviour {
 		tmp.Prepare(0, 0, CarSpeed);
 
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
-		Camera.main.GetComponent<FollowGM>().Offset.y = 0;
-
+		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
 
 	}
 
@@ -62,11 +67,11 @@ public class Minigame : MonoBehaviour {
 		GameObject g = new GameObject(); 
 		g.name = "street";
 		Street street = g.AddComponent<Street>();
-		street.Prepare(inGameY, WallChance, HoleChance);
+		street.Prepare(inGameY);
 		return g;
 	}
 
-	private void GameOver(string reason){
+	public void GameOver(string reason){
 		IsGameOver = true;
 		Car.GetComponent<Speeder>().v = 0;
 		GameOverReason = reason;
@@ -95,8 +100,8 @@ public class Minigame : MonoBehaviour {
 				if (Mathf.Abs( Car.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.5){
 					Street tmp = street.Value.GetComponent<Street>();
 					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
-						if (tile.Value.GetComponent<Tile>().TileContent != TileContent.NONE && tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
-							GameOver("Crashed");
+						if (tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
+							tile.Value.GetComponent<Tile>().CarIsOn();
 						}
 				    }
 				}
@@ -149,7 +154,7 @@ public class Minigame : MonoBehaviour {
 
 
 		if (IsGameOver){
-			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), "Game Over,\n " + GameOverReason + "\n One more time")){
+			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), GameOverReason + "\nPoints: "+Distance + "\n One more time")){
 				PrepareRace();
 			}
 		}

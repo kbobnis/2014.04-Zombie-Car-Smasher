@@ -15,7 +15,7 @@ public class Street : MonoBehaviour {
 	void Update () {
 	}
 
-	public void Prepare(int inGameY, float WallChance, float HoleChance){
+	public void Prepare(int inGameY){
 		SpriteRenderer streetRenderer = gameObject.AddComponent<SpriteRenderer>();
 		streetRenderer.sprite = Resources.Load<Sprite>("Images/street");
 		streetRenderer.sortingLayerName = "Layer1";
@@ -32,7 +32,7 @@ public class Street : MonoBehaviour {
 		for(int i=-1; i < 2; i++){
 			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
-			tmp2.InitMe(WallChance, HoleChance, gameObject, i, inGameY);
+			tmp2.InitMe(gameObject, i, inGameY);
 
 			Tiles.Add(i, Tile);
 		}
