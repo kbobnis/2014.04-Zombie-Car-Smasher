@@ -19,6 +19,8 @@ public class Street : MonoBehaviour {
 		SpriteRenderer streetRenderer = gameObject.AddComponent<SpriteRenderer>();
 		streetRenderer.sprite = Resources.Load<Sprite>("Images/street");
 		streetRenderer.sortingLayerName = "Layer1";
+		streetRenderer.receiveShadows = true;
+		streetRenderer.castShadows = true;
 		Vector3 size = streetRenderer.sprite.bounds.size;
 		gameObject.transform.localScale = new Vector3(InGamePosition.tileW * 3 / size.x, InGamePosition.tileH  / size.y);
 		

@@ -8,6 +8,7 @@ public class Minigame : MonoBehaviour {
 	public float HoleChance;
 
 	private int lastCarWasAt = 0;
+	private bool GameOver = false;
 	private GameObject Car;
 	private Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 	private GameObject FurthestStreet;
@@ -20,6 +21,18 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void PrepareRace(){
+		//remove all previous objects 
+		foreach(KeyValuePair<int, GameObject> tmp2 in Streets){
+			UnloadStreet(tmp2.Value);
+		}
+		Streets.Clear();
+		//remove car
+		Destroy(Car);
+		Car = null;
+		FurthestStreet = null;
+		GameOver = false;
+		lastCarWasAt = 0;
+
 		for(int i=0; i < 16; i ++){
 			Streets.Add(i, CreateStreet(i));
 		}
@@ -47,8 +60,6 @@ public class Minigame : MonoBehaviour {
 		if (Car == null){
 			return ;
 		}
-
-
 		//car should be always in the middle of the road
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
 		if (carIsAt != lastCarWasAt){
@@ -64,6 +75,7 @@ public class Minigame : MonoBehaviour {
 					foreach(KeyValuePair<int, GameObject> tile in tmp.Tiles){
 						if (tile.Value.GetComponent<Tile>().TileContent != TileContent.NONE && tile.Value.GetComponent<InGamePosition>().x == Car.GetComponent<InGamePosition>().x && Car.GetComponent<InGamePosition>().z >= 0){
 							Car.GetComponent<Speeder>().v = 0;
+							GameOver = true;
 						}
 				    }
 				}
@@ -80,17 +92,23 @@ public class Minigame : MonoBehaviour {
 			//Debug.Log("car is at:  " + carIsAt +", middle: " + streetsMiddle + ", min: " + minStreet+ ", max: " + maxStreet);
 			if (Mathf.Abs(streetsMiddle - carIsAt) > 1){
 
-				Streets[minStreet].GetComponent<Street>().UnloadResources();
-				Destroy(Streets[minStreet]);
+				UnloadStreet(Streets[minStreet]);
 				Streets.Remove(minStreet);
 				Streets.Add(maxStreet+1, CreateStreet(maxStreet+1));
 			}
+
 		}
 
 	}
 
+	private void UnloadStreet(GameObject gm){
+		gm.GetComponent<Street>().UnloadResources();
+		Destroy(gm);
+	}
+
 	void OnGUI () {
 		int oneThirdW = Screen.width/3;
+		int oneThirdH = Screen.height/3;
 		int twentyPercent = Screen.height / 5;
 		if (Car != null && Car.GetComponent<InGamePosition>() != null){
 			float carX = Car.GetComponent<InGamePosition>().x;
@@ -103,6 +121,12 @@ public class Minigame : MonoBehaviour {
 			}
 			if (GUI.Button(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), "Jump")){
 				Car.GetComponent<Jumper>().Jump();
+			}
+		}
+
+		if (GameOver){
+			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), "Game Over, repeat")){
+				PrepareRace();
 			}
 		}
 	}

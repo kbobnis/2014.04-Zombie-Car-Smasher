@@ -43,6 +43,8 @@ public class Tile : MonoBehaviour
 			r.sortingLayerName = "Layer2";
 			float scale = InGamePosition.tileW/(float) r.sprite.bounds.size.x ;
 			transform.localScale = new Vector3(scale, scale, 0);
+			r.receiveShadows = true;
+			r.castShadows = true;
 		}
 		InGamePosition igp = gameObject.AddComponent<InGamePosition>();
 		igp.x = i;

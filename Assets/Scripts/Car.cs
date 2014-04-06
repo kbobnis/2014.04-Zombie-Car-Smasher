@@ -6,6 +6,8 @@ public class Car : MonoBehaviour {
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
 		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
 		carRenderer.sortingLayerName = "Layer3";
+		carRenderer.receiveShadows = true;
+		carRenderer.castShadows = true;
 		
 		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
 		gameObject.transform.localScale = new Vector3(scale, scale);
