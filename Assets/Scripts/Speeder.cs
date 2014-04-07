@@ -8,6 +8,8 @@ public class Speeder : MonoBehaviour
 	public float RideCost;
 	public bool DestroyWhenEmpty = false;
 
+
+	private float LastDistance;
 	// Use this for initialization
 	void Start () {
 		
@@ -15,11 +17,14 @@ public class Speeder : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		float rideCost = Time.deltaTime * RideCost;
+		if (LastDistance == 0){
+			LastDistance = GetComponent<InGamePosition>().y;
+		}
 
 		if (GetComponent<Fuel>().Amount > 0 && v > 0){
 			GetComponent<InGamePosition>().y += v * Time.deltaTime;
-			GetComponent<Fuel>().Amount -= rideCost;
+			GetComponent<Fuel>().Amount -= (GetComponent<InGamePosition>().y - LastDistance) * RideCost;
+			LastDistance  = GetComponent<InGamePosition>().y;
 		}
 
 		if (GetComponent<Fuel>().Amount <= 0 && DestroyWhenEmpty){
@@ -28,7 +33,7 @@ public class Speeder : MonoBehaviour
 
 			foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
 				//check collision with obstacles
-				if (Mathf.Abs(  gameObject.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.5){
+				if (Mathf.Abs(  gameObject.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.3f){
 					Street tmp = street.Value.GetComponent<Street>();
 					GameObject tile = tmp.Tiles[Mathf.RoundToInt( gameObject.GetComponent<InGamePosition>().x)];
 					tile.GetComponent<Tile>().GMIsOn(gameObject);

@@ -2,14 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Flyier.cs">
     <Files>
-      <File FileName="Assets\Scripts\Shooter.cs" Line="39" Column="2" />
-      <File FileName="Assets\Scripts\Fuel.cs" Line="19" Column="1" />
-      <File FileName="Assets\Scripts\Car.cs" Line="31" Column="14" />
-      <File FileName="Assets\Scripts\Minigame.cs" Line="62" Column="10" />
-      <File FileName="Assets\Scripts\Speeder.cs" Line="34" Column="35" />
-      <File FileName="Assets\Scripts\Tile.cs" Line="51" Column="40" />
-      <File FileName="Assets\Scripts\Jumper.cs" Line="11" Column="13" />
-      <File FileName="Assets\Scripts\Flyier.cs" Line="15" Column="36" />
+      <File FileName="Assets\Scripts\Flyier.cs" Line="26" Column="18" />
+      <File FileName="Assets\Scripts\Jumper.cs" Line="11" Column="15" />
+      <File FileName="Assets\Scripts\Tile.cs" Line="77" Column="45" />
+      <File FileName="Assets\Scripts\ActionReceiver.cs" Line="19" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

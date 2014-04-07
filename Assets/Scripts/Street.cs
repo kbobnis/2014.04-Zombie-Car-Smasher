@@ -15,7 +15,7 @@ public class Street : MonoBehaviour {
 	void Update () {
 	}
 
-	public void Prepare(int inGameY){
+	public void Prepare(int inGameY, GameObject previousStreet, bool noObstacles){
 		SpriteRenderer streetRenderer = gameObject.AddComponent<SpriteRenderer>();
 		streetRenderer.sprite = Resources.Load<Sprite>("Images/street");
 		streetRenderer.sortingLayerName = "Layer1";
@@ -27,14 +27,64 @@ public class Street : MonoBehaviour {
 		InGamePosition tmp = gameObject.AddComponent<InGamePosition>();
 		tmp.x = 0;
 		tmp.y = inGameY;
-		
+
+		bool[] foundWall = new bool[]{ false, false, false };
+		bool[] foundHole = new bool[]{ false, false, false} ;
+		//getting previous street
+		int i2=0; 
+		if (previousStreet != null){
+			foreach(GameObject tileGmTmp in previousStreet.GetComponent<Street>().Tiles.Values){
+				Tile tileTmp = tileGmTmp.GetComponent<Tile>();
+
+				if (tileTmp.TileContent == TileContent.WALL){
+					foundWall[i2] = true;
+				}
+				if (tileTmp.TileContent == TileContent.HOLE){
+					foundHole[i2] = true;
+				}
+				i2++;
+			}
+		}
+
 		//left, center, right
 		for(int i=-1; i < 2; i++){
+			bool canBeWall = true;
+			bool canBeHole = true;
+			if (i == -1){
+				canBeWall = !foundWall[0] && !foundWall[1];
+				canBeHole = !foundHole[0] && !foundHole[1];
+			}
+			if (i == 1){
+				canBeWall = !foundWall[1] && !foundWall[2];
+				canBeHole = !foundHole[1] && !foundHole[2];
+			}
+			if (i == 0){
+				canBeWall = !foundWall[0] && !foundWall[1] && !foundWall[2] ;
+				canBeHole = !foundHole[0] && !foundHole[1] && !foundHole[2];
+			}
+
+			if (noObstacles){
+				canBeHole = false;
+				canBeWall = false;
+			}
+
 			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
-			tmp2.InitMe(gameObject, i, inGameY);
+
+			tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole);
 
 			Tiles.Add(i, Tile);
+
+			if (i < 1){
+				if (tmp2.TileContent == TileContent.WALL){
+					foundWall[i+1] = true;
+					foundWall[i+2] = true; //we dont want two obstacles on the same level
+				}
+				if (tmp2.TileContent == TileContent.HOLE){
+					foundHole[i+1] = true;
+					foundHole[i+2] = true; //we dont want two obstacles on the same level
+				}
+			}
 		}
 	}
 

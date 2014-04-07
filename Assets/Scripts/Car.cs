@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
-	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float shooterProbability, float jumperProbability){
+	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float shooterProbability, float jumperProbability, float rideCost){
 
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
 		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
@@ -14,7 +14,7 @@ public class Car : MonoBehaviour {
 		
 		Speeder speeder = gameObject.AddComponent<Speeder>();
 		speeder.v = carSpeed;
-		speeder.RideCost = 1f;
+		speeder.RideCost = rideCost;
 		
 		InGamePosition tmp = gameObject.AddComponent<InGamePosition>();
 		tmp.y = gamePosY;
@@ -28,11 +28,10 @@ public class Car : MonoBehaviour {
 			jumper.JumpCost = 4;
 		}
 		else if (ticket <= jumperProbability + shooterProbability){
-			Shooter shooter = gameObject.AddComponent<Shooter>();
-			shooter.ShootCost = 5;
+			gameObject.AddComponent<Shooter>();
 		}
 
-		Fuel fuel = gameObject.AddComponent<Fuel>(); //for shooter
+		Fuel fuel = gameObject.AddComponent<Fuel>(); 
 		fuel.MaxAmount = 100;
 		fuel.Amount = 70;
 

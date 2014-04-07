@@ -6,6 +6,12 @@ public class Minigame : MonoBehaviour {
 	public float CarSpeed;
 	public float ShooterProbability;
 	public float JumperProbability;
+	public float WallChance = 0.05f;
+	public float HoleChance = 0.08f;
+	public float BuffFuelChance = 0.01f;
+	public float BuffOilValue = 10;
+	public int FirstClearStreets = 6;
+	public float RideCost = 5f;
 
 	public GameObject Car;
 
@@ -18,6 +24,8 @@ public class Minigame : MonoBehaviour {
 	public static Minigame Me;
 
 	private GUIStyle bigFontLeft = new GUIStyle();
+
+	private bool Pressed = false;
 
 	// Use this for initialization
 	void Start () {
@@ -47,30 +55,40 @@ public class Minigame : MonoBehaviour {
 	public void PrepareRace(){
 		UnloadResources();
 
-		Tile.WallChance = 0.05f;
-		Tile.HoleChance = 0.08f;
-		Tile.BuffFuelChance = 0.01f;
-		Tile.BuffOilValue = 10;
+		Tile.WallChance = WallChance;
+		Tile.HoleChance = HoleChance;
+		Tile.BuffFuelChance = BuffFuelChance;
+		Tile.BuffOilValue = BuffOilValue;
 
+
+
+
+		GameObject previousStreet = null;
+		int carStartingStreet = 0;
+		int clearStreets =0;
 		for(int i=-8; i < 8; i ++){
-			Streets.Add(i, CreateStreet(i));
+			bool noObstacles = clearStreets-8-carStartingStreet<=FirstClearStreets;
+			GameObject thisStreet = CreateStreet(i, previousStreet, noObstacles);
+			Streets.Add(i, thisStreet);
+			previousStreet = thisStreet;
+			clearStreets ++;
 		}
-
 		Car = new GameObject();
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
-		tmp.Prepare(0, 0, CarSpeed, ShooterProbability, JumperProbability);
+		tmp.Prepare(0, carStartingStreet, CarSpeed, ShooterProbability, JumperProbability, RideCost);
+
 
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
 		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
 
 	}
 
-	private GameObject CreateStreet(int inGameY){
+	private GameObject CreateStreet(int inGameY, GameObject previousStreet, bool noObstacles=false){
 		GameObject g = new GameObject(); 
 		g.name = "street";
 		Street street = g.AddComponent<Street>();
-		street.Prepare(inGameY);
+		street.Prepare(inGameY, previousStreet, noObstacles);
 		return g;
 	}
 
@@ -83,6 +101,11 @@ public class Minigame : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetMouseButtonUp (0)){
+			Pressed = false;
+		}
+
+
 		if (Car == null){
 			return ;
 		}
@@ -113,7 +136,7 @@ public class Minigame : MonoBehaviour {
 
 				UnloadStreet(Streets[minStreet]);
 				Streets.Remove(minStreet);
-				Streets.Add(maxStreet+1, CreateStreet(maxStreet+1));
+				Streets.Add(maxStreet+1, CreateStreet(maxStreet+1, Streets[maxStreet]));
 			}
 
 		}
@@ -126,6 +149,8 @@ public class Minigame : MonoBehaviour {
 	}
 
 	void OnGUI () {
+
+
 		int oneThirdW = Screen.width/3;
 		int oneThirdH = Screen.height/3;
 		int oneTenthW = Screen.width/10;
@@ -134,13 +159,20 @@ public class Minigame : MonoBehaviour {
 		if (Car != null && Car.GetComponent<InGamePosition>() != null){
 			float carX = Car.GetComponent<InGamePosition>().x;
 
-			if(carX >= 0 && GUI.Button(new Rect(0, Screen.height*(2/3f), oneThirdW, twentyPercent), "Left")){
+			if(Input.GetButtonDown("Fire1")&&new Rect(10,10,50,40).Contains(Input.mousePosition))
+				Debug.Log("I want a value when i press the button.");
+
+
+			if(carX >= 0 && GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), oneThirdW, twentyPercent), "Left") && !Pressed){
+				Pressed = true;
 				Car.GetComponent<InGamePosition>().x --;
 			}
-			if(carX <= 0 && GUI.Button(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right")){
+			if(carX <= 0 && GUI.RepeatButton(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right") && !Pressed){
+				Pressed = true;
 				Car.GetComponent<InGamePosition>().x ++;
 			}
-			if (Car.GetComponent<CarBuff>().CanDoAction() && GUI.Button(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), Car.GetComponent<CarBuff>().GetActionName())){
+			if (Car.GetComponent<CarBuff>().CanDoAction() && GUI.RepeatButton(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), Car.GetComponent<CarBuff>().GetActionName()) && !Pressed){
+				Pressed = true;
 				Car.GetComponent<CarBuff>().DoAction();
 			}
 		}

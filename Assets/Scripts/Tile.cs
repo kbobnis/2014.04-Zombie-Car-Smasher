@@ -27,22 +27,22 @@ public class Tile : MonoBehaviour
 
 	}
 
-	public void InitMe(GameObject parent, int i, int inGameY){
+	public void InitMe(GameObject parent, int i, int inGameY, bool canBeWall, bool canBeHole){
 		TileContent = TileContent.NONE;
 		float ticket = Random.Range(0f, 1f);
 		//Debug.Log ("ticket was: " + ticket );
 		SpriteRenderer r = null;
-		if (ticket < WallChance ){
+		if (ticket < WallChance && canBeWall ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/wall");
 			//Debug.Log("created wall");
-		} else if (ticket < WallChance + HoleChance){
+		} else if (ticket > WallChance && ticket < WallChance + HoleChance && canBeHole){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/hole");
 			//Debug.Log("created hole");
-		} else if (ticket < WallChance + HoleChance + BuffFuelChance){
+		} else if (ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
 			TileContent = TileContent.BUFF_OIL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = Resources.Load<Sprite>("Images/oil");
@@ -73,7 +73,7 @@ public class Tile : MonoBehaviour
 				gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				TileContent  = TileContent.NONE;
 				Destroy(g);
-			} else if (g.GetComponent<Flyier>() == null){
+			} else { //if (g.GetComponent<Flyier>() == null){ //even flying crash into walls
 				g.GetComponent<ActionReceiver>().CrashedIntoWall();
 			}
 		}
@@ -84,7 +84,7 @@ public class Tile : MonoBehaviour
 				gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				TileContent  = TileContent.NONE;
 				Destroy(g);
-			} else {
+			} else  if (g.GetComponent<Flyier>() == null){ //flying object don't pick up oil buffs
 				Minigame.Me.Car.GetComponent<Fuel>().Amount += BuffOilValue;
 				GetComponent<SpriteRenderer>().enabled = false;
 				TileContent = TileContent.NONE;
