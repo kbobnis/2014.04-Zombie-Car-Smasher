@@ -5,6 +5,12 @@ public class GuiHelper{
 
 	private static List<MyKeyValue> blinking = new List<MyKeyValue>();
 
+	public static int oneThirdW = Screen.width/3;
+	public static int oneThirdH = Screen.height/3;
+	public static int oneTenthW = Screen.width/10;
+	public static int oneTenthH = Screen.height/10;
+	public static int twentyPercent = Screen.height / 5;
+
 	public static void DrawElement(string slotName, double x, double y, double w, double h, double actualW=-1, double actualH=-1, bool downUp=false){
 		int tmpX = PercentW(x);
 		int tmpY = PercentH (y);

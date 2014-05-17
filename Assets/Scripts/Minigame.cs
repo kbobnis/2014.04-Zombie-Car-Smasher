@@ -95,6 +95,7 @@ public class Minigame : MonoBehaviour {
 	public void GameOver(string reason){
 		IsGameOver = true;
 		Car.GetComponent<Speeder>().v = 0;
+		Car.GetComponent<CarTurner>().enabled = false;
 		GameOverReason = reason;
 	}
 
@@ -148,38 +149,17 @@ public class Minigame : MonoBehaviour {
 		Destroy(gm);
 	}
 
+
+
 	void OnGUI () {
 
 
-		int oneThirdW = Screen.width/3;
-		int oneThirdH = Screen.height/3;
-		int oneTenthW = Screen.width/10;
-		int oneTenthH = Screen.height/10;
-		int twentyPercent = Screen.height / 5;
-		if (Car != null && Car.GetComponent<InGamePosition>() != null){
-			float carX = Car.GetComponent<InGamePosition>().x;
 
-			if (!Car.GetComponent<CarTurner>().IsTurning()){
-				if(carX >= 0 && GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), oneThirdW, twentyPercent), "Left" )  ){
-					Pressed = true;
-					Car.GetComponent<CarTurner>().TurnLeft();
-					
-				}
-				if(carX <= 0 && GUI.RepeatButton(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right") ){
-					Pressed = true;
-					Car.GetComponent<CarTurner>().TurnRight();
-				}
-			}
-			if (false && Car.GetComponent<CarBuff>().CanDoAction() && GUI.RepeatButton(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), Car.GetComponent<CarBuff>().GetActionName()) && !Pressed){
-				Pressed = true;
-				Car.GetComponent<CarBuff>().DoAction();
-			}
-		}
-		GUI.Label (new Rect (oneTenthW, oneTenthH, Screen.width, Screen.height), "Distance: " + Distance);//, bigFontLeft);
+		GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH, Screen.width, Screen.height), "Distance: " + Distance);//, bigFontLeft);
 
 
 		if (IsGameOver){
-			if(GUI.Button(new Rect(oneThirdW, oneThirdH, oneThirdW, oneThirdH), GameOverReason + "\nPoints: "+Distance + "\n One more time")){
+			if(GUI.Button(new Rect(GuiHelper.oneThirdW, GuiHelper.oneThirdH, GuiHelper.oneThirdW, GuiHelper.oneThirdH), GameOverReason + "\nPoints: "+Distance + "\n One more time")){
 				PrepareRace();
 			}
 		}

@@ -64,4 +64,18 @@ public class CarTurner : MonoBehaviour {
 		return WhereTurn != SIDE.NOWHERE;
 	}
 
+	void OnGUI() {
+		float carX = GetComponent<InGamePosition>().x;
+		
+		if (!IsTurning()){
+			if(carX >= 0 && GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Left" )  ){
+				TurnLeft();
+			}
+			if(carX <= 0 && GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Right") ){
+				TurnRight();
+			}
+		}
+	}
+
+
 }
