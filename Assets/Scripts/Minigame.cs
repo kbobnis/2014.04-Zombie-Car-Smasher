@@ -159,19 +159,18 @@ public class Minigame : MonoBehaviour {
 		if (Car != null && Car.GetComponent<InGamePosition>() != null){
 			float carX = Car.GetComponent<InGamePosition>().x;
 
-			if(Input.GetButtonDown("Fire1")&&new Rect(10,10,50,40).Contains(Input.mousePosition))
-				Debug.Log("I want a value when i press the button.");
-
-
-			if(carX >= 0 && GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), oneThirdW, twentyPercent), "Left") && !Pressed){
-				Pressed = true;
-				Car.GetComponent<InGamePosition>().x --;
+			if (!Car.GetComponent<CarTurner>().IsTurning()){
+				if(carX >= 0 && GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), oneThirdW, twentyPercent), "Left" )  ){
+					Pressed = true;
+					Car.GetComponent<CarTurner>().TurnLeft();
+					
+				}
+				if(carX <= 0 && GUI.RepeatButton(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right") ){
+					Pressed = true;
+					Car.GetComponent<CarTurner>().TurnRight();
+				}
 			}
-			if(carX <= 0 && GUI.RepeatButton(new Rect(Screen.width - oneThirdW, Screen.height*(2/3f), oneThirdW, twentyPercent), "Right") && !Pressed){
-				Pressed = true;
-				Car.GetComponent<InGamePosition>().x ++;
-			}
-			if (Car.GetComponent<CarBuff>().CanDoAction() && GUI.RepeatButton(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), Car.GetComponent<CarBuff>().GetActionName()) && !Pressed){
+			if (false && Car.GetComponent<CarBuff>().CanDoAction() && GUI.RepeatButton(new Rect(oneThirdW, Screen.height -twentyPercent, oneThirdW, twentyPercent), Car.GetComponent<CarBuff>().GetActionName()) && !Pressed){
 				Pressed = true;
 				Car.GetComponent<CarBuff>().DoAction();
 			}

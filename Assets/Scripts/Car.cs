@@ -41,6 +41,8 @@ public class Car : MonoBehaviour {
 
 		Animator animator = gameObject.AddComponent<Animator>();
 		animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Images/carAnimator");
+
+		gameObject.AddComponent<CarTurner>();
 	}
 
 	public void Update(){
