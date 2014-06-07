@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 public class Minigame : MonoBehaviour {
 
-	public float CarSpeed;
+	public float StartingCarSpeed;
+	public float EndingCarSpeed;
 	public float ShooterProbability;
 	public float JumperProbability;
 	public float WallChance = 0.05f;
@@ -75,7 +76,7 @@ public class Minigame : MonoBehaviour {
 		Car = new GameObject();
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
-		tmp.Prepare(0, carStartingStreet, CarSpeed, ShooterProbability, JumperProbability, RideCost);
+		tmp.Prepare(0, carStartingStreet, StartingCarSpeed, EndingCarSpeed, ShooterProbability, JumperProbability, RideCost);
 
 
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;

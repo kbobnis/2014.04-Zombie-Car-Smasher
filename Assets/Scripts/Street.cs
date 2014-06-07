@@ -7,6 +7,8 @@ public class Street : MonoBehaviour {
 
 	public Dictionary<int, GameObject> Tiles = new Dictionary<int, GameObject>();
 
+	private static Sprite StreetSprite = Resources.Load<Sprite>("Images/street");
+
 	// Use this for initialization
 	void Start () {
 	}
@@ -17,7 +19,7 @@ public class Street : MonoBehaviour {
 
 	public void Prepare(int inGameY, GameObject previousStreet, bool noObstacles){
 		SpriteRenderer streetRenderer = gameObject.AddComponent<SpriteRenderer>();
-		streetRenderer.sprite = Resources.Load<Sprite>("Images/street");
+		streetRenderer.sprite = StreetSprite;
 		streetRenderer.sortingLayerName = "Layer1";
 		streetRenderer.receiveShadows = true;
 		streetRenderer.castShadows = true;

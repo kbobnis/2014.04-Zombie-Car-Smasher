@@ -7,8 +7,6 @@ public enum TileContent{
 	BUFF_OIL
 }
 
-
-
 public class Tile : MonoBehaviour 
 {
 	public TileContent TileContent;
@@ -18,6 +16,9 @@ public class Tile : MonoBehaviour
 	public static float BuffFuelChance;
 	public static float BuffOilValue;
 
+	private static Sprite WallSprite = Resources.Load<Sprite>("Images/wall");
+	private static Sprite HoleSprite = Resources.Load<Sprite>("Images/hole");
+	private static Sprite OilSprite = Resources.Load<Sprite>("Images/oil");
 	// Use this for initialization
 	void Start () {
 	}
@@ -35,17 +36,17 @@ public class Tile : MonoBehaviour
 		if (ticket < WallChance && canBeWall ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
-			r.sprite = Resources.Load<Sprite>("Images/wall");
+			r.sprite = WallSprite;
 			//Debug.Log("created wall");
 		} else if (ticket > WallChance && ticket < WallChance + HoleChance && canBeHole){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
-			r.sprite = Resources.Load<Sprite>("Images/hole");
+			r.sprite = HoleSprite;
 			//Debug.Log("created hole");
 		} else if (ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
 			TileContent = TileContent.BUFF_OIL;
 			r = gameObject.AddComponent<SpriteRenderer>();
-			r.sprite = Resources.Load<Sprite>("Images/oil");
+			r.sprite = OilSprite;
 		}
 
 		transform.localScale = new Vector3(1, 1, 1);
@@ -89,8 +90,6 @@ public class Tile : MonoBehaviour
 				GetComponent<SpriteRenderer>().enabled = false;
 				TileContent = TileContent.NONE;
 			}
-
-
 		}
 	}
 }

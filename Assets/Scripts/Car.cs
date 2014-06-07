@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
-	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float shooterProbability, float jumperProbability, float rideCost){
+	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float maxCarSpeed, float shooterProbability, float jumperProbability, float rideCost){
 
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
 		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
@@ -43,6 +43,9 @@ public class Car : MonoBehaviour {
 		animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Images/carAnimator");
 
 		gameObject.AddComponent<CarTurner>();
+
+		Accelerator accelerator = gameObject.AddComponent<Accelerator> ();
+		accelerator.Prepare (maxCarSpeed, 300);
 	}
 
 	public void Update(){

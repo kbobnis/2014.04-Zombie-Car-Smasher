@@ -15,6 +15,8 @@ public class CarTurner : MonoBehaviour {
 	private Texture2D RightIcon;
 	private bool pressed;
 
+	private float LastY;
+
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +29,11 @@ public class CarTurner : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		float thisY = GetComponent<InGamePosition> ().y;
+		if (LastY == 0) {
+			LastY = thisY;
+		}
+		float deltaY = thisY - LastY;
 		float howUpdate = 0;
 		float oldX = GetComponent<InGamePosition>().x;
 
@@ -34,7 +41,7 @@ public class CarTurner : MonoBehaviour {
 			case SIDE.LEFT:{
 				
 				int stopPoint = Mathf.FloorToInt(oldX );
-				howUpdate += -1 * TurnSpeed * Time.deltaTime;
+				howUpdate += -1 * TurnSpeed * deltaY;
 				if (oldX + howUpdate < stopPoint){
 					howUpdate = -1 * oldX + stopPoint ;
 					WhereTurn = SIDE.NOWHERE;
@@ -42,7 +49,7 @@ public class CarTurner : MonoBehaviour {
 				break;
 			}
 			case SIDE.RIGHT: { 
-				howUpdate +=  TurnSpeed * Time.deltaTime;
+				howUpdate +=  TurnSpeed * deltaY;
 
 				int stopPoint = (int)(oldX + 1);
 				if (oldX + howUpdate > stopPoint){
@@ -61,6 +68,7 @@ public class CarTurner : MonoBehaviour {
 		{
 			pressed = false;
 		}
+		LastY = thisY;
 	}
 
 	public void TurnLeft(){
@@ -82,11 +90,11 @@ public class CarTurner : MonoBehaviour {
 
 
 		if (!IsTurning() && !pressed){
-			if(carX >= 0 && (GUI.RepeatButton(new Rect(GuiHelper.oneTenthW, Screen.height*(75/100f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), LeftIcon ) || Input.GetKeyDown(KeyCode.A))  ){
+			if(carX >= 0 && (GUI.RepeatButton(new Rect(GuiHelper.oneTenthW/2, Screen.height*(75/100f), GuiHelper.oneThirdW*1.3f, GuiHelper.twentyPercent), LeftIcon ) || Input.GetKeyDown(KeyCode.A))  ){
 				TurnLeft();
 				pressed = true;
 			}
-			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW - GuiHelper.oneTenthW, Screen.height*(75/100f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), RightIcon) || Input.GetKeyDown(KeyCode.D))){
+			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW - GuiHelper.oneTenthW, Screen.height*(75/100f), GuiHelper.oneThirdW*1.3f, GuiHelper.twentyPercent), RightIcon) || Input.GetKeyDown(KeyCode.D))){
 				TurnRight();
 				pressed = true;
 			}
