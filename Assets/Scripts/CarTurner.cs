@@ -13,6 +13,7 @@ public class CarTurner : MonoBehaviour {
 
 	private Texture2D LeftIcon;
 	private Texture2D RightIcon;
+	private bool pressed;
 
 
 	// Use this for initialization
@@ -55,6 +56,11 @@ public class CarTurner : MonoBehaviour {
 		if (howUpdate != 0){
 			GetComponent<InGamePosition>().x += howUpdate;
 		}
+
+		if (Input.touchCount == 0)
+		{
+			pressed = false;
+		}
 	}
 
 	public void TurnLeft(){
@@ -73,15 +79,20 @@ public class CarTurner : MonoBehaviour {
 
 	void OnGUI() {
 		float carX = GetComponent<InGamePosition>().x;
-		
-		if (!IsTurning()){
+
+
+		if (!IsTurning() && !pressed){
 			if(carX >= 0 && (GUI.RepeatButton(new Rect(GuiHelper.oneTenthW, Screen.height*(75/100f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), LeftIcon ) || Input.GetKeyDown(KeyCode.A))  ){
 				TurnLeft();
+				pressed = true;
 			}
 			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW - GuiHelper.oneTenthW, Screen.height*(75/100f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), RightIcon) || Input.GetKeyDown(KeyCode.D))){
 				TurnRight();
+				pressed = true;
 			}
 		}
+
+		//GUI.Label (new Rect (Screen.width * 4 / 5, 0, Screen.width / 5, Screen.height), "Touches: " + Input.touchCount + ", mouse button down: " + Input.GetMouseButtonDown(0));
 	}
 
 
