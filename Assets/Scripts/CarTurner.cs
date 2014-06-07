@@ -9,7 +9,7 @@ enum SIDE {
 public class CarTurner : MonoBehaviour {
 
 	private SIDE WhereTurn = SIDE.NOWHERE;
-	public float TurnSpeed = 5f;
+	public static float TurnSpeed = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -68,10 +68,10 @@ public class CarTurner : MonoBehaviour {
 		float carX = GetComponent<InGamePosition>().x;
 		
 		if (!IsTurning()){
-			if(carX >= 0 && GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Left" )  ){
+			if(carX >= 0 && (GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Left" ) || Input.GetKeyDown(KeyCode.A))  ){
 				TurnLeft();
 			}
-			if(carX <= 0 && GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Right") ){
+			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Right") || Input.GetKeyDown(KeyCode.D))){
 				TurnRight();
 			}
 		}

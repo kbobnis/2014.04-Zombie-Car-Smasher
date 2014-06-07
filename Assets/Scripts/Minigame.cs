@@ -12,6 +12,7 @@ public class Minigame : MonoBehaviour {
 	public float BuffOilValue = 10;
 	public int FirstClearStreets = 6;
 	public float RideCost = 5f;
+	public float TurnSpeed = 7f;
 
 	public GameObject Car;
 
@@ -36,6 +37,7 @@ public class Minigame : MonoBehaviour {
 		Sprite sprite = Resources.Load<Sprite>("Images/street");
 		InGamePosition.tileH = sprite.bounds.size.y/1.3f;
 		InGamePosition.tileW = sprite.bounds.size.x/3;
+		CarTurner.TurnSpeed = TurnSpeed;
 	}
 
 	public void UnloadResources(){
@@ -59,9 +61,6 @@ public class Minigame : MonoBehaviour {
 		Tile.HoleChance = HoleChance;
 		Tile.BuffFuelChance = BuffFuelChance;
 		Tile.BuffOilValue = BuffOilValue;
-
-
-
 
 		GameObject previousStreet = null;
 		int carStartingStreet = 0;
