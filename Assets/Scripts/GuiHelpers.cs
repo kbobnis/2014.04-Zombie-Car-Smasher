@@ -11,6 +11,19 @@ public class GuiHelper{
 	public static int oneTenthH = Screen.height/10;
 	public static int twentyPercent = Screen.height / 5;
 
+	public static GUIStyle SmallFont = new GUIStyle();
+	public static GUIStyle CustomButton = new GUIStyle("button");
+	
+	// Use this for initialization
+	static GuiHelper () {
+		SmallFont.fontSize = 40 * Screen.width / 480;
+		//SmallFont.font = (Font)Resources.Load ("font/Dosis-Bold");
+		SmallFont.normal.textColor = new Color (155 / 255f, 155 / 255f, 155 / 255f);
+
+		CustomButton.fontSize = 40 * Screen.width / 480;
+
+	}
+
 	public static void DrawElement(string slotName, double x, double y, double w, double h, double actualW=-1, double actualH=-1, bool downUp=false){
 		int tmpX = PercentW(x);
 		int tmpY = PercentH (y);

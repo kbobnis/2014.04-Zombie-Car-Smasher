@@ -11,8 +11,15 @@ public class CarTurner : MonoBehaviour {
 	private SIDE WhereTurn = SIDE.NOWHERE;
 	public static float TurnSpeed = 5f;
 
+	private Texture2D LeftIcon;
+	private Texture2D RightIcon;
+
+
 	// Use this for initialization
 	void Start () {
+
+		LeftIcon = Resources.Load<Texture2D>("Images/left");
+		RightIcon = Resources.Load<Texture2D> ("Images/right");
 	
 	}
 	
@@ -68,10 +75,10 @@ public class CarTurner : MonoBehaviour {
 		float carX = GetComponent<InGamePosition>().x;
 		
 		if (!IsTurning()){
-			if(carX >= 0 && (GUI.RepeatButton(new Rect(0, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Left" ) || Input.GetKeyDown(KeyCode.A))  ){
+			if(carX >= 0 && (GUI.RepeatButton(new Rect(GuiHelper.oneTenthW, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), LeftIcon ) || Input.GetKeyDown(KeyCode.A))  ){
 				TurnLeft();
 			}
-			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), "Right") || Input.GetKeyDown(KeyCode.D))){
+			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW - GuiHelper.oneTenthW, Screen.height*(2/3f), GuiHelper.oneThirdW, GuiHelper.twentyPercent), RightIcon) || Input.GetKeyDown(KeyCode.D))){
 				TurnRight();
 			}
 		}

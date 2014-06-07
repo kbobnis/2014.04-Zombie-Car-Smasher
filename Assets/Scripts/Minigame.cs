@@ -148,17 +148,12 @@ public class Minigame : MonoBehaviour {
 		Destroy(gm);
 	}
 
-
-
 	void OnGUI () {
 
-
-
-		GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH, Screen.width, Screen.height), "Distance: " + Distance);//, bigFontLeft);
-
+		GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
 
 		if (IsGameOver){
-			if(GUI.Button(new Rect(GuiHelper.oneThirdW, GuiHelper.oneThirdH, GuiHelper.oneThirdW, GuiHelper.oneThirdH), GameOverReason + "\nPoints: "+Distance + "\n One more time")){
+			if(GUI.Button(new Rect(GuiHelper.oneTenthW, GuiHelper.oneThirdH, Screen.width - 2* GuiHelper.oneTenthW, GuiHelper.oneThirdH), GameOverReason + "\nPoints: "+Distance + "\n One more time", GuiHelper.CustomButton)){
 				PrepareRace();
 			}
 		}
