@@ -3,9 +3,9 @@ using System.Collections;
 
 public class FPSDisplay : MonoBehaviour {
 
-	float timeA;
-	public int fps;
-	public int lastFPS;
+	static float timeA;
+	static public int fps;
+	static public int lastFPS;
 	// Use this for initialization
 	void Start () {
 		timeA = Time.timeSinceLevelLoad;
@@ -14,6 +14,14 @@ public class FPSDisplay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		FPSDisplay.UpdateFrom ("followGM");
+	}
+
+	void OnGUI(){
+		GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "FPS: " + lastFPS);
+	}
+
+	public static void UpdateFrom(string what){
 		if (Time.timeSinceLevelLoad - timeA <= 1) {
 			fps ++;
 		} else {
@@ -21,9 +29,5 @@ public class FPSDisplay : MonoBehaviour {
 			timeA = Time.timeSinceLevelLoad;
 			fps = 0;
 		}
-	}
-
-	void OnGUI(){
-		GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "FPS: " + lastFPS);
 	}
 }

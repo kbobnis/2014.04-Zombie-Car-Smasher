@@ -33,7 +33,7 @@ public class Speeder : MonoBehaviour
 
 			foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
 				//check collision with obstacles
-				if (Mathf.Abs(  gameObject.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.3f){
+				if (Mathf.Abs(  gameObject.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.15f){
 					Street tmp = street.Value.GetComponent<Street>();
 					GameObject tile = tmp.Tiles[Mathf.RoundToInt( gameObject.GetComponent<InGamePosition>().x)];
 					tile.GetComponent<Tile>().GMIsOn(gameObject);

@@ -1,8 +1,17 @@
 using UnityEngine;
 
 public class Fuel : MonoBehaviour {
-	
-	public float Amount;
+
+	private float _Amount;
+	public float Amount{
+		get { return _Amount; }
+		set {
+			_Amount = value;
+			if (_Amount > 100){
+				_Amount = 100;
+			}
+		}
+	}
 	public float MaxAmount;
 	// Use this for initialization
 	void Start () {
@@ -16,7 +25,6 @@ public class Fuel : MonoBehaviour {
 		}
 	}
 
-	
 	void OnGUI(){
 
 		GuiHelper.DrawElement ("images/fuel", 0.01, 0.01, 0.05, 0.98, 0.05 , 0.98 * Amount / MaxAmount, true); 
