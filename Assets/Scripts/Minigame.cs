@@ -110,10 +110,6 @@ public class Minigame : MonoBehaviour {
 		if (Car == null){
 			return ;
 		}
-		if (Car.GetComponent<Fuel>().Amount <= 0 && Car.GetComponent<Speeder>().v <= 0.1f){
-			GameOver("No more fuel");
-		}
-
 
 		//car should be always in the middle of the road
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);

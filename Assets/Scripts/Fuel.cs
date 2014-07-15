@@ -22,6 +22,7 @@ public class Fuel : MonoBehaviour {
 	void Update () {
 		if (Amount < 0){
 			Amount = 0;
+			Minigame.Me.GameOver("No fuel");
 		}
 	}
 
