@@ -31,18 +31,15 @@ public class Tile : MonoBehaviour
 	public void InitMe(GameObject parent, int i, int inGameY, bool canBeWall, bool canBeHole){
 		TileContent = TileContent.NONE;
 		float ticket = Random.Range(0f, 1f);
-		//Debug.Log ("ticket was: " + ticket );
 		SpriteRenderer r = null;
 		if (ticket < WallChance && canBeWall ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = WallSprite;
-			//Debug.Log("created wall");
 		} else if (ticket > WallChance && ticket < WallChance + HoleChance && canBeHole){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = HoleSprite;
-			//Debug.Log("created hole");
 		} else if (ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
 			TileContent = TileContent.BUFF_OIL;
 			r = gameObject.AddComponent<SpriteRenderer>();
@@ -66,7 +63,7 @@ public class Tile : MonoBehaviour
 	public void GMIsOn(GameObject g){
 		//if crashed
 		if (TileContent == TileContent.HOLE && g.GetComponent<Flyier>() == null){
-			g.GetComponent<ActionReceiver>().FellIntoHole();
+			Minigame.Me.GameOver("Fell into hole");
 		}
 
 		if (TileContent == TileContent.WALL ){
@@ -75,7 +72,7 @@ public class Tile : MonoBehaviour
 				TileContent  = TileContent.NONE;
 				Destroy(g);
 			} else { //if (g.GetComponent<Flyier>() == null){ //even flying crash into walls
-				g.GetComponent<ActionReceiver>().CrashedIntoWall();
+				Minigame.Me.GameOver("Crashed into wall");
 			}
 		}
 

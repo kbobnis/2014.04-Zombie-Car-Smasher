@@ -76,11 +76,11 @@ public class GuiHelper{
 		
 	}
 
-	private static int PercentW(double x){
+	public static int PercentW(double x){
 		return (int)(x * Screen.width);
 	}
 
-	private static int PercentH(double y){
+	public static int PercentH(double y){
 		return (int)(y * Screen.height);
 	}
 

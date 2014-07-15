@@ -19,7 +19,9 @@ public class Accelerator : MonoBehaviour {
 		if (fractionMade > 1) {
 			fractionMade = 1;
 		}
-		GetComponent<Speeder> ().v = StartingSpeed + (AccelerateTo - StartingSpeed) * fractionMade;
+		if (GetComponent<Speeder> ()) {
+			GetComponent<Speeder> ().v = StartingSpeed + (AccelerateTo - StartingSpeed) * fractionMade;
+		}
 	}
 
 	public void Prepare (float accelerateTo, int distanceOfAcceleration){

@@ -78,7 +78,6 @@ public class Minigame : MonoBehaviour {
 		Car tmp = Car.AddComponent<Car>();
 		tmp.Prepare(0, carStartingStreet, StartingCarSpeed, EndingCarSpeed, ShooterProbability, JumperProbability, RideCost);
 
-
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
 		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
 
@@ -94,8 +93,9 @@ public class Minigame : MonoBehaviour {
 
 	public void GameOver(string reason){
 		IsGameOver = true;
-		Car.GetComponent<Speeder>().v = 0;
-		Car.GetComponent<CarTurner>().enabled = false;
+		Destroy (Car.GetComponent<Speeder> ());
+		Destroy (Car.GetComponent<CarTurner> ());
+		HighScores.AddScore (Distance);
 		GameOverReason = reason;
 	}
 
@@ -110,7 +110,7 @@ public class Minigame : MonoBehaviour {
 		if (Car == null){
 			return ;
 		}
-		if (Car.GetComponent<Fuel>().Amount <= 0){
+		if (Car.GetComponent<Fuel>().Amount <= 0 && Car.GetComponent<Speeder>().v <= 0.1f){
 			GameOver("No more fuel");
 		}
 
@@ -151,12 +151,21 @@ public class Minigame : MonoBehaviour {
 
 	void OnGUI () {
 
-		GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
-
-		if (IsGameOver){
-			if(GUI.Button(new Rect(GuiHelper.oneTenthW, GuiHelper.oneThirdH, Screen.width - 2* GuiHelper.oneTenthW, GuiHelper.oneThirdH), GameOverReason + "\nPoints: "+Distance + "\n One more time", GuiHelper.CustomButton)){
-				PrepareRace();
+		if (IsGameOver) {
+			List<int> top = HighScores.GetTopScores (5);
+			string topScores = "HighScores: \n";
+			int i = 0; 
+			foreach (int s in top) {
+					topScores += "Score " + ++i + ". " + s + "\n";
 			}
+
+			GuiHelper.DrawText (topScores, GuiHelper.CustomButton, 0.1, 0.1, 0.8, 0.4);
+
+			if (GUI.Button (new Rect (GuiHelper.PercentW (0.1), GuiHelper.PercentH (0.6), GuiHelper.PercentW (0.8), GuiHelper.PercentH (0.3)), "Actual score: " + Distance + "\n" + GameOverReason + "\n One more time", GuiHelper.CustomButton)) {
+					PrepareRace ();
+			}
+		} else {
+			GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
 		}
 	}
 

@@ -34,7 +34,6 @@ public class Shooter : CarBuff {
 
 		g.AddComponent<Destroyer>(); //to destroy obstacles
 		g.AddComponent<Flyier>(); //to not fall into holes
-		g.AddComponent<ActionReceiver>(); //to receive actions 
 	}
 
 	public override bool CanDoAction(){

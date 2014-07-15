@@ -35,8 +35,6 @@ public class Car : MonoBehaviour {
 		fuel.MaxAmount = 100;
 		fuel.Amount = 70;
 
-		gameObject.AddComponent<ActionReceiver>();
-
 		//Animator carAnimator = Resources.Load<Animator>("Images/carAnimator");
 
 		Animator animator = gameObject.AddComponent<Animator>();
@@ -48,16 +46,7 @@ public class Car : MonoBehaviour {
 		accelerator.Prepare (maxCarSpeed, 300);
 	}
 
-	public void Update(){
-		foreach(KeyValuePair<Fate, bool> keyValue in gameObject.GetComponent<ActionReceiver>().Fates){
-			if (keyValue.Key == Fate.FELL_INTO_HOLE ){
-				Minigame.Me.GameOver("Fell into hole");
-			}
-			if (keyValue.Key == Fate.CRASHED_INTO_WALL){
-				Minigame.Me.GameOver("Crashed into wall");
-			}
-		}
-	}
+
 
 
 }
