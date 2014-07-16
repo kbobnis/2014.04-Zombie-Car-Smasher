@@ -6,7 +6,7 @@ public class Car : MonoBehaviour {
 	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float maxCarSpeed, float shooterProbability, float jumperProbability, float rideCost){
 
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
-		carRenderer.sprite = Resources.Load<Sprite>("Images/car");
+		carRenderer.sprite = SpriteManager.GetCar ();
 		carRenderer.sortingLayerName = "Layer3";
 
 		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;

@@ -16,10 +16,6 @@ public class Tile : MonoBehaviour
 	public static float BuffFuelChance;
 	public static float BuffOilValue;
 
-	private static Sprite WallSprite = Resources.Load<Sprite>("Images/wall");
-	private static Sprite HoleSprite = Resources.Load<Sprite>("Images/hole");
-	private static Sprite OilSprite = Resources.Load<Sprite>("Images/oil");
-	// Use this for initialization
 	void Start () {
 	}
 
@@ -35,23 +31,23 @@ public class Tile : MonoBehaviour
 		if (ticket < WallChance && canBeWall ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
-			r.sprite = WallSprite;
+			r.sprite = SpriteManager.GetWall();
 		} else if (ticket > WallChance && ticket < WallChance + HoleChance && canBeHole){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
-			r.sprite = HoleSprite;
+			r.sprite = SpriteManager.GetHole();
 		} else if (ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
 			TileContent = TileContent.BUFF_OIL;
 			r = gameObject.AddComponent<SpriteRenderer>();
-			r.sprite = OilSprite;
+			r.sprite = SpriteManager.GetOil();
 		}
 
 		transform.localScale = new Vector3(1, 1, 1);
 		transform.parent = parent.transform;
 		if (r != null){
 			r.sortingLayerName = "Layer2";
-			float scale = InGamePosition.tileW/(float) r.sprite.bounds.size.x ;
-			transform.localScale = new Vector3(scale, scale, 0);
+			//float scale = InGamePosition.tileW/(float) r.sprite.bounds.size.x ;
+			transform.localScale = new Vector3(1, 1, 0); //scale, scale, 0);
 			r.receiveShadows = true;
 			r.castShadows = true;
 		}

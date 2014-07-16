@@ -17,10 +17,11 @@ public class GuiHelper{
 	// Use this for initialization
 	static GuiHelper () {
 		SmallFont.fontSize = 40 * Screen.width / 480;
-		//SmallFont.font = (Font)Resources.Load ("font/Dosis-Bold");
+		SmallFont.font = (Font)Resources.Load ("Fluf");
 		SmallFont.normal.textColor = new Color (155 / 255f, 155 / 255f, 155 / 255f);
 
 		CustomButton.fontSize = 40 * Screen.width / 480;
+		CustomButton.font = (Font)Resources.Load ("Fluf");
 
 	}
 

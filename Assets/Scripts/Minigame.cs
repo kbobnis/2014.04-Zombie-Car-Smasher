@@ -35,9 +35,8 @@ public class Minigame : MonoBehaviour {
 		bigFontLeft.fontSize = 25 * Screen.width / 1900;
 		bigFontLeft.normal.textColor = new Color (255/255f, 255/255f, 255/255f);
 
-		Sprite sprite = Resources.Load<Sprite>("Images/street");
-		InGamePosition.tileH = sprite.bounds.size.y/1.3f;
-		InGamePosition.tileW = sprite.bounds.size.x/3;
+		InGamePosition.tileH = SpriteManager.GetCar().bounds.size.y*2;
+		InGamePosition.tileW = SpriteManager.GetCar().bounds.size.x*2.5f;
 		CarTurner.TurnSpeed = TurnSpeed;
 	}
 

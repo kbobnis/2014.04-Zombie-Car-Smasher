@@ -7,7 +7,7 @@ public class Street : MonoBehaviour {
 
 	public Dictionary<int, GameObject> Tiles = new Dictionary<int, GameObject>();
 
-	private static Sprite StreetSprite = Resources.Load<Sprite>("Images/street");
+	private static Sprite StreetSprite = Resources.Load<Sprite>("Images/street4");
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +24,7 @@ public class Street : MonoBehaviour {
 		streetRenderer.receiveShadows = true;
 		streetRenderer.castShadows = true;
 		Vector3 size = streetRenderer.sprite.bounds.size;
-		gameObject.transform.localScale = new Vector3(InGamePosition.tileW * 3 / size.x, InGamePosition.tileH  / size.y);
+		gameObject.transform.localScale = new Vector3(InGamePosition.tileW * 5.5f / size.x, InGamePosition.tileH  / size.y);
 		
 		InGamePosition tmp = gameObject.AddComponent<InGamePosition>();
 		tmp.x = 0;

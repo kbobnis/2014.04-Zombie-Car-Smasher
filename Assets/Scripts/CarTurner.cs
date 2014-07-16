@@ -11,8 +11,6 @@ public class CarTurner : MonoBehaviour {
 	private SIDE WhereTurn = SIDE.NOWHERE;
 	public static float TurnSpeed = 5f;
 
-	private Texture2D LeftIcon;
-	private Texture2D RightIcon;
 	private bool pressed;
 
 	private float LastY;
@@ -20,9 +18,6 @@ public class CarTurner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		LeftIcon = Resources.Load<Texture2D>("Images/left");
-		RightIcon = Resources.Load<Texture2D> ("Images/right");
 	
 	}
 	
@@ -90,11 +85,14 @@ public class CarTurner : MonoBehaviour {
 
 
 		if (!IsTurning() && !pressed){
-			if(carX >= 0 && (GUI.RepeatButton(new Rect(GuiHelper.oneTenthW/2, Screen.height*(75/100f), GuiHelper.oneThirdW*1.3f, GuiHelper.twentyPercent), LeftIcon ) || Input.GetKeyDown(KeyCode.A))  ){
+			if(carX >= 0 && 
+			   (
+				GUI.RepeatButton(new Rect(GuiHelper.PercentW(0.01), GuiHelper.PercentH(0.75), GuiHelper.PercentW(0.44), GuiHelper.PercentH(0.24)),  SpriteManager.GetLeftArrow() ) 
+				|| Input.GetKeyDown(KeyCode.A))  ){
 				TurnLeft();
 				pressed = true;
 			}
-			if(carX <= 0 && (GUI.RepeatButton(new Rect(Screen.width - GuiHelper.oneThirdW - GuiHelper.oneTenthW, Screen.height*(75/100f), GuiHelper.oneThirdW*1.3f, GuiHelper.twentyPercent), RightIcon) || Input.GetKeyDown(KeyCode.D))){
+			if(carX <= 0 && (GUI.RepeatButton(new Rect(GuiHelper.PercentW(0.55), GuiHelper.PercentH(0.75), GuiHelper.PercentW(0.44), GuiHelper.PercentH(0.24)), SpriteManager.GetRightArrow()) || Input.GetKeyDown(KeyCode.D))){
 				TurnRight();
 				pressed = true;
 			}
