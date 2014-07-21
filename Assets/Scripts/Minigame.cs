@@ -14,6 +14,8 @@ public class Minigame : MonoBehaviour {
 	public int FirstClearStreets = 6;
 	public float RideCost = 5f;
 	public float TurnSpeed = 7f;
+	public static float CactusChance = 0.05f;
+	public static float LinesChance = 0.01f;
 
 	public GameObject Car;
 
@@ -160,6 +162,8 @@ public class Minigame : MonoBehaviour {
 					PrepareRace ();
 			}
 		} else {
+			//GUI.DrawTexture(new Rect( GuiHelper.PercentW(0.03), GuiHelper.PercentH(0.034) , GuiHelper.PercentW(0.5), GuiHelper.PercentH(0.1) ), SpriteManager.GetDistanceBorder());
+
 			GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
 		}
 	}

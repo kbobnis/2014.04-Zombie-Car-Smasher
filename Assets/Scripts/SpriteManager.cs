@@ -9,6 +9,7 @@ class SpriteManager {
 	private static Texture RightArrow;
 	private static Texture RoundButton;
 	private static Texture OilTexture;
+	private static Texture DistanceBorder;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -16,6 +17,11 @@ class SpriteManager {
 		RightArrow = Resources.Load<Texture> ("Images/rightArrow");
 		RoundButton = Resources.Load<Texture> ("Images/roundButton");
 		OilTexture = Resources.Load<Texture> ("Images/oil");
+		DistanceBorder = Resources.Load<Texture> ("Images/distanceBorder");
+	}
+
+	static public Texture GetDistanceBorder(){
+		return DistanceBorder;
 	}
 
 	static public Sprite GetWall() {

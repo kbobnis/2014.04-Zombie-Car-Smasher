@@ -31,6 +31,8 @@ public class SplashScreen : MonoBehaviour {
 				showingSplash = false;
 				GetComponent<MainLogic>().WantToStartGame();
 			}
+
+			GuiHelper.DrawText("Programming: K Bobnis \n, Game Design: K Bobnis, M Bartynski", GuiHelper.MicroFont, 0.2, 0.05, 0.8, 0.2);
 		}
 	}
 

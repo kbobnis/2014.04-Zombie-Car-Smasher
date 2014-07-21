@@ -13,15 +13,26 @@ public class GuiHelper{
 
 	public static GUIStyle SmallFont = new GUIStyle();
 	public static GUIStyle CustomButton = new GUIStyle("button");
+	public static GUIStyle SmallFontBrown = new GUIStyle ();
+	public static GUIStyle MicroFont = new GUIStyle();
 	
 	// Use this for initialization
 	static GuiHelper () {
 		SmallFont.fontSize = 40 * Screen.width / 480;
 		SmallFont.font = (Font)Resources.Load ("Fluf");
-		SmallFont.normal.textColor = new Color (155 / 255f, 155 / 255f, 155 / 255f);
+		SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+
+		MicroFont.fontSize = 20 * Screen.width / 480;
+		MicroFont.font = (Font)Resources.Load ("Fluf");
+		MicroFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+
 
 		CustomButton.fontSize = 40 * Screen.width / 480;
 		CustomButton.font = (Font)Resources.Load ("Fluf");
+
+		SmallFontBrown.fontSize = 40 * Screen.width / 480;
+		SmallFontBrown.font = (Font)Resources.Load ("Fluf");
+		SmallFontBrown.normal.textColor = new Color (227 / 255f, 6 / 255f, 19 / 255f);
 
 	}
 

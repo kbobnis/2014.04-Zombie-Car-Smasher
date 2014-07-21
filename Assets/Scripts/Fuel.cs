@@ -28,8 +28,8 @@ public class Fuel : MonoBehaviour {
 
 	void OnGUI(){
 
-		GuiHelper.DrawElement ("images/fuel", 0.041, 0.1, 0.05, 0.55, 0.05 , 0.55 * Amount / MaxAmount, true); 
-		GuiHelper.DrawElement ("images/border", 0.041, 0.1, 0.05, 0.55);
+		GuiHelper.DrawElement ("images/fuel", 0.015, 0.1, 0.07, 0.55, -1 , 0.55 * Amount / MaxAmount, true); 
+		GuiHelper.DrawElement ("images/border", 0.01, 0.1, 0.1, 0.55);
 
 		GUI.DrawTexture(new Rect(GuiHelper.PercentW(0.0), GuiHelper.PercentH(0.6), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.1)), SpriteManager.GetOilTexture());
 		

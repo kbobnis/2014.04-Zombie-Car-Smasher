@@ -1,11 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Fuel.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GuiHelpers.cs">
     <Files>
-      <File FileName="Assets\Scripts\Minigame.cs" Line="159" Column="224" />
-      <File FileName="Assets\Scripts\SplashScreen.cs" Line="68" Column="1" />
-      <File FileName="Assets\Scripts\Street.cs" Line="26" Column="15" />
-      <File FileName="Assets\Scripts\Fuel.cs" Line="32" Column="48" />
+      <File FileName="Assets\Scripts\Fuel.cs" Line="41" Column="1" />
+      <File FileName="Assets\Scripts\Minigame.cs" Line="165" Column="150" />
+      <File FileName="Assets\Scripts\SplashScreen.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Street.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Fuel.cs" Line="21" Column="36" />
+      <File FileName="Assets\Scripts\GuiHelpers.cs" Line="29" Column="72" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
