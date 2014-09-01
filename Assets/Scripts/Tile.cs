@@ -24,6 +24,26 @@ public class Tile : MonoBehaviour
 
 	}
 
+	public void InitWithOil(GameObject parent, int i, int inGameY){
+
+		SpriteRenderer r = null;
+		TileContent = TileContent.BUFF_OIL;
+		r = gameObject.AddComponent<SpriteRenderer>();
+		r.sprite = SpriteManager.GetOil();
+		transform.localScale = new Vector3(1, 1, 1);
+		transform.parent = parent.transform;
+		if (r != null){
+			r.sortingLayerName = "Layer2";
+			//float scale = InGamePosition.tileW/(float) r.sprite.bounds.size.x ;
+			transform.localScale = new Vector3(1, 1, 0); //scale, scale, 0);
+			r.receiveShadows = true;
+			r.castShadows = true;
+		}
+		InGamePosition igp = gameObject.AddComponent<InGamePosition>();
+		igp.x = i;
+		igp.y = inGameY;
+	}
+
 	public void InitMe(GameObject parent, int i, int inGameY, bool canBeWall, bool canBeHole){
 		TileContent = TileContent.NONE;
 		float ticket = Random.Range(0f, 1f);

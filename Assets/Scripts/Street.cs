@@ -73,7 +73,11 @@ public class Street : MonoBehaviour {
 			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
 
-			tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole);
+			if (noObstacles){
+				tmp2.InitWithOil(gameObject, i, inGameY);
+			} else {
+				tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole);
+			}
 
 			Tiles.Add(i, Tile);
 
