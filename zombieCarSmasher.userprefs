@@ -1,19 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GuiHelpers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GoogleMobileAdsKProjekt.cs">
     <Files>
-      <File FileName="Assets\Scripts\Fuel.cs" Line="41" Column="1" />
-      <File FileName="Assets\Scripts\Minigame.cs" Line="165" Column="150" />
-      <File FileName="Assets\Scripts\SplashScreen.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Street.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Fuel.cs" Line="21" Column="36" />
-      <File FileName="Assets\Scripts\GuiHelpers.cs" Line="29" Column="72" />
+      <File FileName="Assets\Scripts\GoogleMobileAdsKProjekt.cs" Line="4" Column="26" />
+      <File FileName="C:\Users\philon\Downloads\googleads-mobile-plugins-2.1\unity\samples\HelloWorld\Assets\GoogleMobileAdsDemoScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Plugins\Android\AndroidManifest.xml" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="D:\workspace\zombieCarSmasher\Assets\Scripts\Minigame.cs" line="94" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

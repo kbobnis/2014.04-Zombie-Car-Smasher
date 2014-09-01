@@ -81,6 +81,7 @@ public class Minigame : MonoBehaviour {
 
 		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
 		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
+		GetComponent<GoogleMobileAdsKProjekt> ().HideBanner ();
 
 	}
 
@@ -98,6 +99,7 @@ public class Minigame : MonoBehaviour {
 		Destroy (Car.GetComponent<CarTurner> ());
 		HighScores.AddScore (Distance);
 		GameOverReason = reason;
+		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
 	}
 
 
