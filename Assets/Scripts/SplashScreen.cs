@@ -27,10 +27,11 @@ public class SplashScreen : MonoBehaviour {
 
 			GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
-			if(GUI.Button(new Rect(PercentW(0.2), PercentH(0.7), PercentW(0.6), PercentH(0.2)), "Start game", GuiHelper.CustomButton)){
+			if(GUI.Button(new Rect(PercentW(0.2), PercentH(0.7), PercentW(0.6), PercentH(0.25)), SpriteManager.GetStartButton())){
 				showingSplash = false;
 				GetComponent<MainLogic>().WantToStartGame();
 			}
+		
 
 			GuiHelper.DrawText("Programming: K Bobnis \n, Game Design: K Bobnis, M Bartynski", GuiHelper.MicroFont, 0.2, 0.05, 0.8, 0.2);
 		}

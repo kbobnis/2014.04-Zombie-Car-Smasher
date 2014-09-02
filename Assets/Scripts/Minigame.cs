@@ -31,8 +31,14 @@ public class Minigame : MonoBehaviour {
 
 	private bool Pressed = false;
 
+	public static string FELL_INTO_HOLE = "Fell into paper hole";
+	public static string CRASHED_INTO_WALL = "Crashed into paper brick";
+	public static string OUT_OF_OIL = "Out of paper fuel";
+	
+
 	// Use this for initialization
 	void Start () {
+		Sounds.LoadSounds ();
 		Me = this;
 		bigFontLeft.fontSize = 25 * Screen.width / 1900;
 		bigFontLeft.normal.textColor = new Color (255/255f, 255/255f, 255/255f);
@@ -94,6 +100,12 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void GameOver(string reason){
+		if (reason == Minigame.CRASHED_INTO_WALL || reason == Minigame.FELL_INTO_HOLE) {
+			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Car.transform.position);
+		} else if (reason == Minigame.OUT_OF_OIL){
+			PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Car.transform.position);
+		}
+
 		IsGameOver = true;
 		Destroy (Car.GetComponent<Speeder> ());
 		Destroy (Car.GetComponent<CarTurner> ());
@@ -151,18 +163,26 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (IsGameOver) {
-			List<int> top = HighScores.GetTopScores (5);
+			List<int> top = HighScores.GetTopScores (4);
 			string topScores = "HighScores: \n";
 			int i = 0; 
 			foreach (int s in top) {
 					topScores += "Score " + ++i + ". " + s + "\n";
 			}
 
-			GuiHelper.DrawText (topScores, GuiHelper.CustomButton, 0.1, 0.1, 0.8, 0.4);
+			GuiHelper.DrawText (topScores, GuiHelper.CustomButton, 0.1, 0.05, 0.8, 0.4);
 
-			if (GUI.Button (new Rect (GuiHelper.PercentW (0.1), GuiHelper.PercentH (0.6), GuiHelper.PercentW (0.8), GuiHelper.PercentH (0.3)), "Actual score: " + Distance + "\n" + GameOverReason + "\n One more time", GuiHelper.CustomButton)) {
-					PrepareRace ();
+			GUI.Button (new Rect (GuiHelper.PercentW (0.1), GuiHelper.PercentH (0.47), GuiHelper.PercentW (0.8), GuiHelper.PercentH (0.15)), "Actual score: " + Distance + "\n" + GameOverReason, GuiHelper.CustomButton);
+
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton())){
+				PrepareRace ();
 			}
+
+			Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), soundButton)){
+				Sounds.Mute(!Sounds.IsMuted());
+			}
+
 		} else {
 			//GUI.DrawTexture(new Rect( GuiHelper.PercentW(0.03), GuiHelper.PercentH(0.034) , GuiHelper.PercentW(0.5), GuiHelper.PercentH(0.1) ), SpriteManager.GetDistanceBorder());
 

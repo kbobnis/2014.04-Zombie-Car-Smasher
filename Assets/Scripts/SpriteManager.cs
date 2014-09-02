@@ -10,6 +10,9 @@ class SpriteManager {
 	private static Texture RoundButton;
 	private static Texture OilTexture;
 	private static Texture DistanceBorder;
+	private static Texture StartButton;
+	private static Texture SoundButton;
+	private static Texture SoundButtonMuted;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -18,6 +21,9 @@ class SpriteManager {
 		RoundButton = Resources.Load<Texture> ("Images/roundButton");
 		OilTexture = Resources.Load<Texture> ("Images/oil");
 		DistanceBorder = Resources.Load<Texture> ("Images/distanceBorder");
+		StartButton = Resources.Load<Texture> ("Images/start");
+		SoundButton = Resources.Load<Texture> ("Images/note");
+		SoundButtonMuted = Resources.Load<Texture> ("Images/note_muted");
 	}
 
 	static public Texture GetDistanceBorder(){
@@ -54,5 +60,16 @@ class SpriteManager {
 
 	static public Texture GetOilTexture(){
 		return OilTexture;
+	}
+
+	static public Texture GetStartButton(){
+		return StartButton;
+	}
+
+	static public Texture GetSoundButton(){
+		return SoundButton;
+	}
+	static public Texture GetSoundButtonMuted(){
+		return SoundButtonMuted;
 	}
 }

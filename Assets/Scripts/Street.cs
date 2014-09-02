@@ -61,7 +61,7 @@ public class Street : MonoBehaviour {
 				canBeHole = !foundHole[1] && !foundHole[2];
 			}
 			if (i == 0){
-				canBeWall = !foundWall[0] && !foundWall[1] && !foundWall[2] ;
+				canBeWall = !foundWall[0] && !foundWall[1] && !foundWall[2];
 				canBeHole = !foundHole[0] && !foundHole[1] && !foundHole[2];
 			}
 

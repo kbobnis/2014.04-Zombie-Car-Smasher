@@ -79,7 +79,7 @@ public class Tile : MonoBehaviour
 	public void GMIsOn(GameObject g){
 		//if crashed
 		if (TileContent == TileContent.HOLE && g.GetComponent<Flyier>() == null){
-			Minigame.Me.GameOver("Fell into hole");
+			Minigame.Me.GameOver(Minigame.FELL_INTO_HOLE);
 		}
 
 		if (TileContent == TileContent.WALL ){
@@ -88,7 +88,7 @@ public class Tile : MonoBehaviour
 				TileContent  = TileContent.NONE;
 				Destroy(g);
 			} else { //if (g.GetComponent<Flyier>() == null){ //even flying crash into walls
-				Minigame.Me.GameOver("Crashed into wall");
+				Minigame.Me.GameOver(Minigame.CRASHED_INTO_WALL);
 			}
 		}
 
@@ -99,14 +99,10 @@ public class Tile : MonoBehaviour
 				TileContent  = TileContent.NONE;
 				Destroy(g);
 			} else  if (g.GetComponent<Flyier>() == null){ //flying object don't pick up oil buffs
-				Minigame.Me.Car.GetComponent<Fuel>().Amount += BuffOilValue;
+				Minigame.Me.Car.GetComponent<Fuel>().PickedUpFuel(BuffOilValue);
 				GetComponent<SpriteRenderer>().enabled = false;
 				TileContent = TileContent.NONE;
 			}
 		}
 	}
 }
-
-
-
-

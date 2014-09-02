@@ -1,10 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GoogleMobileAdsKProjekt.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Minigame.cs">
     <Files>
-      <File FileName="Assets\Scripts\GoogleMobileAdsKProjekt.cs" Line="4" Column="26" />
-      <File FileName="C:\Users\philon\Downloads\googleads-mobile-plugins-2.1\unity\samples\HelloWorld\Assets\GoogleMobileAdsDemoScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Plugins\Android\AndroidManifest.xml" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Minigame.cs" Line="183" Column="108" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

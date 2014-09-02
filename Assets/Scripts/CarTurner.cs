@@ -69,11 +69,13 @@ public class CarTurner : MonoBehaviour {
 	public void TurnLeft(){
 		GetComponent<InGamePosition>().x -= 0.01f;
 		WhereTurn = SIDE.LEFT;
+		PlaySingleSound.SpawnSound (Sounds.TurnCar, transform.position);
 	}
 
 	public void  TurnRight(){
 		GetComponent<InGamePosition>().x += 0.01f;
 		WhereTurn = SIDE.RIGHT;
+		PlaySingleSound.SpawnSound (Sounds.TurnCar, transform.position);
 	}
 
 	public bool IsTurning() {

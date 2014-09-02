@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HighScores  {
 
 	static private List<int> Scores = new List<int>(); 
-	static private int TrimScores = 4;
+	static private int TrimScores = 100;
 	static private int Version = 1;
 
 	static HighScores(){
@@ -23,7 +23,7 @@ public class HighScores  {
 		Scores.Sort ();
 		Scores.Reverse ();
 		if (Scores.Count > TrimScores) {
-				Scores.RemoveRange (TrimScores, Scores.Count-TrimScores);
+			Scores.RemoveRange (TrimScores, Scores.Count-TrimScores);
 		}
 
 		SaveScores ();
