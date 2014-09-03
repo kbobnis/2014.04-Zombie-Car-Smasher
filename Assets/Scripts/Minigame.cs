@@ -31,9 +31,14 @@ public class Minigame : MonoBehaviour {
 
 	private bool Pressed = false;
 
-	public static string FELL_INTO_HOLE = "Fell into paper hole";
-	public static string CRASHED_INTO_WALL = "Crashed into paper brick";
-	public static string OUT_OF_OIL = "Out of paper fuel";
+	public static string FELL_INTO_HOLE = "Fell into hole";
+	public static string CRASHED_INTO_WALL = "Crashed into brick";
+	public static string OUT_OF_OIL = "Out of fuel";
+
+	public const string SCREEN_MAIN = "Screen main";
+	public const string SCREEN_GAME = "Screen game";
+	public const string SCREEN_FAIL = "Screen fail";
+
 	
 
 	// Use this for initialization
@@ -89,6 +94,12 @@ public class Minigame : MonoBehaviour {
 		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
 		GetComponent<GoogleMobileAdsKProjekt> ().HideBanner ();
 
+		GoogleAnalyticsKProjekt.LogScreenOnce(Minigame.SCREEN_GAME);
+
+	}
+
+	void OnApplicationFocus(bool pauseStatus){
+		GoogleAnalyticsKProjekt.LogIsActive(pauseStatus);
 	}
 
 	private GameObject CreateStreet(int inGameY, GameObject previousStreet, bool noObstacles=false){
@@ -107,11 +118,14 @@ public class Minigame : MonoBehaviour {
 		}
 
 		IsGameOver = true;
+
 		Destroy (Car.GetComponent<Speeder> ());
 		Destroy (Car.GetComponent<CarTurner> ());
 		HighScores.AddScore (Distance);
 		GameOverReason = reason;
 		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
+
+		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 	}
 
 

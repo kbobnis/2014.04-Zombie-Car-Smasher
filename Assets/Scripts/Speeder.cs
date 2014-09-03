@@ -9,9 +9,6 @@ public class Speeder : MonoBehaviour
 			if (value > 0 && audio != null && !audio.isPlaying){
 				audio.Play();
 			}
-			if (value <= 0 && audio != null){
-				audio.Stop();
-			}
 			_v = value;
 
 		}
@@ -39,6 +36,7 @@ public class Speeder : MonoBehaviour
 			LastDistance = GetComponent<InGamePosition>().y;
 		}
 
+
 		if (GetComponent<Fuel>().Amount > 0 && v > 0){
 
 			GetComponent<InGamePosition>().y += v * Time.deltaTime;
@@ -59,6 +57,12 @@ public class Speeder : MonoBehaviour
 					tile.GetComponent<Tile>().GMIsOn(gameObject);
 				}
 			}
+	}
+
+	void OnDestroy() {
+		if (audio && audio.isPlaying) {
+			audio.Stop();
+		}
 	}
 
 }

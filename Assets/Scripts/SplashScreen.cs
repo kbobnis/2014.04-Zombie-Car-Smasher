@@ -15,6 +15,8 @@ public class SplashScreen : MonoBehaviour {
 
 	public void ShowSplash(){
 		showingSplash = true;
+
+
 	}
 
 	void OnGUI(){
@@ -30,10 +32,13 @@ public class SplashScreen : MonoBehaviour {
 			if(GUI.Button(new Rect(PercentW(0.2), PercentH(0.7), PercentW(0.6), PercentH(0.25)), SpriteManager.GetStartButton())){
 				showingSplash = false;
 				GetComponent<MainLogic>().WantToStartGame();
+			} else {
+				GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_MAIN);
 			}
 		
 
 			GuiHelper.DrawText("Programming: K Bobnis \n, Game Design: K Bobnis, M Bartynski", GuiHelper.MicroFont, 0.2, 0.05, 0.8, 0.2);
+
 		}
 	}
 

@@ -12,11 +12,11 @@ public class Sounds : MonoBehaviour {
 	private static bool isMuted;
 
 	public static void LoadSounds(){
-		CartonImpact = Resources.Load<AudioClip> ("Audio/carton_impact");
-		PickUpFuel = Resources.Load<AudioClip> ("Audio/water_drop");
-		TurnCar = Resources.Load<AudioClip> ("Audio/page_turn");
-		NoMoreFuel = Resources.Load<AudioClip> ("Audio/paper_falling");
-		CarDrive = Resources.Load<AudioClip> ("Audio/paper_slide");
+		CartonImpact = Resources.Load<AudioClip> ("Audio/ms_hit_wall");
+		PickUpFuel = Resources.Load<AudioClip> ("Audio/ms_fuel");
+		TurnCar = Resources.Load<AudioClip> ("Audio/ms_page_turn");
+		NoMoreFuel = Resources.Load<AudioClip> ("Audio/ms_fuel_end");
+		CarDrive = Resources.Load<AudioClip> ("Audio/ms_auto_running");
 
 		isMuted = PlayerPrefs.GetInt("audioMuted")>0;
 
