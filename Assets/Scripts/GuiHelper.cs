@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class GuiHelper{
+public class GuiHelper : MonoBehaviour {
 
 	private static List<MyKeyValue> blinking = new List<MyKeyValue>();
 
@@ -11,29 +11,42 @@ public class GuiHelper{
 	public static int oneTenthH = Screen.height/10;
 	public static int twentyPercent = Screen.height / 5;
 
-	public static GUIStyle SmallFont = new GUIStyle();
-	public static GUIStyle CustomButton = new GUIStyle("button");
+	public static GUIStyle SmallFont ;
+	public static GUIStyle CustomButton ;
 	public static GUIStyle SmallFontBrown = new GUIStyle ();
 	public static GUIStyle MicroFont = new GUIStyle();
+
+	private static Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
+
+
+	void Update () {
+		foreach(MyKeyValue one in blinking) {
+			one.Value += Time.deltaTime;
+		}
+	}
 	
+
 	// Use this for initialization
-	static GuiHelper () {
-		SmallFont.fontSize = 40 * Screen.width / 480;
-		SmallFont.font = (Font)Resources.Load ("Fluf");
-		SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+	void OnGUI () {
+		if (SmallFont == null) {
+			SmallFont = new GUIStyle();
+			SmallFont.fontSize = 40 * Screen.width / 480;
+			SmallFont.font = (Font)Resources.Load ("Fluf");
+			SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
-		MicroFont.fontSize = 20 * Screen.width / 480;
-		MicroFont.font = (Font)Resources.Load ("Fluf");
-		MicroFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+			MicroFont.fontSize = 20 * Screen.width / 480;
+			MicroFont.font = (Font)Resources.Load ("Fluf");
+			MicroFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
 
-		CustomButton.fontSize = 40 * Screen.width / 480;
-		CustomButton.font = (Font)Resources.Load ("Fluf");
+			CustomButton = new GUIStyle ("button");
+			CustomButton.fontSize = 40 * Screen.width / 480;
+			CustomButton.font = (Font)Resources.Load ("Fluf");
 
-		SmallFontBrown.fontSize = 40 * Screen.width / 480;
-		SmallFontBrown.font = (Font)Resources.Load ("Fluf");
-		SmallFontBrown.normal.textColor = new Color (227 / 255f, 6 / 255f, 19 / 255f);
-
+			SmallFontBrown.fontSize = 40 * Screen.width / 480;
+			SmallFontBrown.font = (Font)Resources.Load ("Fluf");
+			SmallFontBrown.normal.textColor = new Color (227 / 255f, 6 / 255f, 19 / 255f);
+		}
 	}
 
 	public static void DrawElement(string slotName, double x, double y, double w, double h, double actualW=-1, double actualH=-1, bool downUp=false){
@@ -53,13 +66,21 @@ public class GuiHelper{
 			groupY = Mathf.RoundToInt( (float)(tmpY + tmpH - tmpActualH) );
 			textY = Mathf.RoundToInt( -tmpH + tmpActualH);
 		}
-		
+
+		Texture texture = null;
+		if (Textures.ContainsKey (slotName)) {
+			texture = Textures[slotName];
+		} else {
+			texture = Resources.Load<Texture>(slotName);
+			Textures[slotName] = texture;
+		}
+
 		GUI.BeginGroup (new Rect (groupX, groupY, tmpActualW, tmpActualH));
-		GUI.DrawTexture(new Rect(textX, textY , tmpW, tmpH), Resources.Load(slotName, typeof(Texture))as Texture);
+		GUI.DrawTexture(new Rect(textX, textY , tmpW, tmpH), texture);
 		GUI.EndGroup ();
 	}
 
-	public static void DrawElementBlink(string slotName, double x, double y, double w, double h, double actualW=-1, double actualH=-1){
+	public static void DrawElementBlink(string slotName, double x, double y, double w, double h, double actualW=-1, double actualH=-1, bool downUp=false){
 		
 		double blinkValue = 0;
 		MyKeyValue one = null;
@@ -71,11 +92,11 @@ public class GuiHelper{
 		}
 		
 		if (blinkValue > 0) {
-			DrawElement (slotName, x, y, w, h, actualW, actualH);
+			DrawElement (slotName, x, y, w, h, actualW, actualH, downUp);
 		}
 		
-		if (blinkValue > 0.5) {
-			blinkValue = -0.5;
+		if (blinkValue > 0.25) {
+			blinkValue = -0.25;
 		}
 		
 		if (one == null) {

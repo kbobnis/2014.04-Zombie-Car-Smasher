@@ -114,13 +114,14 @@ public class Minigame : MonoBehaviour {
 		if (reason == Minigame.CRASHED_INTO_WALL || reason == Minigame.FELL_INTO_HOLE) {
 			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Car.transform.position);
 		} else if (reason == Minigame.OUT_OF_OIL){
-			PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Car.transform.position);
+			PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Car.transform.position, 0.8f);
 		}
 
 		IsGameOver = true;
 
 		Destroy (Car.GetComponent<Speeder> ());
 		Destroy (Car.GetComponent<CarTurner> ());
+		Destroy (Car.GetComponent<Fuel> ());
 		HighScores.AddScore (Distance);
 		GameOverReason = reason;
 		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();

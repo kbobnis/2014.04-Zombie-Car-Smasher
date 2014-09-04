@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Speeder.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Minigame.cs">
     <Files>
-      <File FileName="Assets\Scripts\Sounds.cs" Line="21" Column="32" />
-      <File FileName="Assets\Scripts\Minigame.cs" Line="122" Column="31" />
-      <File FileName="Assets\Scripts\Fuel.cs" Line="30" Column="20" />
-      <File FileName="Assets\Scripts\Speeder.cs" Line="51" Column="3" />
+      <File FileName="Assets\Scripts\Fuel.cs" Line="5" Column="33" />
+      <File FileName="Assets\Scripts\Sounds.cs" Line="18" Column="48" />
+      <File FileName="Assets\Scripts\Minigame.cs" Line="117" Column="76" />
+      <File FileName="Assets\Scripts\PlaySingleSound.cs" Line="23" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

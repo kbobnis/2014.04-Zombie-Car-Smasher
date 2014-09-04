@@ -8,15 +8,17 @@ public class Sounds : MonoBehaviour {
 	public static AudioClip TurnCar;
 	public static AudioClip NoMoreFuel;
 	public static AudioClip CarDrive;
+	public static AudioClip LowFuelSignal;
 
 	private static bool isMuted;
 
 	public static void LoadSounds(){
-		CartonImpact = Resources.Load<AudioClip> ("Audio/ms_hit_wall");
-		PickUpFuel = Resources.Load<AudioClip> ("Audio/ms_fuel");
+		CartonImpact = Resources.Load<AudioClip> ("Audio/car_crash3");
+		PickUpFuel = Resources.Load<AudioClip> ("Audio/water_drop");
 		TurnCar = Resources.Load<AudioClip> ("Audio/ms_page_turn");
-		NoMoreFuel = Resources.Load<AudioClip> ("Audio/ms_fuel_end");
+		NoMoreFuel = Resources.Load<AudioClip> ("Audio/engine_stop3");
 		CarDrive = Resources.Load<AudioClip> ("Audio/ms_auto_running");
+		LowFuelSignal = Resources.Load<AudioClip> ("Audio/ms_fuel_ending");
 
 		isMuted = PlayerPrefs.GetInt("audioMuted")>0;
 
