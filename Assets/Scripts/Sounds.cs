@@ -9,6 +9,7 @@ public class Sounds : MonoBehaviour {
 	public static AudioClip NoMoreFuel;
 	public static AudioClip CarDrive;
 	public static AudioClip LowFuelSignal;
+	public static AudioClip Fanfare;
 
 	private static bool isMuted;
 
@@ -18,7 +19,8 @@ public class Sounds : MonoBehaviour {
 		TurnCar = Resources.Load<AudioClip> ("Audio/ms_page_turn");
 		NoMoreFuel = Resources.Load<AudioClip> ("Audio/engine_stop3");
 		CarDrive = Resources.Load<AudioClip> ("Audio/ms_auto_running");
-		LowFuelSignal = Resources.Load<AudioClip> ("Audio/ms_fuel_ending");
+		LowFuelSignal = Resources.Load<AudioClip> ("Audio/ms_fuel2_ending");
+		Fanfare = Resources.Load<AudioClip> ("Audio/fanfare");
 
 		isMuted = PlayerPrefs.GetInt("audioMuted")>0;
 

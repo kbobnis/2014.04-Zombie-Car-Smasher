@@ -39,7 +39,7 @@ public class Minigame : MonoBehaviour {
 	public const string SCREEN_GAME = "Screen game";
 	public const string SCREEN_FAIL = "Screen fail";
 
-	
+	private int HowManyInTopScores = 5;
 
 	// Use this for initialization
 	void Start () {
@@ -110,11 +110,15 @@ public class Minigame : MonoBehaviour {
 		return g;
 	}
 
+	private bool IsShowBanner(){
+		return HighScores.GetTopScoresCount() > HowManyInTopScores;
+	}
+
 	public void GameOver(string reason){
 		if (reason == Minigame.CRASHED_INTO_WALL || reason == Minigame.FELL_INTO_HOLE) {
 			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Car.transform.position);
 		} else if (reason == Minigame.OUT_OF_OIL){
-			PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Car.transform.position, 0.8f);
+			PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Car.transform.position, 0.4f);
 		}
 
 		IsGameOver = true;
@@ -123,9 +127,17 @@ public class Minigame : MonoBehaviour {
 		Destroy (Car.GetComponent<CarTurner> ());
 		Destroy (Car.GetComponent<Fuel> ());
 		HighScores.AddScore (Distance);
-		GameOverReason = reason;
-		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
+		int place = HighScores.GetPlaceFor (Distance);
+		if (place == 1) {
+			PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.gameObject.transform.position, 0.2f);
+		} 
 
+
+		if (IsShowBanner()) {
+			GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
+		}
+
+		GameOverReason = reason;
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 	}
 
@@ -178,18 +190,40 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (IsGameOver) {
-			List<int> top = HighScores.GetTopScores (4);
-			string topScores = "HighScores: \n";
-			int i = 0; 
-			foreach (int s in top) {
-					topScores += "Score " + ++i + ". " + s + "\n";
+			GUI.Button (new Rect (GuiHelper.PercentW (0.1), GuiHelper.PercentH (0.01), GuiHelper.PercentW (0.8), GuiHelper.PercentH (0.07)), GameOverReason, GuiHelper.CustomButton);
+
+			int place = HighScores.GetPlaceFor (Distance);
+			bool isInTop = place <= HowManyInTopScores;
+			List<int> top = HighScores.GetTopScores (HowManyInTopScores);
+			bool yourWasSet = false;
+			string topScores = "Best Distances:";
+				for(int i=0; i < HowManyInTopScores && top.Count > i; i++){
+
+				if (i < HowManyInTopScores){
+					topScores += "\n";
+				}
+				if (!yourWasSet && i == HowManyInTopScores-1 && !isInTop){
+					break;
+				}
+
+				int s = top[i];
+				if (s == Distance && !yourWasSet){
+					yourWasSet = true;
+					topScores += "Top " + (i+1) + ". " + s + " (Now)";
+				} else {
+					topScores += "Top " + (i+1) + ". " + s + "";
+				}
+
+
 			}
 
-			GuiHelper.DrawText (topScores, GuiHelper.CustomButton, 0.1, 0.05, 0.8, 0.4);
+			if (!yourWasSet){
+				topScores += "... Now: " + Distance ;
+			}
 
-			GUI.Button (new Rect (GuiHelper.PercentW (0.1), GuiHelper.PercentH (0.47), GuiHelper.PercentW (0.8), GuiHelper.PercentH (0.15)), "Actual score: " + Distance + "\n" + GameOverReason, GuiHelper.CustomButton);
+			GuiHelper.DrawText (topScores, GuiHelper.CustomButton, 0.1, 0.09, 0.8, 0.41);
 
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton())){
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton())){
 				PrepareRace ();
 			}
 
@@ -198,10 +232,15 @@ public class Minigame : MonoBehaviour {
 				Sounds.Mute(!Sounds.IsMuted());
 			}
 
-		} else {
-			//GUI.DrawTexture(new Rect( GuiHelper.PercentW(0.03), GuiHelper.PercentH(0.034) , GuiHelper.PercentW(0.5), GuiHelper.PercentH(0.1) ), SpriteManager.GetDistanceBorder());
+			if (IsShowBanner()){
+				GuiHelper.DrawText ("Like this game? Click banner", GuiHelper.CustomButton, 0.01, 0.82, 0.98, 0.08);
+			}
 
-			GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
+		} else {
+
+			if (GuiHelper.SmallFont != null){
+				GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
+			}
 		}
 	}
 

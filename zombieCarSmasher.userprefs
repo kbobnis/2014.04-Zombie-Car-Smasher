@@ -1,11 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Minigame.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Fuel.cs">
     <Files>
-      <File FileName="Assets\Scripts\Fuel.cs" Line="5" Column="33" />
-      <File FileName="Assets\Scripts\Sounds.cs" Line="18" Column="48" />
-      <File FileName="Assets\Scripts\Minigame.cs" Line="117" Column="76" />
-      <File FileName="Assets\Scripts\PlaySingleSound.cs" Line="23" Column="3" />
+      <File FileName="Assets\Scripts\Fuel.cs" Line="13" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

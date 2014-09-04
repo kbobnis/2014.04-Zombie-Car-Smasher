@@ -12,6 +12,9 @@ public class HighScores  {
 		LoadScores ();
 	}
 
+	public static int GetTopScoresCount(){
+		return Scores.Count;
+	}
 
 	public static List<int> GetTopScores(int howMany){
 		howMany = Scores.Count > howMany ? howMany : Scores.Count;
@@ -27,6 +30,15 @@ public class HighScores  {
 		}
 
 		SaveScores ();
+	}
+
+	public static int GetPlaceFor(int score){
+		for (int i=0; i < Scores.Count; i++) {
+			if (score >= Scores[i]){
+				return i+1;
+			}
+		}
+		return 0;
 	}
 
 	private static void LoadScores(){
@@ -45,6 +57,7 @@ public class HighScores  {
 		foreach(int score2 in Scores){
 			PlayerPrefs.SetInt("HighScores" + Version + ++i, score2);
 		}
+
 
 	}
 }

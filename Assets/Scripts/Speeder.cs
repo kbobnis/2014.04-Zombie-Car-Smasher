@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class Speeder : MonoBehaviour 
 {
+	private AudioSource DriveSound;
+
 	public float v {
 		set{
-			if (value > 0 && audio != null && !audio.isPlaying){
-				audio.Play();
+			if (value > 0 && DriveSound != null && !DriveSound.isPlaying){
+				//audio.Play();
 			}
 			_v = value;
 
@@ -25,9 +27,9 @@ public class Speeder : MonoBehaviour
 	private float LastDistance;
 	// Use this for initialization
 	void Start () {
-		gameObject.AddComponent<AudioSource> ();
-		audio.clip = Sounds.CarDrive;
-		audio.loop = true;
+		DriveSound = gameObject.AddComponent<AudioSource> ();
+		DriveSound.clip = Sounds.CarDrive;
+		DriveSound.loop = true;
 	}
 	
 	// Update is called once per frame
@@ -60,8 +62,8 @@ public class Speeder : MonoBehaviour
 	}
 
 	void OnDestroy() {
-		if (audio && audio.isPlaying) {
-			audio.Stop();
+		if (DriveSound && DriveSound.isPlaying) {
+			DriveSound.Stop();
 		}
 	}
 
