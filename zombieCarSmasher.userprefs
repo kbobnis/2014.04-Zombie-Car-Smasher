@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Fuel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Minigame.cs">
     <Files>
-      <File FileName="Assets\Scripts\Fuel.cs" Line="13" Column="23" />
+      <File FileName="Assets\Scripts\CarTurner.cs" Line="72" Column="43" />
+      <File FileName="Assets\Scripts\Minigame.cs" Line="244" Column="77" />
+      <File FileName="Assets\Scripts\CarSmasherSocial.cs" Line="42" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

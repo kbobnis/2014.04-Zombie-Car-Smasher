@@ -13,6 +13,8 @@ class SpriteManager {
 	private static Texture StartButton;
 	private static Texture SoundButton;
 	private static Texture SoundButtonMuted;
+	private static Texture Leaderboard;
+	private static Texture Achievements;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -24,6 +26,16 @@ class SpriteManager {
 		StartButton = Resources.Load<Texture> ("Images/start");
 		SoundButton = Resources.Load<Texture> ("Images/note");
 		SoundButtonMuted = Resources.Load<Texture> ("Images/note_muted");
+		Leaderboard = Resources.Load<Texture> ("Images/leaderboard");
+		Achievements = Resources.Load<Texture> ("Images/achievement");
+	}
+
+	static public Texture GetAchievements(){
+		return Achievements;
+	}
+
+	static public Texture GetLeaderboard(){
+		return Leaderboard;
 	}
 
 	static public Texture GetDistanceBorder(){

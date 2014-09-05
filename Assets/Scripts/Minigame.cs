@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class Minigame : MonoBehaviour {
 
@@ -51,6 +53,7 @@ public class Minigame : MonoBehaviour {
 		InGamePosition.tileH = SpriteManager.GetCar().bounds.size.y*2;
 		InGamePosition.tileW = SpriteManager.GetCar().bounds.size.x*2.5f;
 		CarTurner.TurnSpeed = TurnSpeed;
+
 	}
 
 	public void UnloadResources(){
@@ -139,6 +142,10 @@ public class Minigame : MonoBehaviour {
 
 		GameOverReason = reason;
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
+
+		CarSmasherSocial.GameOverWithScore (Distance);
+		Debug.Log ("Distance driven: " + Distance + ", divided by 100: " + Mathf.RoundToInt (Distance / 100f));
+
 	}
 
 
@@ -190,7 +197,8 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (IsGameOver) {
-			GUI.Button (new Rect (GuiHelper.PercentW (0.1), GuiHelper.PercentH (0.01), GuiHelper.PercentW (0.8), GuiHelper.PercentH (0.07)), GameOverReason, GuiHelper.CustomButton);
+
+			GuiHelper.DrawText (GameOverReason, GuiHelper.CustomButton, 0.1, 0.01, 0.8, 0.07);
 
 			int place = HighScores.GetPlaceFor (Distance);
 			bool isInTop = place <= HowManyInTopScores;
@@ -228,8 +236,19 @@ public class Minigame : MonoBehaviour {
 			}
 
 			Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), soundButton)){
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), soundButton)){
 				Sounds.Mute(!Sounds.IsMuted());
+			}
+
+			Texture leaderBoard = SpriteManager.GetLeaderboard();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), leaderBoard)){
+				CarSmasherSocial.ShowLeaderBoard();
+			}
+
+			
+			Texture achievements = SpriteManager.GetAchievements();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.01), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), achievements)){
+				CarSmasherSocial.ShowAchievements();
 			}
 
 			if (IsShowBanner()){
