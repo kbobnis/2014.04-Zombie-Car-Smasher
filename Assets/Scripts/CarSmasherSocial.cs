@@ -3,13 +3,16 @@ using System.Collections;
 using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
 using System.Collections.Generic;
+using System;
 
 public class CarSmasherSocial : MonoBehaviour {
 
-	private static List<CommonAchievement> Achievements = new List<CommonAchievement>();
+	private static List<CommonAchievement> Achievements = new List<CommonAchievement> ();
 	private static List<GoogleLeaderboard> LeaderBoards = new List<GoogleLeaderboard> ();
 
 	private static bool Authenticated;
+	private delegate void AfterAuthenticateD ();
+	private static AfterAuthenticateD AfterAuthenticate;
 
 	static CarSmasherSocial(){
 		Achievements.Add (new GoogleAchievement ("Around The World", GoogleAchievement.ACHIEV_AROUND_THE_WORLD, 40000, AchievementType.INCREMENTAL));
@@ -29,6 +32,10 @@ public class CarSmasherSocial : MonoBehaviour {
 		Social.localUser.Authenticate ((bool success) => {
 			Debug.Log("zalogowany " + (success?"tak":"nie"));
 			Authenticated = success;
+			if (Authenticated){
+				AfterAuthenticate();
+				AfterAuthenticate = null;
+			}
 		});
 	}
 
@@ -36,23 +43,31 @@ public class CarSmasherSocial : MonoBehaviour {
 
 		if (Authenticated) {
 			foreach (CommonAchievement ach in Achievements) {
-					ach.Update (distance);
+				ach.Update (distance);
 			}
 			foreach (GoogleLeaderboard lead in LeaderBoards) {
-					lead.Update (distance);
+				lead.Update (distance);
 			}
 		} 
 	}
 
 	public static void ShowLeaderBoard(){
+		AfterAuthenticate = ShowLeaderBoardInner;
+
 		if (Authenticated) {
-			Social.ShowLeaderboardUI ();
+			ShowLeaderBoardInner();
 		}else {
 			InitializeSocial();
 		}
 	}
 
+	private static void ShowLeaderBoardInner(){
+		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
+	}
+
 	public static void ShowAchievements(){
+		AfterAuthenticate = Social.ShowAchievementsUI;
+
 		if (Authenticated) {
 			Social.ShowAchievementsUI();
 		}else {
