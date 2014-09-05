@@ -54,6 +54,8 @@ public class Minigame : MonoBehaviour {
 		InGamePosition.tileW = SpriteManager.GetCar().bounds.size.x*2.5f;
 		CarTurner.TurnSpeed = TurnSpeed;
 
+		CarSmasherSocial.InitializeSocial (false);
+
 	}
 
 	public void UnloadResources(){
@@ -242,13 +244,13 @@ public class Minigame : MonoBehaviour {
 
 			Texture leaderBoard = SpriteManager.GetLeaderboard();
 			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), leaderBoard)){
-				CarSmasherSocial.ShowLeaderBoard();
+				CarSmasherSocial.ShowLeaderBoard(Distance);
 			}
 
 			
 			Texture achievements = SpriteManager.GetAchievements();
 			if (GUI.Button(new Rect(GuiHelper.PercentW(0.01), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), achievements)){
-				CarSmasherSocial.ShowAchievements();
+				CarSmasherSocial.ShowAchievements(Distance);
 			}
 
 			if (IsShowBanner()){

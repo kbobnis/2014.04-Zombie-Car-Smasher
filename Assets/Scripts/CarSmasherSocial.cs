@@ -5,6 +5,8 @@ using UnityEngine.SocialPlatforms;
 using System.Collections.Generic;
 using System;
 
+
+
 public class CarSmasherSocial : MonoBehaviour {
 
 	private static List<CommonAchievement> Achievements = new List<CommonAchievement> ();
@@ -15,29 +17,51 @@ public class CarSmasherSocial : MonoBehaviour {
 	private static AfterAuthenticateD AfterAuthenticate;
 
 	static CarSmasherSocial(){
-		Achievements.Add (new GoogleAchievement ("Around The World", GoogleAchievement.ACHIEV_AROUND_THE_WORLD, 40000, AchievementType.INCREMENTAL));
-		Achievements.Add (new GoogleAchievement ("First Steps", GoogleAchievement.ACHIEV_FIRST_STEPS, 100, AchievementType.UNLOCKABLE));
-		Achievements.Add (new GoogleAchievement ("Apprentice", GoogleAchievement.ACHIEV_APPRENTICE, 250, AchievementType.UNLOCKABLE));
-		Achievements.Add (new GoogleAchievement ("Expert Driver", GoogleAchievement.ACHIEV_EXPERT_DRIVER, 400, AchievementType.UNLOCKABLE));
-		Achievements.Add (new GoogleAchievement ("Master of Zombie Car Smasher", GoogleAchievement.ACHIEV_MASTER_OF_ZOMBIE_CAR_SMASHER, 1000, AchievementType.UNLOCKABLE));
-		Achievements.Add (new GoogleAchievement ("To The Moon", GoogleAchievement.ACHIEV_TO_THE_MOON, 384400, AchievementType.INCREMENTAL));
+
+		Achievements.Add (new GoogleAchievement ("Around The World", GoogleAchievement.ACHIEV_AROUND_THE_WORLD, 40000, CommonAchievement.Incremental));
+		Achievements.Add (new GoogleAchievement ("First Steps", GoogleAchievement.ACHIEV_FIRST_STEPS, 100, CommonAchievement.Unlockable));
+		Achievements.Add (new GoogleAchievement ("Apprentice", GoogleAchievement.ACHIEV_APPRENTICE, 250, CommonAchievement.Unlockable));
+		Achievements.Add (new GoogleAchievement ("Expert Driver", GoogleAchievement.ACHIEV_EXPERT_DRIVER, 400, CommonAchievement.Unlockable));
+		Achievements.Add (new GoogleAchievement ("Master of Zombie Car Smasher", GoogleAchievement.ACHIEV_MASTER_OF_ZOMBIE_CAR_SMASHER, 1000, CommonAchievement.Unlockable));
+		Achievements.Add (new GoogleAchievement ("To The Moon", GoogleAchievement.ACHIEV_TO_THE_MOON, 384400, CommonAchievement.Incremental));
+		Achievements.Add (new GoogleAchievement ("Constant Driver", GoogleAchievement.ACHIEV_CONSTANT_DRIVER, 100, CommonAchievement.IncrementIf));
 
 		LeaderBoards.Add (new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES));
 	}
 
 
-	public static void InitializeSocial(){
+	public static void InitializeSocial(bool forceUI, int distanceToSave=-1){
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
-		Social.localUser.Authenticate ((bool success) => {
-			Debug.Log("zalogowany " + (success?"tak":"nie"));
-			Authenticated = success;
-			if (Authenticated){
-				AfterAuthenticate();
-				AfterAuthenticate = null;
-			}
-		});
+
+		if (CanIAsk() || forceUI) {
+			Social.localUser.Authenticate ((bool success) => {
+				Debug.Log ("zalogowany " + (success ? "tak" : "nie"));
+				Authenticated = success;
+				SaveAnswerForAuthentication(success);
+				if (Authenticated && AfterAuthenticate != null) {
+					if (distanceToSave != -1){
+						GameOverWithScore(distanceToSave);
+					}
+					AfterAuthenticate ();
+					AfterAuthenticate = null;
+				}
+			});
+		}
 	}
+
+	/**
+	 * We automatically ask only for the first time
+	 **/
+	private static bool CanIAsk(){
+		return PlayerPrefs.GetString ("hasPreviouslyAccepted", "yes") == "yes";
+	}
+
+	private static void SaveAnswerForAuthentication(bool answer){
+		PlayerPrefs.SetString ("hasPreviouslyAccepted", answer ? "yes" : "no");
+	}
+
+
 
 	public static void GameOverWithScore (int distance){
 
@@ -51,13 +75,13 @@ public class CarSmasherSocial : MonoBehaviour {
 		} 
 	}
 
-	public static void ShowLeaderBoard(){
+	public static void ShowLeaderBoard(int lastDistance){
 		AfterAuthenticate = ShowLeaderBoardInner;
 
 		if (Authenticated) {
 			ShowLeaderBoardInner();
 		}else {
-			InitializeSocial();
+			InitializeSocial(true, lastDistance);
 		}
 	}
 
@@ -65,13 +89,13 @@ public class CarSmasherSocial : MonoBehaviour {
 		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
 	}
 
-	public static void ShowAchievements(){
+	public static void ShowAchievements(int lastDistance){
 		AfterAuthenticate = Social.ShowAchievementsUI;
 
 		if (Authenticated) {
 			Social.ShowAchievementsUI();
 		}else {
-			InitializeSocial();
+			InitializeSocial(true, lastDistance);
 		}
 	}
 
@@ -91,26 +115,44 @@ class GoogleLeaderboard{
 	}
 }
 
-
-enum AchievementType{
-	INCREMENTAL, UNLOCKABLE
-}
+delegate void CustomUpdateAchievement (int distance, string id, int value);
 
 abstract class CommonAchievement{
 	protected string Id;
 	protected int Value;
 	protected string Name;
-	protected AchievementType Type;
+	protected CustomUpdateAchievement CustomUpdate;
 
-	public CommonAchievement(string name, string id, int value, AchievementType type){
+	public CommonAchievement(string name, string id, int value, CustomUpdateAchievement customUpdate){
 		Id = id;
 		Value = value;
 		Name = name;
-		Type = type;
+		CustomUpdate = customUpdate;
 	}
 
-	public abstract void Update (int distance);
+	public void Update (int distance){
+		CustomUpdate (distance, Id, Value);
+	}
+
+	public static void Unlockable(int distance, string id, int value) {
+		if (distance >= value) {
+			Social.ReportProgress (id, 100.0f, (bool success) => {});
+		}
+	}
+			
+	public static void Incremental(int distance, string id, int value) {
+		//google play has limit to 10 000 steps. We will divide here distance by 100 and in google+ write amounts 100 times smaller
+		((PlayGamesPlatform)Social.Active).IncrementAchievement (id, Mathf.RoundToInt (distance / 100f), (bool success) => {});
+	}
+			
+	public static void IncrementIf(int distance, string id, int value) {
+		if (distance > value){
+			((PlayGamesPlatform)Social.Active).IncrementAchievement(id, 1, (bool success) => {});
+		}
+	}
 }
+
+
 
 class GoogleAchievement : CommonAchievement{
 
@@ -120,26 +162,10 @@ class GoogleAchievement : CommonAchievement{
 	public const string ACHIEV_EXPERT_DRIVER = "CgkI0eO__P0OEAIQBQ";
 	public const string ACHIEV_MASTER_OF_ZOMBIE_CAR_SMASHER = "CgkI0eO__P0OEAIQBg";
 	public const string ACHIEV_TO_THE_MOON = "CgkI0eO__P0OEAIQBw";
+	public const string ACHIEV_CONSTANT_DRIVER = "CgkI0eO__P0OEAIQCA";
 
-	public GoogleAchievement(string name, string id, int value, AchievementType type):base(name, id, value, type){
-	}
 
-	override public void Update(int distance){
+	public GoogleAchievement(string name, string id, int value, CustomUpdateAchievement customUpdate):base(name, id, value, customUpdate){}
 
-		switch (Type) {
-			case AchievementType.UNLOCKABLE:
-				if (distance >= Value) {
-					Social.ReportProgress (Id, 100.0f, (bool success) => {
-					});
-				}
-			break;
-			case AchievementType.INCREMENTAL:
-				//google play has limit to 10 000 steps. We will divide here distance by 100 and in google+ write amounts 100 times smaller
-				((PlayGamesPlatform)Social.Active).IncrementAchievement(Id, Mathf.RoundToInt(distance/100f), (bool success) => {
-				});
-			break;
-			default:
-				throw new UnityException("There is no achievement type " + Type);
-		}
-	}
+
 }
