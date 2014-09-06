@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Speeder : MonoBehaviour 
 {
 	private AudioSource DriveSound;
+	public float Distortion = 0.1f;
 
 	public float v {
 		set{
@@ -40,7 +41,7 @@ public class Speeder : MonoBehaviour
 
 		if (GetComponent<Fuel>().Amount > 0 && v > 0){
 
-			GetComponent<InGamePosition>().y += v * Time.deltaTime;
+			GetComponent<InGamePosition>().y += v * Time.deltaTime * (1 + Random.value * Distortion);
 			GetComponent<Fuel>().Amount -= (GetComponent<InGamePosition>().y - LastDistance) * RideCost;
 			LastDistance  = GetComponent<InGamePosition>().y;
 
