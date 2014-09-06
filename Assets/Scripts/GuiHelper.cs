@@ -30,7 +30,7 @@ public class GuiHelper : MonoBehaviour {
 	void OnGUI () {
 		if (SmallFont == null) {
 			SmallFont = new GUIStyle();
-			SmallFont.fontSize = 40 * Screen.width / 480;
+			SmallFont.fontSize = 37 * Screen.width / 480;
 			SmallFont.font = (Font)Resources.Load ("Fluf");
 			SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
@@ -40,10 +40,10 @@ public class GuiHelper : MonoBehaviour {
 
 
 			CustomButton = new GUIStyle ("button");
-			CustomButton.fontSize = 40 * Screen.width / 480;
+			CustomButton.fontSize = 37 * Screen.width / 480;
 			CustomButton.font = (Font)Resources.Load ("Fluf");
 
-			SmallFontBrown.fontSize = 40 * Screen.width / 480;
+			SmallFontBrown.fontSize = 37 * Screen.width / 480;
 			SmallFontBrown.font = (Font)Resources.Load ("Fluf");
 			SmallFontBrown.normal.textColor = new Color (227 / 255f, 6 / 255f, 19 / 255f);
 		}
