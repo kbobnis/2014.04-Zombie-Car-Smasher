@@ -83,8 +83,9 @@ public class Minigame : MonoBehaviour {
 		GameObject previousStreet = null;
 		int carStartingStreet = 0;
 		int clearStreets =0;
-		for(int i=-8; i < 8; i ++){
-			bool noObstacles = clearStreets-8-carStartingStreet<=FirstClearStreets;
+		int streetCount = 20;
+		for(int i=-1*streetCount; i < streetCount; i ++){
+			bool noObstacles = clearStreets-streetCount-carStartingStreet<=FirstClearStreets;
 			GameObject thisStreet = CreateStreet(i, previousStreet, noObstacles);
 			Streets.Add(i, thisStreet);
 			previousStreet = thisStreet;
@@ -95,8 +96,10 @@ public class Minigame : MonoBehaviour {
 		Car tmp = Car.AddComponent<Car>();
 		tmp.Prepare(0, carStartingStreet, StartingCarSpeed, EndingCarSpeed, ShooterProbability, JumperProbability, RideCost);
 
-		Camera.main.GetComponent<FollowGM>().FollowWhom = Car;
-		Camera.main.GetComponent<FollowGM>().Offset.y = -0.5f;
+		Destroy (Camera.main.gameObject.GetComponent<FollowGM> ());
+		FollowGM fgm = Camera.main.gameObject.AddComponent<FollowGM> ();
+		fgm.FollowWhom = Car;
+		fgm.Offset.y = -0.5f;
 		GetComponent<GoogleMobileAdsKProjekt> ().HideBanner ();
 
 		GoogleAnalyticsKProjekt.LogScreenOnce(Minigame.SCREEN_GAME);
