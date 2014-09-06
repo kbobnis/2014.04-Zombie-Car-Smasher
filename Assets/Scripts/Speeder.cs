@@ -32,8 +32,7 @@ public class Speeder : MonoBehaviour
 		DriveSound.loop = true;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (LastDistance == 0){
 			LastDistance = GetComponent<InGamePosition>().y;
 		}

@@ -11,7 +11,7 @@ public class FollowGM : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (FollowWhom != null){
 			float y = FollowWhom.GetComponent<InGamePosition>().y;
 			GetComponent<InGamePosition>().y = y + Offset.y;
