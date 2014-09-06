@@ -23,13 +23,12 @@ public class FollowGM : MonoBehaviour {
 
 			if (LastPos != 0 ){
 				if (  thisDelta / LastDelta > MaxIncrement){
-					thisDelta = LastDelta * MaxIncrement ;
+					thisDelta = LastDelta * (MaxIncrement );//+ (thisDelta / LastDelta - 1)/100) ;
 				} else if ( thisDelta / LastDelta < MinIncrement){
-					thisDelta = LastDelta * MinIncrement ;
+					thisDelta = LastDelta * (MinIncrement - (1- thisDelta / LastDelta)/50) ;
 				}
 			}
 
-			Debug.Log("lastDelta: " + LastDelta +", thisDelta: " + thisDelta);
 			thisPos = LastPos + thisDelta; 
 			GetComponent<InGamePosition>().y = thisPos + 2 * Offset.y;
 			LastDelta = thisDelta;

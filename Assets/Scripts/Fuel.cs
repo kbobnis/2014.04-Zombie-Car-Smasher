@@ -40,6 +40,14 @@ public class Fuel : MonoBehaviour {
 		Amount += fuelAmount;
 		PlaySingleSound.SpawnSound (Sounds.PickUpFuel, gameObject.transform.position);
 	}
+
+	public bool HasEnoughFuel(){
+		return Amount > 0;
+	}
+
+	public void ChargeForDistance(float distance, float cost){
+		Amount -= distance * cost;
+	}
 	
 	// Update is called once per frame
 	void Update () {

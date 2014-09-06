@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CarSmasherSocial.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Accelerator.cs">
     <Files>
-      <File FileName="Assets\Scripts\CarSmasherSocial.cs" Line="45" Column="42" />
-      <File FileName="Assets\Scripts\Minigame.cs" Line="15" Column="33" />
+      <File FileName="Assets\Scripts\Speeder.cs" Line="40" Column="60" />
+      <File FileName="Assets\Scripts\Car.cs" Line="58" Column="12" />
+      <File FileName="Assets\Scripts\Accelerator.cs" Line="31" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

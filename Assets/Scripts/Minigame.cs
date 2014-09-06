@@ -149,7 +149,6 @@ public class Minigame : MonoBehaviour {
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 
 		CarSmasherSocial.GameOverWithScore (Distance);
-		Debug.Log ("Distance driven: " + Distance + ", divided by 100: " + Mathf.RoundToInt (Distance / 100f));
 
 	}
 

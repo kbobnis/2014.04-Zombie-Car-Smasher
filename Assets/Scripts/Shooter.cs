@@ -27,7 +27,6 @@ public class Shooter : CarBuff {
 		Speeder speeder = g.AddComponent<Speeder>(); //to have speed
 		speeder.v = ShootSpeed;
 		speeder.RideCost = 0.1f;
-		speeder.DestroyWhenEmpty = true;
 
 		//for speeder to work
 		g.AddComponent<Fuel>().Amount = 10; //to have fuel for speeder

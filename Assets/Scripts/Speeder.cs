@@ -6,6 +6,11 @@ public class Speeder : MonoBehaviour
 {
 	private AudioSource DriveSound;
 	private float Distortion = 0.2f;
+	private float LastDistance;
+
+	public float _v;
+	public float RideCost;
+	public float Decelerate = 0.3f;
 
 	public float v {
 		set{
@@ -13,20 +18,10 @@ public class Speeder : MonoBehaviour
 				//audio.Play();
 			}
 			_v = value;
-
 		}
-		get{
-			return _v;
-		}
+		get{ return _v; }
 	}
 
-	public float _v;
-	public float RideCost;
-	public bool DestroyWhenEmpty = false;
-
-
-	private float LastDistance;
-	// Use this for initialization
 	void Start () {
 		DriveSound = gameObject.AddComponent<AudioSource> ();
 		DriveSound.clip = Sounds.CarDrive;
@@ -38,27 +33,23 @@ public class Speeder : MonoBehaviour
 			LastDistance = GetComponent<InGamePosition>().y;
 		}
 
-
-		if (GetComponent<Fuel>().Amount > 0 && v > 0){
-
-			GetComponent<InGamePosition>().y += v * Time.deltaTime * (1 + Random.value * Distortion);
-			GetComponent<Fuel>().Amount -= (GetComponent<InGamePosition>().y - LastDistance) * RideCost;
-			LastDistance  = GetComponent<InGamePosition>().y;
-
-		}
-
-		if (GetComponent<Fuel>().Amount <= 0 && DestroyWhenEmpty){
-			Destroy(gameObject);
-		}
-
-			foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
-				//check collision with obstacles
-				if (Mathf.Abs(  gameObject.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.15f){
-					Street tmp = street.Value.GetComponent<Street>();
-					GameObject tile = tmp.Tiles[Mathf.RoundToInt( gameObject.GetComponent<InGamePosition>().x)];
-					tile.GetComponent<Tile>().GMIsOn(gameObject);
-				}
+		if (v > 0.5f) {
+			if (GetComponent<Fuel> ().HasEnoughFuel ()) {
+				GetComponent<InGamePosition> ().y += v * Time.deltaTime * (1 + Random.value * Distortion);
+				GetComponent<Fuel> ().ChargeForDistance (GetComponent<InGamePosition> ().y - LastDistance, RideCost);
+				LastDistance = GetComponent<InGamePosition> ().y;
 			}
+		} else {
+			Minigame.Me.GameOver(Minigame.OUT_OF_OIL);
+		}
+
+		foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
+			if (Mathf.Abs(  gameObject.GetComponent<InGamePosition>().y - street.Value.GetComponent<InGamePosition>().y) < 0.15f){
+				Street tmp = street.Value.GetComponent<Street>();
+				GameObject tile = tmp.Tiles[Mathf.RoundToInt( gameObject.GetComponent<InGamePosition>().x)];
+				tile.GetComponent<Tile>().GMIsOn(gameObject);
+			}
+		}
 	}
 
 	void OnDestroy() {
