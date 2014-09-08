@@ -58,6 +58,10 @@ class SpriteManager {
 		return Atlas [10];
 	}
 
+	static public Sprite GetCactus(){
+		return Atlas[2];
+	}
+
 	static public Texture GetLeftArrow(){
 		return LeftArrow;
 	}

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Speeder : MonoBehaviour 
 {
 	private AudioSource DriveSound;
-	private float Distortion = 0.2f;
+	private float Distortion = 0.15f;
 	private float LastDistance;
 
 	public float _v;

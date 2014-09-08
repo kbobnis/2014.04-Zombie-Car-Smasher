@@ -256,7 +256,8 @@ public class Minigame : MonoBehaviour {
 			}
 
 			if (IsShowBanner()){
-				GuiHelper.DrawText ("Like this game? Click banner", GuiHelper.CustomButton, 0.01, 0.82, 0.98, 0.08);
+				//this is forbidden by adsense and others
+				//GuiHelper.DrawText ("Like this game? Click banner", GuiHelper.CustomButton, 0.01, 0.82, 0.98, 0.08);
 			}
 
 		} else {
