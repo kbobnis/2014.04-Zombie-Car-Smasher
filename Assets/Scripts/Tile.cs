@@ -10,12 +10,21 @@ public enum TileContent{
 
 public class Tile : MonoBehaviour 
 {
-	public TileContent TileContent;
+	public TileContent _TileContent;
 
 	public static float WallChance;
 	public static float HoleChance;
 	public static float BuffFuelChance;
 	public static float BuffOilValue;
+
+
+	public TileContent TileContent {
+		get { return _TileContent; }
+		set { 
+			_TileContent = value;
+			gameObject.name = value.ToString();
+		}
+	}
 
 	void Start () {
 	}

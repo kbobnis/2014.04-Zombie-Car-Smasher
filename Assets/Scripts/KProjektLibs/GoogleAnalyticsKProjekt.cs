@@ -26,6 +26,7 @@ public class GoogleAnalyticsKProjekt {
 	}
 
 	public static void LogIsActive(bool isActive){
+		return; // i dont want screen inactive
 		if (GoogleAnalytics.instance && isActive != IsActive ) {
 			IsActive = isActive;
 
