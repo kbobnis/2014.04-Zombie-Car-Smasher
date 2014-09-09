@@ -94,7 +94,12 @@ public class Minigame : MonoBehaviour {
 		Car = new GameObject();
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
-		tmp.Prepare(0, carStartingStreet, StartingCarSpeed, EndingCarSpeed, ShooterProbability, JumperProbability, RideCost);
+		float bestScore = HighScores.GetTopScores (1) [0];
+		float carStartingSpeed = StartingCarSpeed;
+		if (bestScore < 200){
+			carStartingSpeed = 3 + bestScore/200 * 2;
+		}
+		tmp.Prepare(0, carStartingStreet, carStartingSpeed, EndingCarSpeed, ShooterProbability, JumperProbability, RideCost);
 
 		Destroy (Camera.main.gameObject.GetComponent<FollowGM> ());
 		FollowGM fgm = Camera.main.gameObject.AddComponent<FollowGM> ();
