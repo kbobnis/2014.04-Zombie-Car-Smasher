@@ -35,6 +35,7 @@ public class GuiHelper : MonoBehaviour {
 			SmallFont.font = (Font)Resources.Load ("Fluf");
 			SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			SmallFont.alignment = TextAnchor.UpperCenter;
+			SmallFont.wordWrap = true;
 
 			SmallFontLeft = new GUIStyle();
 			SmallFontLeft.fontSize = 37 * Screen.width / 480;
@@ -49,6 +50,7 @@ public class GuiHelper : MonoBehaviour {
 			CustomButton = new GUIStyle ();//("button");
 			CustomButton.fontSize = 37 * Screen.width / 480;
 			CustomButton.font = (Font)Resources.Load ("Fluf");
+			CustomButton.alignment = TextAnchor.MiddleCenter;
 
 			SmallFontBrown.fontSize = 37 * Screen.width / 480;
 			SmallFontBrown.font = (Font)Resources.Load ("Fluf");

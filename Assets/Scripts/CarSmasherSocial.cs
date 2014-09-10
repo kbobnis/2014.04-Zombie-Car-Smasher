@@ -16,7 +16,11 @@ public class CarSmasherSocial : MonoBehaviour {
 	private delegate void AfterAuthenticateD ();
 	private static AfterAuthenticateD AfterAuthenticate;
 
+	public static FBKprojekt FB;
+
+
 	static CarSmasherSocial(){
+		FB = new FBKprojekt ();
 
 		Achievements.Add (new GoogleAchievement ("Around The World", GoogleAchievement.ACHIEV_AROUND_THE_WORLD, 40000, CommonAchievement.Incremental));
 		Achievements.Add (new GoogleAchievement ("First Steps", GoogleAchievement.ACHIEV_FIRST_STEPS, 100, CommonAchievement.Unlockable));
@@ -166,6 +170,20 @@ class GoogleAchievement : CommonAchievement{
 
 
 	public GoogleAchievement(string name, string id, int value, CustomUpdateAchievement customUpdate):base(name, id, value, customUpdate){}
+}
 
-
+class FBKprojekt{
+	public void FeedHighScore(int score){
+		if (!FB.IsLoggedIn){
+			FB.Login("", ShareBestScores);
+		} else {
+			ShareBestScores(null);
+		}
+	}
+	private void ShareBestScores(FBResult result)
+	{
+		if (FB.IsLoggedIn){
+			FB.Feed("", "https://play.google.com/store/apps/details?id=com.krzysiekprojekt.zombieCarSmasher","New Highscore","", "I drove distance "+Distance+". Can you beat me?","http://philon.pl/zombieCarSmasher/icon.png");
+		}
+	} 
 }

@@ -43,6 +43,7 @@ public class Minigame : MonoBehaviour {
 	public const string SCREEN_FAIL = "Screen fail";
 
 	private int HowManyInTopScores = 5;
+	private bool ShowNewHighScoreScreen = false;
 
 	// Use this for initialization
 	void Start () {
@@ -145,6 +146,9 @@ public class Minigame : MonoBehaviour {
 		int place = HighScores.GetPlaceFor (Distance);
 		if (place == 1) {
 			PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.gameObject.transform.position, 0.2f);
+			if (Distance > 100){
+				ShowNewHighScoreScreen = true;
+			}
 		} 
 
 
@@ -208,41 +212,41 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (IsGameOver) {
+			if (ShowNewHighScoreScreen){
+				GuiHelper.DrawElement("Images/popupWindow", 0.01, 0.01, 0.98, 0.98);
+				GuiHelper.DrawText ("New High Score!", GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
+				GuiHelper.DrawText ("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFont, 0.1, 0.2, 0.75, 0.07);
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.3), GuiHelper.PercentH(0.84), GuiHelper.PercentW(0.4), GuiHelper.PercentH(0.15)), SpriteManager.GetBackButton(), GuiHelper.CustomButton)){
+					ShowNewHighScoreScreen = false;
+				}
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.11)), SpriteManager.GetFbShareButton(), GuiHelper.CustomButton)){
+					CarSmasherSocial.FB.FeedHighScore(Distance);
+					ShowNewHighScoreScreen = false;
+				}
 
-			GuiHelper.DrawElement("Images/popupWindow", 0.04, 0.025, 0.94, 0.99);
-
-			GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
-
-			DrawTopScores(0.2f);
-
-
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.49), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
-				PrepareRace ();
-			}
-
-			Texture achievements = SpriteManager.GetAchievements();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
-				CarSmasherSocial.ShowAchievements(Distance);
-			}
-
-			Texture leaderBoard = SpriteManager.GetLeaderboard();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
-				CarSmasherSocial.ShowLeaderBoard(Distance);
-			}
-
-			Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
-				Sounds.Mute(!Sounds.IsMuted());
-			}
-
-
-
-			
-
-
-			if (IsShowBanner()){
-				//this is forbidden by adsense and others
-				//GuiHelper.DrawText ("Like this game? Click banner", GuiHelper.CustomButton, 0.01, 0.82, 0.98, 0.08);
+			} else {
+				GuiHelper.DrawElement("Images/popupWindow", 0.04, 0.025, 0.94, 0.99);
+				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
+				DrawTopScores(0.2f);
+				
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.49), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
+					PrepareRace ();
+				}
+				
+				Texture achievements = SpriteManager.GetAchievements();
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
+					CarSmasherSocial.ShowAchievements(Distance);
+				}
+				
+				Texture leaderBoard = SpriteManager.GetLeaderboard();
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
+					CarSmasherSocial.ShowLeaderBoard(Distance);
+				}
+				
+				Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
+					Sounds.Mute(!Sounds.IsMuted());
+				}
 			}
 
 		} else {

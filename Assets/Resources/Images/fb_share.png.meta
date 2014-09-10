@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: 7c2f4a6f3a1581e438bee650fd9800a2
+guid: b084691bf903d554b97e3f42ad6a0688
 TextureImporter:
   fileIDToRecycleName:
-    21300000: intro
+    21300000: share-button-fb
+    21300002: fb_share
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

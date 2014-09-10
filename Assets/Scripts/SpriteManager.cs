@@ -15,6 +15,8 @@ class SpriteManager {
 	private static Texture SoundButtonMuted;
 	private static Texture Leaderboard;
 	private static Texture Achievements;
+	private static Texture BackButton;
+	private static Texture FbShareButton;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -28,6 +30,12 @@ class SpriteManager {
 		SoundButtonMuted = Resources.Load<Texture> ("Images/note_muted");
 		Leaderboard = Resources.Load<Texture> ("Images/leaderboard");
 		Achievements = Resources.Load<Texture> ("Images/achievement");
+		BackButton = Resources.Load<Texture> ("Images/back_arrow");
+		FbShareButton = Resources.Load<Texture> ("Images/fb_share");
+	}
+
+	static public Texture GetFbShareButton(){
+		return FbShareButton;
 	}
 
 	static public Texture GetAchievements(){
@@ -87,5 +95,9 @@ class SpriteManager {
 	}
 	static public Texture GetSoundButtonMuted(){
 		return SoundButtonMuted;
+	}
+
+	static public Texture GetBackButton(){
+		return BackButton;
 	}
 }

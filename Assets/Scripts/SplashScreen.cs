@@ -6,7 +6,7 @@ public class SplashScreen : MonoBehaviour {
 	public bool showingSplash;
 	// Use this for initialization
 	void Start () {
-
+		FB.Init(delegate {});
 	}
 	
 	// Update is called once per frame
@@ -29,7 +29,9 @@ public class SplashScreen : MonoBehaviour {
 
 			GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
-			if(GUI.Button(new Rect(PercentW(0.27), PercentH(0.7), PercentW(0.6), PercentH(0.30)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
+			GUIStyle gs = new GUIStyle();
+			gs.alignment = TextAnchor.MiddleCenter;
+			if(GUI.Button(new Rect(PercentW(0), PercentH(0.7), PercentW(1), PercentH(0.30)), SpriteManager.GetStartButton(), gs)){
 				showingSplash = false;
 				GetComponent<MainLogic>().WantToStartGame();
 			} else {
