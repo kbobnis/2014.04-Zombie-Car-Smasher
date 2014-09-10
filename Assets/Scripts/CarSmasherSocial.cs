@@ -172,8 +172,12 @@ class GoogleAchievement : CommonAchievement{
 	public GoogleAchievement(string name, string id, int value, CustomUpdateAchievement customUpdate):base(name, id, value, customUpdate){}
 }
 
-class FBKprojekt{
+public class FBKprojekt{
+
+	private int Score;
+
 	public void FeedHighScore(int score){
+		Score = score;
 		if (!FB.IsLoggedIn){
 			FB.Login("", ShareBestScores);
 		} else {
@@ -183,7 +187,7 @@ class FBKprojekt{
 	private void ShareBestScores(FBResult result)
 	{
 		if (FB.IsLoggedIn){
-			FB.Feed("", "https://play.google.com/store/apps/details?id=com.krzysiekprojekt.zombieCarSmasher","New Highscore","", "I drove distance "+Distance+". Can you beat me?","http://philon.pl/zombieCarSmasher/icon.png");
+			FB.Feed("", "https://play.google.com/store/apps/details?id=com.krzysiekprojekt.zombieCarSmasher","New Highscore","", "I drove distance "+Score+". Can you beat me?","http://philon.pl/zombieCarSmasher/icon.png");
 		}
 	} 
 }
