@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
+using Facebook;
 
 public class Minigame : MonoBehaviour {
 
@@ -94,7 +95,8 @@ public class Minigame : MonoBehaviour {
 		Car = new GameObject();
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
-		float bestScore = HighScores.GetTopScores (1) [0];
+		List<int> topScores = HighScores.GetTopScores (1);
+		float bestScore =  topScores.Count==0?0:topScores[0];
 		float carStartingSpeed = StartingCarSpeed;
 		if (bestScore < 200){
 			carStartingSpeed = 3 + bestScore/200 * 2;
@@ -207,58 +209,36 @@ public class Minigame : MonoBehaviour {
 
 		if (IsGameOver) {
 
-			GuiHelper.DrawText (GameOverReason, GuiHelper.CustomButton, 0.1, 0.01, 0.8, 0.07);
+			GuiHelper.DrawElement("Images/popupWindow", 0.04, 0.025, 0.94, 0.99);
 
-			int place = HighScores.GetPlaceFor (Distance);
-			bool isInTop = place <= HowManyInTopScores;
-			List<int> top = HighScores.GetTopScores (HowManyInTopScores);
-			bool yourWasSet = false;
-			string topScores = "Best Distances:";
-				for(int i=0; i < HowManyInTopScores && top.Count > i; i++){
+			GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
 
-				if (i < HowManyInTopScores){
-					topScores += "\n";
-				}
-				if (!yourWasSet && i == HowManyInTopScores-1 && !isInTop){
-					break;
-				}
-
-				int s = top[i];
-				if (s == Distance && !yourWasSet){
-					yourWasSet = true;
-					topScores += "Top " + (i+1) + ". " + s + " (Now)";
-				} else {
-					topScores += "Top " + (i+1) + ". " + s + "";
-				}
+			DrawTopScores(0.2f);
 
 
-			}
-
-			if (!yourWasSet){
-				topScores += "... Now: " + Distance ;
-			}
-
-			GuiHelper.DrawText (topScores, GuiHelper.CustomButton, 0.1, 0.09, 0.8, 0.41);
-
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton())){
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.49), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
 				PrepareRace ();
 			}
 
-			Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), soundButton)){
-				Sounds.Mute(!Sounds.IsMuted());
+			Texture achievements = SpriteManager.GetAchievements();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
+				CarSmasherSocial.ShowAchievements(Distance);
 			}
 
 			Texture leaderBoard = SpriteManager.GetLeaderboard();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.81), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), leaderBoard)){
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
 				CarSmasherSocial.ShowLeaderBoard(Distance);
 			}
 
-			
-			Texture achievements = SpriteManager.GetAchievements();
-			if (GUI.Button(new Rect(GuiHelper.PercentW(0.01), GuiHelper.PercentH(0.51), GuiHelper.PercentW(0.18), GuiHelper.PercentH(0.15)), achievements)){
-				CarSmasherSocial.ShowAchievements(Distance);
+			Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
+				Sounds.Mute(!Sounds.IsMuted());
 			}
+
+
+
+			
+
 
 			if (IsShowBanner()){
 				//this is forbidden by adsense and others
@@ -268,9 +248,48 @@ public class Minigame : MonoBehaviour {
 		} else {
 
 			if (GuiHelper.SmallFont != null){
-				GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFont);
+				GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
 			}
 		}
+	}
+
+	private bool IsBetterDrawDrivingTips(){
+		List<int> scores = HighScores.GetTopScores (1);
+
+		return scores.Count > 0 && scores[0] < 200;
+	}
+
+	private void DrawTopScores(float y){
+		int place = HighScores.GetPlaceFor (Distance);
+		bool isInTop = place <= HowManyInTopScores;
+		List<int> top = HighScores.GetTopScores (HowManyInTopScores);
+		bool yourWasSet = false;
+		string topScores = "Best Distances:";
+		for(int i=0; i < HowManyInTopScores && top.Count > i; i++){
+			
+			if (i < HowManyInTopScores){
+				topScores += "\n";
+			}
+			if (!yourWasSet && i == HowManyInTopScores-1 && !isInTop){
+				break;
+			}
+			
+			int s = top[i];
+			if (s == Distance && !yourWasSet){
+				yourWasSet = true;
+				topScores += "Top " + (i+1) + ". " + s + " (Now)";
+			} else {
+				topScores += "Top " + (i+1) + ". " + s + "";
+			}
+			
+			
+		}
+		
+		if (!yourWasSet){
+			topScores += "... Now: " + Distance ;
+		}
+		
+		GuiHelper.DrawText (topScores, GuiHelper.SmallFont, 0.1, y, 0.8, 0.41);
 	}
 
 }

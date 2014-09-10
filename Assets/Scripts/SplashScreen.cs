@@ -29,7 +29,7 @@ public class SplashScreen : MonoBehaviour {
 
 			GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
-			if(GUI.Button(new Rect(PercentW(0.2), PercentH(0.7), PercentW(0.6), PercentH(0.25)), SpriteManager.GetStartButton())){
+			if(GUI.Button(new Rect(PercentW(0.27), PercentH(0.7), PercentW(0.6), PercentH(0.30)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
 				showingSplash = false;
 				GetComponent<MainLogic>().WantToStartGame();
 			} else {

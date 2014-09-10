@@ -12,6 +12,7 @@ public class GuiHelper : MonoBehaviour {
 	public static int twentyPercent = Screen.height / 5;
 
 	public static GUIStyle SmallFont ;
+	public static GUIStyle SmallFontLeft;
 	public static GUIStyle CustomButton ;
 	public static GUIStyle SmallFontBrown = new GUIStyle ();
 	public static GUIStyle MicroFont = new GUIStyle();
@@ -33,13 +34,19 @@ public class GuiHelper : MonoBehaviour {
 			SmallFont.fontSize = 37 * Screen.width / 480;
 			SmallFont.font = (Font)Resources.Load ("Fluf");
 			SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+			SmallFont.alignment = TextAnchor.UpperCenter;
+
+			SmallFontLeft = new GUIStyle();
+			SmallFontLeft.fontSize = 37 * Screen.width / 480;
+			SmallFontLeft.font = (Font)Resources.Load ("Fluf");
+			SmallFontLeft.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
 			MicroFont.fontSize = 20 * Screen.width / 480;
 			MicroFont.font = (Font)Resources.Load ("Fluf");
 			MicroFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
 
-			CustomButton = new GUIStyle ("button");
+			CustomButton = new GUIStyle ();//("button");
 			CustomButton.fontSize = 37 * Screen.width / 480;
 			CustomButton.font = (Font)Resources.Load ("Fluf");
 
