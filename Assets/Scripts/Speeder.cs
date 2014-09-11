@@ -6,7 +6,7 @@ public class Speeder : MonoBehaviour
 {
 	private AudioSource DriveSound;
 	private float Distortion = 0.1f;
-	private float LastDistance;
+	private float LastY;
 
 	public float _v;
 	public float RideCost;
@@ -29,16 +29,20 @@ public class Speeder : MonoBehaviour
 	}
 	
 	void FixedUpdate () {
-		if (LastDistance == 0){
-			LastDistance = GetComponent<InGamePosition>().y;
+		if (LastY == 0){
+			LastY = GetComponent<InGamePosition>().y;
+		}
+
+		if (Mathf.FloorToInt (GetComponent<InGamePosition> ().y) != Mathf.FloorToInt (LastY)) {
+			GetComponent<Car>().JustMovedToAnotherTile(Mathf.FloorToInt(GetComponent<InGamePosition>().y));
 		}
 
 		if (v > 0.5f) {
 			if (GetComponent<Fuel> ().HasEnoughFuel ()) {
 				float distort = GetComponent<CarTurner>().IsTurning()?0: Random.value * Distortion;
 				GetComponent<InGamePosition> ().y += v * Time.deltaTime * (1 + distort);
-				GetComponent<Fuel> ().ChargeForDistance (GetComponent<InGamePosition> ().y - LastDistance, RideCost);
-				LastDistance = GetComponent<InGamePosition> ().y;
+				GetComponent<Fuel> ().ChargeForDistance (GetComponent<InGamePosition> ().y - LastY, RideCost);
+				LastY = GetComponent<InGamePosition> ().y;
 			}
 		} else {
 			Minigame.Me.GameOver(Minigame.OUT_OF_OIL);

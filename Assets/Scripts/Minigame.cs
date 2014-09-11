@@ -23,7 +23,7 @@ public class Minigame : MonoBehaviour {
 	public GameObject Car;
 
 	private int lastCarWasAt = 0;
-	private int Distance =0;
+	private int _Distance =0;
 	private bool IsGameOver = false;
 	private string GameOverReason = "No reason";
 	public Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
@@ -45,6 +45,10 @@ public class Minigame : MonoBehaviour {
 	private int HowManyInTopScores = 5;
 	private bool ShowNewHighScoreScreen = false;
 
+
+	public int Distance{
+		get { return _Distance;}
+	}
 	// Use this for initialization
 	void Start () {
 		Sounds.LoadSounds ();
@@ -71,7 +75,7 @@ public class Minigame : MonoBehaviour {
 		Car = null;
 		IsGameOver = false;
 		lastCarWasAt = 0;
-		Distance = 0;
+		_Distance = 0;
 	}
 
 	public void PrepareRace(){
@@ -142,11 +146,11 @@ public class Minigame : MonoBehaviour {
 		Destroy (Car.GetComponent<Speeder> ());
 		Destroy (Car.GetComponent<CarTurner> ());
 		Destroy (Car.GetComponent<Fuel> ());
-		HighScores.AddScore (Distance);
-		int place = HighScores.GetPlaceFor (Distance);
+		HighScores.AddScore (_Distance);
+		int place = HighScores.GetPlaceFor (_Distance);
 		if (place == 1) {
 			PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.gameObject.transform.position, 0.2f);
-			if (Distance > 100){
+			if (_Distance > 100){
 				ShowNewHighScoreScreen = true;
 			}
 		} 
@@ -159,7 +163,7 @@ public class Minigame : MonoBehaviour {
 		GameOverReason = reason;
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 
-		CarSmasherSocial.GameOverWithScore (Distance);
+		CarSmasherSocial.GameOverWithScore (_Distance, Car.GetComponent<Car>().FuelPickedUpThisGame, Car.GetComponent<Car>().FuelPickedUpWhenLow);
 
 	}
 
@@ -179,7 +183,7 @@ public class Minigame : MonoBehaviour {
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
 		if (carIsAt != lastCarWasAt){
 
-			Distance  = lastCarWasAt = carIsAt;
+			_Distance  = lastCarWasAt = carIsAt;
 			int minStreet = int.MaxValue;
 			int maxStreet = int.MinValue;
 			foreach(KeyValuePair<int, GameObject> street in Streets){
@@ -215,12 +219,12 @@ public class Minigame : MonoBehaviour {
 			if (ShowNewHighScoreScreen){
 				GuiHelper.DrawElement("Images/popupWindow", 0.01, 0.01, 0.98, 0.98);
 				GuiHelper.DrawText ("New High Score!", GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
-				GuiHelper.DrawText ("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFont, 0.1, 0.2, 0.75, 0.07);
+				GuiHelper.DrawText ("You just beat your high score with distance "+_Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFont, 0.1, 0.2, 0.75, 0.07);
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.3), GuiHelper.PercentH(0.84), GuiHelper.PercentW(0.4), GuiHelper.PercentH(0.15)), SpriteManager.GetBackButton(), GuiHelper.CustomButton)){
 					ShowNewHighScoreScreen = false;
 				}
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.11)), SpriteManager.GetFbShareButton(), GuiHelper.CustomButton)){
-					CarSmasherSocial.FB.FeedHighScore(Distance);
+					CarSmasherSocial.FB.FeedHighScore(_Distance);
 					ShowNewHighScoreScreen = false;
 				}
 
@@ -235,12 +239,12 @@ public class Minigame : MonoBehaviour {
 				
 				Texture achievements = SpriteManager.GetAchievements();
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowAchievements(Distance);
+					CarSmasherSocial.ShowAchievements(_Distance);
 				}
 				
 				Texture leaderBoard = SpriteManager.GetLeaderboard();
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowLeaderBoard(Distance);
+					CarSmasherSocial.ShowLeaderBoard(_Distance);
 				}
 				
 				Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
@@ -252,7 +256,7 @@ public class Minigame : MonoBehaviour {
 		} else {
 
 			if (GuiHelper.SmallFont != null){
-				GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
+				GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + _Distance, GuiHelper.SmallFontLeft);
 			}
 		}
 	}
@@ -264,7 +268,7 @@ public class Minigame : MonoBehaviour {
 	}
 
 	private void DrawTopScores(float y){
-		int place = HighScores.GetPlaceFor (Distance);
+		int place = HighScores.GetPlaceFor (_Distance);
 		bool isInTop = place <= HowManyInTopScores;
 		List<int> top = HighScores.GetTopScores (HowManyInTopScores);
 		bool yourWasSet = false;
@@ -279,7 +283,7 @@ public class Minigame : MonoBehaviour {
 			}
 			
 			int s = top[i];
-			if (s == Distance && !yourWasSet){
+			if (s == _Distance && !yourWasSet){
 				yourWasSet = true;
 				topScores += "Top " + (i+1) + ". " + s + " (Now)";
 			} else {
@@ -290,7 +294,7 @@ public class Minigame : MonoBehaviour {
 		}
 		
 		if (!yourWasSet){
-			topScores += "... Now: " + Distance ;
+			topScores += "... Now: " + _Distance ;
 		}
 		
 		GuiHelper.DrawText (topScores, GuiHelper.SmallFont, 0.1, y, 0.8, 0.41);

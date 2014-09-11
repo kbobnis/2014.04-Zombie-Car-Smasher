@@ -129,7 +129,7 @@ public class Tile : MonoBehaviour
 				TileContent  = TileContent.NONE;
 				Destroy(g);
 			} else  if (g.GetComponent<Flyier>() == null){ //flying object don't pick up oil buffs
-				Minigame.Me.Car.GetComponent<Fuel>().PickedUpFuel(BuffOilValue);
+				Minigame.Me.Car.GetComponent<Car>().PickedUpFuel(BuffOilValue);
 				GetComponent<SpriteRenderer>().enabled = false;
 				TileContent = TileContent.NONE;
 			}

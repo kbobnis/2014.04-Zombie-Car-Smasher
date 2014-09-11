@@ -13,12 +13,11 @@ public class Fuel : MonoBehaviour {
 			if (_Amount > 100){
 				_Amount = 100;
 			} 
-			if (_Amount <= LowAmountFrom ){
+			if (IsLowFuel() ){
 				if (LowFuelAudioSource != null && !LowFuelAudioSource.isPlaying){
 					LowFuelAudioSource.Play();
 				}
-			}
-			if (_Amount > LowAmountFrom){
+			} else {
 				if (LowFuelAudioSource != null && LowFuelAudioSource.isPlaying){
 					LowFuelAudioSource.Stop();
 				}
@@ -47,6 +46,10 @@ public class Fuel : MonoBehaviour {
 
 	public void ChargeForDistance(float distance, float cost){
 		Amount -= distance * cost;
+	}
+
+	public bool IsLowFuel(){
+		return Amount <= LowAmountFrom;
 	}
 	
 	// Update is called once per frame

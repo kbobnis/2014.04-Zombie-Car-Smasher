@@ -12,9 +12,7 @@ public class CarTurner : MonoBehaviour {
 	public static float TurnSpeed = 5f;
 
 	private bool pressed;
-
 	private float LastY;
-
 
 	// Use this for initialization
 	void Start () {
@@ -70,12 +68,14 @@ public class CarTurner : MonoBehaviour {
 		GetComponent<InGamePosition>().x -= 0.01f;
 		WhereTurn = SIDE.LEFT;
 		PlaySingleSound.SpawnSound (Sounds.TurnCar, transform.position);
+		GetComponent<Car> ().StartedTurning ();
 	}
 
 	public void  TurnRight(){
 		GetComponent<InGamePosition>().x += 0.01f;
 		WhereTurn = SIDE.RIGHT;
 		PlaySingleSound.SpawnSound (Sounds.TurnCar, transform.position);
+		GetComponent<Car> ().StartedTurning ();
 	}
 
 	public bool IsTurning() {

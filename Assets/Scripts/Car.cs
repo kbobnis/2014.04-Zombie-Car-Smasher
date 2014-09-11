@@ -3,6 +3,15 @@ using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
+	public int FuelPickedUpThisGame;
+	private int FuelPickedUpThisGameInARow;
+	public int FuelPickedUpWhenLow;
+	private int TurnsMade;
+
+	void Update(){
+		CarSmasherSocial.TurnsMade(TurnsMade, Minigame.Me.Distance);
+	}
+
 	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float maxCarSpeed, float shooterProbability, float jumperProbability, float rideCost){
 
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
@@ -46,8 +55,40 @@ public class Car : MonoBehaviour {
 		accelerator.Prepare (maxCarSpeed, 300);
 	}
 
+	public void PickedUpFuel(float buffOilValue){
+		FuelPickedUpThisGame ++;
+		FuelPickedUpThisGameInARow ++;
+		if (FuelPickedUpThisGame == 5 || FuelPickedUpThisGame == 25 || FuelPickedUpThisGame == 50) {
+			CarSmasherSocial.FuelPickedUpInOneGame(FuelPickedUpThisGame);
+		}
+		GetComponent<Fuel> ().PickedUpFuel (buffOilValue);
 
+		if (FuelPickedUpThisGameInARow == 10 || FuelPickedUpThisGameInARow == 25) {
+			CarSmasherSocial.FuelPickedUpInOneGameInARow(FuelPickedUpThisGameInARow);
+		}
 
+		if (GetComponent<Fuel> ().IsLowFuel ()) {
+			FuelPickedUpWhenLow ++;
+			CarSmasherSocial.FuelPickedUpWhenLow(FuelPickedUpWhenLow);
+		}
+	}
 
+	public void JustMovedToAnotherTile(int newY){
+		//checking if in the previous tile there wasn't any fuel
+		foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
+			if (newY - 1 == Mathf.FloorToInt(street.Value.GetComponent<InGamePosition>().y)){
+				foreach(KeyValuePair<int, GameObject> tilePair in street.Value.GetComponent<Street>().Tiles){
+					Tile tile = tilePair.Value.GetComponent<Tile>();
+					if (tile.TileContent == TileContent.BUFF_OIL){
+						FuelPickedUpThisGameInARow = 0;
+					}
+				}
+			}
+		}
+	}
+
+	public void StartedTurning(){
+		TurnsMade ++;
+	}
 }
 
