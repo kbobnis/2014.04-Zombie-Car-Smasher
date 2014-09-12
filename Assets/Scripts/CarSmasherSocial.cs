@@ -5,72 +5,56 @@ using UnityEngine.SocialPlatforms;
 using System.Collections.Generic;
 using System;
 
-enum SCORE_TYPE{
-	DISTANCE, FUEL_PICKED, FUEL_PICKED_WHEN_LOW, TURNS, FUEL_PICKED_IN_ROW
-}
-enum SIGN{
-	SMALLER, EQUAL, BIGGER, NO_MATTER
-}
-enum ACHIEVEMENT_TYPE{
-	INCREMENTAL, UNLOCKABLE
-}
-class AchievQuery{
-	private SCORE_TYPE ScoreType;
-	private SIGN Sign;
-	private int Value;
-
-	public AchievQuery(SCORE_TYPE scoreType, SIGN sign, int value){
-		ScoreType = scoreType;
-		Sign = sign;
-		Value = value;
-	}
-}
+delegate int ProcessScore (int score);
 
 public class CarSmasherSocial : MonoBehaviour {
 
-	private static List<CommonAchievement> Achievements = new List<CommonAchievement> ();
+	private static List<GoogleAchievement> Achievements = new List<GoogleAchievement> ();
 	private static List<GoogleLeaderboard> LeaderBoards = new List<GoogleLeaderboard> ();
 
-	private static List<CommonAchievement> FuelInOneGame = new List<CommonAchievement> ();
-	private static List<CommonAchievement> FuelInOneGameInARow = new List<CommonAchievement> ();
-	private static List<CommonAchievement> TurnsMadeInOneGame = new List<CommonAchievement> ();
-	private static List<CommonAchievement> FuelPickedWhenLow = new List<CommonAchievement>();
+	internal delegate int ProcessScore (int score);
+	private delegate void AfterAuthenticateD ();
 
 	internal static bool Authenticated;
-	private delegate void AfterAuthenticateD ();
-	private static AfterAuthenticateD AfterAuthenticate;
-
 	public static FBKprojekt FB;
-
+	private static AfterAuthenticateD AfterAuthenticate;
 
 	static CarSmasherSocial(){
 		FB = new FBKprojekt ();
 
-		//Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_AROUND_THE_WORLD, ACHIEVEMENT_TYPE.INCREMENTAL, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.NO_MATTER, 40000) })));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_AROUND_THE_WORLD, 40000, CommonAchievement.IncrementalDiv100));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_FIRST_STEPS, 100, CommonAchievement.Unlockable));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_APPRENTICE, 250, CommonAchievement.Unlockable));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_EXPERT_DRIVER, 400, CommonAchievement.Unlockable));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_MASTER_OF_ZOMBIE_CAR_SMASHER, 1000, CommonAchievement.Unlockable));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_TO_THE_MOON, 384400, CommonAchievement.IncrementalDiv100));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_CONSTANT_DRIVER, 100, CommonAchievement.IncrementIf));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_ECO_FRIENDLY, 50, CommonAchievement.IncrementalFuel));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_A_YEAR_FOR_THE_WORLD, 250, CommonAchievement.IncrementalFuel));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_ALL_IS_MINE, 500, CommonAchievement.IncrementalFuel));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_FIRST_STEPS, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 100) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_APPRENTICE, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 250) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_EXPERT_DRIVER, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 400) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_MASTER_OF_ZOMBIE_CAR_SMASHER, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 1000) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_BEAT_THE_MASTER, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 1254) })));
 
-		FuelInOneGame.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_WHAT_IS_THAT, 5, CommonAchievement.UnlockableFuel));
-		FuelInOneGame.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_CAN_GET_FURTHER_WITH_THIS, 25, CommonAchievement.UnlockableFuel));
-		FuelInOneGame.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_DO_I_NEED_THAT_MUCH, 50, CommonAchievement.UnlockableFuel));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_AROUND_THE_WORLD, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.NO_MATTER, 0) }), GoogleAchievement.DivideBy100));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_TO_THE_MOON, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.NO_MATTER, 0) }), GoogleAchievement.DivideBy100));
 
-		FuelInOneGameInARow.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_STUNT_DRIVER, 10, CommonAchievement.UnlockableFuel));
-		FuelInOneGameInARow.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_BULLSEYE, 25, CommonAchievement.UnlockableFuel));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_CONSTANT_DRIVER, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 100) }), GoogleAchievement.MakeOne));
 
-		TurnsMadeInOneGame.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_LIKE_THE_WHEEL, 60, CommonAchievement.UnlockableTurnsDistanceOver100));
-		TurnsMadeInOneGame.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_SCHUMACHER, 100, CommonAchievement.UnlockableTurnsDistanceOver100));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_ECO_FRIENDLY, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED,  new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.NO_MATTER, 0) }))); 
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_A_YEAR_FOR_THE_WORLD, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED,  new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.NO_MATTER, 0) }))); 
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_ALL_IS_MINE, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED,  new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.NO_MATTER, 0) }))); 
 
-		FuelPickedWhenLow.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_A_LITTLE_BIT_MORE, 1, CommonAchievement.UnlockableFuel));
-		FuelPickedWhenLow.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_DONT_NEED_FUEL_RIGHT_NOW, 3, CommonAchievement.UnlockableFuel));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_WHAT_IS_THAT, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.BIGGER_EQUAL, 5) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_CAN_GET_FURTHER_WITH_THIS, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.BIGGER_EQUAL, 25) }))); 
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_DO_I_NEED_THAT_MUCH, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.BIGGER_EQUAL, 50) })));
 
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_STUNT_DRIVER, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED_IN_ROW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 10) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_BULLSEYE, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED_IN_ROW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 17) })));
+
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_LIKE_THE_WHEEL, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.TURNS, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 50), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 100) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_SCHUMACHER, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.TURNS, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 75), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 100) })));
+
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_A_LITTLE_BIT_MORE, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 1)})));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_DONT_NEED_FUEL_RIGHT_NOW, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 3)})));
+
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_TEMPORARY_EMPTINESS, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 10)})));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_EVERLASTING_POVERTY, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 50)})));
+
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 40), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 5), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 100) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO_MARATHON, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 80), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 8), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 200) })));
 
 		LeaderBoards.Add (new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES));
 	}
@@ -86,9 +70,6 @@ public class CarSmasherSocial : MonoBehaviour {
 				Authenticated = success;
 				SaveAnswerForAuthentication(success);
 				if (Authenticated && AfterAuthenticate != null) {
-					if (distanceToSave != -1){
-						GameOverWithScore(distanceToSave, 0, 0);
-					}
 					AfterAuthenticate ();
 					AfterAuthenticate = null;
 				}
@@ -107,36 +88,20 @@ public class CarSmasherSocial : MonoBehaviour {
 		PlayerPrefs.SetString ("hasPreviouslyAccepted", answer ? "yes" : "no");
 	}
 
-	public static void GameOverWithScore (int distance, int fuelPickedUp, int fuelPickedUpWhenLow){
-		foreach (CommonAchievement ach in Achievements) {
-			ach.Update (distance, fuelPickedUp, 0, fuelPickedUpWhenLow);
-		}
-		foreach (GoogleLeaderboard lead in LeaderBoards) {
-			lead.Update (distance);
+	public static void UpdateAchievements (Result[] results){
+		foreach (GoogleAchievement ach in Achievements) {
+			ach.Update(results);
 		}
 	}
 
-	public static void FuelPickedUpInOneGame(int howMuch){
-		foreach(CommonAchievement ach in FuelInOneGame){
-			ach.Update(0, howMuch, 0, 0);
-		}
-	}
-
-	public static void TurnsMade(int turnsMade, int distance){
-		foreach(CommonAchievement ach in TurnsMadeInOneGame){
-			ach.Update(distance, 0, turnsMade, 0);
-		}
-	}
-
-	public static void FuelPickedUpInOneGameInARow(int inARow){
-		foreach(CommonAchievement ach in FuelInOneGameInARow){
-			ach.Update(0, inARow, 0, 0);
-		}
-	}
-
-	public static void FuelPickedUpWhenLow(int howMany){
-		foreach(CommonAchievement ach in FuelPickedWhenLow){
-			ach.Update(0, howMany, 0, 0);
+	/**
+	 * On some occasions we don't want to increment achievements, because in the end they would be incremented twice for one race.
+	 **/
+	public static void UnlockAchievements(Result[] results){
+		foreach (GoogleAchievement ach in Achievements) {
+			if (ach.Type == ACHIEVEMENT_TYPE.UNLOCKABLE){
+				ach.Update(results);
+			}
 		}
 	}
 
@@ -180,98 +145,65 @@ class GoogleLeaderboard{
 		}
 	}
 }
+public enum SCORE_TYPE{
+	DISTANCE, FUEL_PICKED, FUEL_PICKED_WHEN_LOW, TURNS, FUEL_PICKED_IN_ROW
+}
+public enum SIGN{
+	SMALLER_EQUAL, EQUAL, BIGGER_EQUAL, NO_MATTER
+}
+enum ACHIEVEMENT_TYPE{
+	INCREMENTAL, UNLOCKABLE
+}
 
-delegate void CustomUpdateAchievement (int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow);
-
-abstract class CommonAchievement{
-	protected string Id;
-	protected int Value;
-	protected CustomUpdateAchievement CustomUpdate;
-
-
-	public CommonAchievement(string id, int value, CustomUpdateAchievement customUpdate){
-		Id = id;
-		Value = value;
-		CustomUpdate = customUpdate;
+public class Result{
+	protected SCORE_TYPE _ScoreType;
+	protected int _Value;
+	
+	public SCORE_TYPE ScoreType{
+		get { return _ScoreType; }
 	}
-
-	public void Update (int distance, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow){
-		CustomUpdate (distance, Id, Value, fuelPickedUp, turnsMade, fuelPickedUpWhenLow);
-
-		/*
-		List<AchievQuery> rzeczy = new List<AchievQuery> ();
-		List<AchievQuery> otrzymane = new List<AchievQuery> ();
-		bool allIsOk = false;
-		ACHIEVEMENT_TYPE ten = ACHIEVEMENT_TYPE.INCREMENTAL;
-		foreach (AchievQuery rzecz in rzeczy) {
-			foreach(AchievQuery otrzymana in otrzymane){
-				if (rzecz.IsTheSameType(otrzymana) && !rzecz.CanAccept(otrzymana)){
-					allIsOk = false;
-				}
-			}
-		}
-
-		if (allIsOk) {
-			if (ten == ACHIEVEMENT_TYPE.INCREMENTAL){
-				((PlayGamesPlatform)Social.Active).IncrementAchievement(id, fuelPickedUp, (bool success) => {});
-			} else {
-				Social.ReportProgress (id, 100.0f, (bool success) => {});
-			}
-		}
-		*/
+	public int Value {
+		get { return _Value; }
 	}
-
-	private static void UnlockAchievement(string id){
-		Debug.Log ("[UnlockAchievement] " + GoogleAchievement.GetNameForId(id));
-		if (CarSmasherSocial.Authenticated) {
-			Social.ReportProgress (id, 100.0f, (bool success) => {});
-		} 
-	}
-	private static void IncrementAchievement(string id, int value){
-		Debug.Log ("[IncrementAchievement] " + GoogleAchievement.GetNameForId(id) + " with " + value);
-		if (CarSmasherSocial.Authenticated) {
-			((PlayGamesPlatform)Social.Active).IncrementAchievement (id, value, (bool success) => {});
-		}
-	}
-
-
-	public static void Unlockable(int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow) {
-		if (distance >= value) {
-			UnlockAchievement(id);
-		}
-	}
-
-	public static void UnlockableFuel(int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow) {
-		if (fuelPickedUp >= value) {
-			UnlockAchievement(id);
-		}
-	}
-
-	public static void IncrementalFuel(int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow) {
-		IncrementAchievement (id, fuelPickedUp);
-	}
-			
-	public static void IncrementalDiv100(int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow) {
-		//google play has limit to 10 000 steps. We will divide here distance by 100 and in google+ write amounts 100 times smaller
-		IncrementAchievement(id, Mathf.RoundToInt (distance / 100f));
-	}
-			
-	public static void IncrementIf(int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow) {
-		if (distance > value){
-			IncrementAchievement(id, 1);
-		}
-	}
-
-	public static void UnlockableTurnsDistanceOver100(int distance, string id, int value, int fuelPickedUp, int turnsMade, int fuelPickedUpWhenLow){
-		if (distance == 100 && turnsMade > value) {
-			UnlockAchievement(id);
-		}
+	
+	public Result(SCORE_TYPE scoreType, int value){
+		_ScoreType = scoreType;
+		_Value = value;
 	}
 }
 
+public class AchievQuery : Result {
+	private SIGN _Sign;
+	
+	public SIGN Sign {
+		get { return _Sign; }
+	}
+	
+	public AchievQuery(SCORE_TYPE scoreType, SIGN sign, int value):base(scoreType, value){
+		_Sign = sign;
+	}
+	
+	private bool IsTheSameType(Result r){
+		return ScoreType == r.ScoreType;
+	}
+	public bool CanAccept(Result r){
+		if (!IsTheSameType (r)) {
+			return true;
+		}
+		
+		switch (Sign) {
+		case SIGN.BIGGER_EQUAL: return r.Value >= Value;
+		case SIGN.EQUAL : return Value == r.Value;
+		case SIGN.SMALLER_EQUAL : return r.Value <= Value;
+		case SIGN.NO_MATTER: return true;
+		default:
+			throw new Exception("There is no operation for sign: " + Sign);
+		}
+	}
+	
+}
 
-
-class GoogleAchievement : CommonAchievement{
+class GoogleAchievement {
 
 	public const string ACHIEV_AROUND_THE_WORLD = "CgkI0eO__P0OEAIQAg";
 	public const string ACHIEV_FIRST_STEPS = "CgkI0eO__P0OEAIQAw";
@@ -298,8 +230,31 @@ class GoogleAchievement : CommonAchievement{
 	public const string ACHIEV_A_LITTLE_BIT_MORE = "CgkI0eO__P0OEAIQFA";
 	public const string ACHIEV_I_DONT_NEED_FUEL_RIGHT_NOW = "CgkI0eO__P0OEAIQFQ";
 
-	//public GoogleAchievement(string id, ACHIEVEMENT_TYPE type, List<AchievQuery> achievQuery):base(id, type, achievQuery){}
-	public GoogleAchievement(string id, int value, CustomUpdateAchievement update):base(id, value, update){}
+	public const string ACHIEV_TEMPORARY_EMPTINESS = "CgkI0eO__P0OEAIQFg";
+	public const string ACHIEV_EVERLASTING_POVERTY ="CgkI0eO__P0OEAIQFw";
+
+	public const string ACHIEV_COMBO = "CgkI0eO__P0OEAIQGA";
+	public const string ACHIEV_COMBO_MARATHON = "CgkI0eO__P0OEAIQGQ";
+
+	public const string ACHIEV_BEAT_THE_MASTER = "CgkI0eO__P0OEAIQGg";
+
+	private string Id;
+	private ACHIEVEMENT_TYPE _Type;
+	private SCORE_TYPE WhatIncrement;
+	private List<AchievQuery> Queries;
+	private ProcessScore ProcessScore;
+	
+	public ACHIEVEMENT_TYPE Type {
+		get { return _Type; }
+	}
+
+	public GoogleAchievement(string id, ACHIEVEMENT_TYPE type, SCORE_TYPE whatIncrement, List<AchievQuery> achievQuery, ProcessScore processScore=null){
+		Id = id;
+		_Type = type;
+		WhatIncrement = whatIncrement;
+		Queries = achievQuery;
+		ProcessScore = processScore!=null?processScore:DefaultProcessScore;
+	}
 
 	public static string GetNameForId(string id){
 		switch (id) {
@@ -322,9 +277,66 @@ class GoogleAchievement : CommonAchievement{
 		case ACHIEV_SCHUMACHER: return "Schumacher";
 		case ACHIEV_A_LITTLE_BIT_MORE: return " A little bit more";
 		case ACHIEV_I_DONT_NEED_FUEL_RIGHT_NOW: return "I dont need fel right now";
-		default: throw new Exception("There is no name for id " + id );
+		case ACHIEV_TEMPORARY_EMPTINESS: return "Temporary emptiness";
+		case ACHIEV_EVERLASTING_POVERTY: return "Everlasting poverty";
+		case ACHIEV_COMBO : return "Combo";
+		case ACHIEV_COMBO_MARATHON: return "Combo marathon";
+		case ACHIEV_BEAT_THE_MASTER: return "Beat the master";
+		default: return "There is no name for id " + id;
 				}
 	}
+
+	public static void UnlockAchievement(string id){
+		Debug.Log ("[UnlockAchievement] " + GoogleAchievement.GetNameForId(id));
+		if (CarSmasherSocial.Authenticated) {
+			Social.ReportProgress (id, 100.0f, (bool success) => {});
+		} 
+	}
+	public static void IncrementAchievement(string id, int value){
+		Debug.Log ("[IncrementAchievement] " + GoogleAchievement.GetNameForId(id) + " with " + value);
+		if (CarSmasherSocial.Authenticated) {
+			((PlayGamesPlatform)Social.Active).IncrementAchievement (id, value, (bool success) => {});
+		}
+	}
+
+	public void Update(Result[] results){
+		bool allIsOk = true;
+		int score = -1;
+
+		foreach(Result result in results){
+			if (result.ScoreType == WhatIncrement){
+				score = result.Value;
+			}
+			foreach (AchievQuery query in Queries) {
+				if (!query.CanAccept(result)){
+					allIsOk = false;
+				}
+			}
+		}
+
+		if (allIsOk && score != -1) { //score is -1 when achievement and results have different scoreTypes. no worries, this is normal, when updating just some of achievements while game is running
+
+			if (_Type == ACHIEVEMENT_TYPE.INCREMENTAL && ProcessScore(score) > 0) { //there is no need to send request to inrement by zero
+				GoogleAchievement.IncrementAchievement (Id, ProcessScore(score));
+			}
+			if (_Type == ACHIEVEMENT_TYPE.UNLOCKABLE){
+				GoogleAchievement.UnlockAchievement(Id);
+			}
+		}
+	}
+
+	public static int DivideBy100(int score){
+		return Mathf.RoundToInt (score / 100f);
+	}
+
+	public static int MakeOne(int score){
+		return 1;
+	}
+	public static int DefaultProcessScore(int score){
+		return score;
+	}
+
+
 }
 
 public class FBKprojekt{

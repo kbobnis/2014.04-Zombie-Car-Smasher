@@ -3,13 +3,28 @@ using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
+	private int _FuelPickedUpInARow;
+	private int _FuelPickedUpInARowBest;
 	public int FuelPickedUpThisGame;
-	private int FuelPickedUpThisGameInARow;
 	public int FuelPickedUpWhenLow;
-	private int TurnsMade;
+	public int TurnsMade;
+
+
+	public int FuelPickedUpInARow{
+		get { return _FuelPickedUpInARow>_FuelPickedUpInARowBest?_FuelPickedUpInARow:_FuelPickedUpInARowBest; }
+	}
 
 	void Update(){
-		CarSmasherSocial.TurnsMade(TurnsMade, Minigame.Me.Distance);
+		if (Minigame.Me != null && (Minigame.Me.Distance == 100 || Minigame.Me.Distance == 200)) { //because there are several achievements which have to be made in the distance 100 or 200
+			CarSmasherSocial.UnlockAchievements (new Result[]{
+				new Result(SCORE_TYPE.TURNS, TurnsMade),
+				new Result(SCORE_TYPE.DISTANCE, Minigame.Me.Distance),
+				new Result(SCORE_TYPE.FUEL_PICKED, FuelPickedUpThisGame),
+				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, FuelPickedUpInARow),
+				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, FuelPickedUpWhenLow)
+			});
+		}
+
 	}
 
 	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float maxCarSpeed, float shooterProbability, float jumperProbability, float rideCost){
@@ -42,7 +57,7 @@ public class Car : MonoBehaviour {
 
 		Fuel fuel = gameObject.AddComponent<Fuel>(); 
 		fuel.MaxAmount = 100;
-		fuel.Amount = 40;
+		fuel.Amount = 70;
 
 		//Animator carAnimator = Resources.Load<Animator>("Images/carAnimator");
 
@@ -57,30 +72,45 @@ public class Car : MonoBehaviour {
 
 	public void PickedUpFuel(float buffOilValue){
 		FuelPickedUpThisGame ++;
-		FuelPickedUpThisGameInARow ++;
-		if (FuelPickedUpThisGame == 5 || FuelPickedUpThisGame == 25 || FuelPickedUpThisGame == 50) {
-			CarSmasherSocial.FuelPickedUpInOneGame(FuelPickedUpThisGame);
+		_FuelPickedUpInARow ++;
+		if (GetComponent<Fuel> ().IsLowFuel ()) {
+			FuelPickedUpWhenLow ++;
+		}
+
+		//this big if is to prevent to much requests to google play
+		if (FuelPickedUpThisGame == 5 || 
+			FuelPickedUpThisGame == 25 || 
+			FuelPickedUpThisGame == 50 || 
+			FuelPickedUpInARow == 10 || 
+			FuelPickedUpInARow == 25 || 
+			FuelPickedUpWhenLow ==1 || 
+			FuelPickedUpWhenLow == 3)  {
+			CarSmasherSocial.UnlockAchievements(new Result[]{
+				new Result(SCORE_TYPE.FUEL_PICKED, FuelPickedUpThisGame),
+				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, FuelPickedUpInARow),
+				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, FuelPickedUpWhenLow)
+			});
 		}
 		GetComponent<Fuel> ().PickedUpFuel (buffOilValue);
 
-		if (FuelPickedUpThisGameInARow == 10 || FuelPickedUpThisGameInARow == 25) {
-			CarSmasherSocial.FuelPickedUpInOneGameInARow(FuelPickedUpThisGameInARow);
-		}
-
-		if (GetComponent<Fuel> ().IsLowFuel ()) {
-			FuelPickedUpWhenLow ++;
-			CarSmasherSocial.FuelPickedUpWhenLow(FuelPickedUpWhenLow);
-		}
 	}
 
 	public void JustMovedToAnotherTile(int newY){
+		int distance = Minigame.Me.Distance;
+		if (distance == 100 || distance == 250 || distance == 400 || distance == 1000 || distance == 1255) {
+			CarSmasherSocial.UnlockAchievements (new Result[]{ new Result (SCORE_TYPE.DISTANCE, distance)});
+		}
+
 		//checking if in the previous tile there wasn't any fuel
 		foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
 			if (newY - 1 == Mathf.FloorToInt(street.Value.GetComponent<InGamePosition>().y)){
 				foreach(KeyValuePair<int, GameObject> tilePair in street.Value.GetComponent<Street>().Tiles){
 					Tile tile = tilePair.Value.GetComponent<Tile>();
 					if (tile.TileContent == TileContent.BUFF_OIL){
-						FuelPickedUpThisGameInARow = 0;
+						if (_FuelPickedUpInARow > _FuelPickedUpInARowBest){
+							_FuelPickedUpInARowBest = _FuelPickedUpInARow;
+						}
+						_FuelPickedUpInARow = 0;
 					}
 				}
 			}
@@ -89,6 +119,12 @@ public class Car : MonoBehaviour {
 
 	public void StartedTurning(){
 		TurnsMade ++;
+		if ((TurnsMade == 50 || TurnsMade == 75) && Minigame.Me.Distance < 100) {
+			CarSmasherSocial.UnlockAchievements (new Result[]{
+				new Result(SCORE_TYPE.TURNS, TurnsMade),
+				new Result(SCORE_TYPE.DISTANCE, Minigame.Me.Distance)
+			});
+		}
 	}
 }
 

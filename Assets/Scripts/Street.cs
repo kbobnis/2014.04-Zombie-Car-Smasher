@@ -32,6 +32,8 @@ public class Street : MonoBehaviour {
 
 		bool[] foundWall = new bool[]{ false, false, false };
 		bool[] foundHole = new bool[]{ false, false, false} ;
+		bool[] foundObstacle = new bool[]{ false, false, false};
+		bool[] foundOil = new bool[]{false, false, false};
 		//getting previous street
 		int i2=0; 
 		if (previousStreet != null){
@@ -39,15 +41,18 @@ public class Street : MonoBehaviour {
 				Tile tileTmp = tileGmTmp.GetComponent<Tile>();
 
 				if (tileTmp.TileContent == TileContent.WALL){
-					foundWall[i2] = true;
+					foundObstacle[i2] = foundWall[i2] = true;
 				}
 				if (tileTmp.TileContent == TileContent.HOLE){
-					foundHole[i2] = true;
+					foundObstacle[i2] = foundHole[i2] = true;
+				}
+				if (tileTmp.TileContent == TileContent.BUFF_OIL){
+					foundOil[i2] = true;
 				}
 				i2++;
 			}
 		}
-
+		bool metOilInThisLevel = false; 
 		//left, center, right
 		for(int i=-1; i < 2; i++){
 			bool canBeWall = true;
@@ -65,6 +70,14 @@ public class Street : MonoBehaviour {
 				canBeHole = !foundHole[0] && !foundHole[1] && !foundHole[2];
 			}
 
+			bool canBeOil = !metOilInThisLevel; //there can be only one oil on each level
+			if ((i == -1 && foundOil[2]) || (i == 1 && foundOil[0])){  //oils can not be separated by 2 tiles on following levels
+				canBeOil = false;
+			}
+			if (i == 1 && foundObstacle[0] && foundObstacle[1]){
+				canBeOil = false;
+			}
+
 			if (noObstacles){
 				canBeHole = false;
 				canBeWall = false;
@@ -73,11 +86,7 @@ public class Street : MonoBehaviour {
 			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
 
-			if (noObstacles){
-				tmp2.InitWithOil(gameObject, i, inGameY);
-			} else {
-				tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole);
-			}
+			tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole, canBeOil);
 
 			if (Random.value < 0.1){
 				GameObject cactus = new GameObject();
@@ -89,13 +98,16 @@ public class Street : MonoBehaviour {
 
 			if (i < 1){
 				if (tmp2.TileContent == TileContent.WALL){
-					foundWall[i+1] = true;
-					foundWall[i+2] = true; //we dont want two obstacles on the same level
+					foundObstacle[i+1] = foundWall[i+1] = true;
+					foundObstacle[i+2] = foundWall[i+2] = true; //we dont want two obstacles on the same level
 				}
 				if (tmp2.TileContent == TileContent.HOLE){
-					foundHole[i+1] = true;
-					foundHole[i+2] = true; //we dont want two obstacles on the same level
+					foundObstacle[i+1] = foundHole[i+1] = true;
+					foundObstacle[i+2] = foundHole[i+2] = true; //we dont want two obstacles on the same level
 				}
+			}
+			if (tmp2.TileContent == TileContent.BUFF_OIL){
+				metOilInThisLevel = true;
 			}
 		}
 	}

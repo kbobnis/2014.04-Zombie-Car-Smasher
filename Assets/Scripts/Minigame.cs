@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
@@ -44,6 +44,7 @@ public class Minigame : MonoBehaviour {
 
 	private int HowManyInTopScores = 5;
 	private bool ShowNewHighScoreScreen = false;
+	private bool ShowRideInfoScreen = false;
 
 
 	public int Distance{
@@ -163,7 +164,17 @@ public class Minigame : MonoBehaviour {
 		GameOverReason = reason;
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 
-		CarSmasherSocial.GameOverWithScore (_Distance, Car.GetComponent<Car>().FuelPickedUpThisGame, Car.GetComponent<Car>().FuelPickedUpWhenLow);
+		int fuelPickedUp = Car.GetComponent<Car> ().FuelPickedUpThisGame;
+		int fuelPickedUpInARow = Car.GetComponent<Car> ().FuelPickedUpInARow;
+		int fuelPickedUpWhenLow = Car.GetComponent<Car> ().FuelPickedUpWhenLow;
+		int turns = Car.GetComponent<Car> ().TurnsMade;
+		CarSmasherSocial.UpdateAchievements (new Result[]{
+			new Result(SCORE_TYPE.DISTANCE, Distance), 
+			new Result(SCORE_TYPE.FUEL_PICKED, fuelPickedUp), 
+			new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, fuelPickedUpWhenLow),
+			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, fuelPickedUpInARow),
+			new Result(SCORE_TYPE.TURNS, turns)
+		});
 
 	}
 
@@ -216,8 +227,10 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (IsGameOver) {
+			GuiHelper.DrawElement("Images/popupWindow", 0.01, 0.03, 0.98, 1);
+
 			if (ShowNewHighScoreScreen){
-				GuiHelper.DrawElement("Images/popupWindow", 0.01, 0.01, 0.98, 0.98);
+
 				GuiHelper.DrawText ("New High Score!", GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
 				GuiHelper.DrawText ("You just beat your high score with distance "+_Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFont, 0.1, 0.2, 0.75, 0.07);
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.3), GuiHelper.PercentH(0.84), GuiHelper.PercentW(0.4), GuiHelper.PercentH(0.15)), SpriteManager.GetBackButton(), GuiHelper.CustomButton)){
@@ -228,9 +241,31 @@ public class Minigame : MonoBehaviour {
 					ShowNewHighScoreScreen = false;
 				}
 
-			} else {
-				GuiHelper.DrawElement("Images/popupWindow", 0.04, 0.025, 0.94, 0.99);
+			} else if (ShowRideInfoScreen){
 				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
+
+				int fuelPickedUp = Car.GetComponent<Car> ().FuelPickedUpThisGame;
+				int fuelPickedUpInARow = Car.GetComponent<Car> ().FuelPickedUpInARow;
+				int fuelPickedUpWhenLow = Car.GetComponent<Car> ().FuelPickedUpWhenLow;
+				int turns = Car.GetComponent<Car> ().TurnsMade;
+
+
+				GuiHelper.DrawText ("Collect oil drops to replenish fuel tank. Omit obstacles.\n"+
+				                    "\nDistance made: "+Distance+
+				                    "\nTurns made: "+turns+
+				                    "\nFuel picked up: "+fuelPickedUp+" "+
+				                    "(in a row: "+fuelPickedUpInARow+") "+
+				                    "(when low: "+fuelPickedUpWhenLow+") "
+				                    , GuiHelper.SmallFont, 0.1, 0.2, 0.75, 0.07);
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.3), GuiHelper.PercentH(0.84), GuiHelper.PercentW(0.4), GuiHelper.PercentH(0.15)), SpriteManager.GetBackButton(), GuiHelper.CustomButton)){
+					ShowRideInfoScreen = false;
+				}
+
+			} else {
+				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFontLeft, 0.1, 0.08, 0.8, 0.07);
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.08), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.1)), "click", GuiHelper.SmallFont)){
+					ShowRideInfoScreen = true;
+				}
 				DrawTopScores(0.2f);
 				
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.49), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){

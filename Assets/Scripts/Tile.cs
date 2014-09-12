@@ -74,19 +74,19 @@ public class Tile : MonoBehaviour
 
 	}
 
-	public void InitMe(GameObject parent, int i, int inGameY, bool canBeWall, bool canBeHole){
+	public void InitMe(GameObject parent, int i, int inGameY, bool canBeWall, bool canBeHole, bool canBeOil){
 		TileContent = TileContent.NONE;
 		float ticket = Random.Range(0f, 1f);
 		SpriteRenderer r = null;
-		if (ticket < WallChance && canBeWall ){
+		if (canBeWall && ticket < WallChance ){
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = SpriteManager.GetWall();
-		} else if (ticket > WallChance && ticket < WallChance + HoleChance && canBeHole){
+		} else if (canBeHole && ticket > WallChance && ticket < WallChance + HoleChance){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = SpriteManager.GetHole();
-		} else if (ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
+		} else if (canBeOil && ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
 			TileContent = TileContent.BUFF_OIL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = SpriteManager.GetOil();

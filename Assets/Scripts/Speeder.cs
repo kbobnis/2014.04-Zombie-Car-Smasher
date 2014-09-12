@@ -33,15 +33,17 @@ public class Speeder : MonoBehaviour
 			LastY = GetComponent<InGamePosition>().y;
 		}
 
-		if (Mathf.FloorToInt (GetComponent<InGamePosition> ().y) != Mathf.FloorToInt (LastY)) {
-			GetComponent<Car>().JustMovedToAnotherTile(Mathf.FloorToInt(GetComponent<InGamePosition>().y));
-		}
 
 		if (v > 0.5f) {
 			if (GetComponent<Fuel> ().HasEnoughFuel ()) {
 				float distort = GetComponent<CarTurner>().IsTurning()?0: Random.value * Distortion;
 				GetComponent<InGamePosition> ().y += v * Time.deltaTime * (1 + distort);
 				GetComponent<Fuel> ().ChargeForDistance (GetComponent<InGamePosition> ().y - LastY, RideCost);
+
+				if ( Mathf.FloorToInt( GetComponent<InGamePosition> ().y) != Mathf.FloorToInt( LastY)) {
+					GetComponent<Car>().JustMovedToAnotherTile(Mathf.FloorToInt(GetComponent<InGamePosition>().y));
+				}
+
 				LastY = GetComponent<InGamePosition> ().y;
 			}
 		} else {
