@@ -286,6 +286,11 @@ public class Minigame : MonoBehaviour {
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
 					Sounds.Mute(!Sounds.IsMuted());
 				}
+
+				Texture fbButton = SpriteManager.GetFbIcon();
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), fbButton, GuiHelper.CustomButton)){
+					CarSmasherSocial.FB.Like();
+				}
 			}
 
 		} else {
@@ -332,7 +337,13 @@ public class Minigame : MonoBehaviour {
 			topScores += "... Now: " + _Distance ;
 		}
 		
-		GuiHelper.DrawText (topScores, GuiHelper.SmallFont, 0.1, y, 0.8, 0.41);
+		GuiHelper.DrawText (topScores, GuiHelper.SmallFontLeft, 0.1, y, 0.8, 0.41);
+
+		Texture fbButton = SpriteManager.GetFbShareButton();
+		int bestScore = top.Count>0?top[0]:0;
+		if (GUI.Button(new Rect(GuiHelper.PercentW(0.545), GuiHelper.PercentH(0.215), GuiHelper.PercentW(0.35), GuiHelper.PercentH(0.18)), fbButton, GuiHelper.CustomButton)){
+			CarSmasherSocial.FB.FeedHighScore(bestScore);
+		}
 	}
 
 }

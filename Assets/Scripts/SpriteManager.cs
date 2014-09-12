@@ -17,6 +17,7 @@ class SpriteManager {
 	private static Texture Achievements;
 	private static Texture BackButton;
 	private static Texture FbShareButton;
+	private static Texture FbIcon;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -32,6 +33,7 @@ class SpriteManager {
 		Achievements = Resources.Load<Texture> ("Images/achievement");
 		BackButton = Resources.Load<Texture> ("Images/back_arrow");
 		FbShareButton = Resources.Load<Texture> ("Images/fb_share");
+		FbIcon = Resources.Load<Texture> ("Images/fb");
 	}
 
 	static public Texture GetFbShareButton(){
@@ -99,5 +101,9 @@ class SpriteManager {
 
 	static public Texture GetBackButton(){
 		return BackButton;
+	}
+
+	static public Texture GetFbIcon(){
+		return FbIcon;
 	}
 }

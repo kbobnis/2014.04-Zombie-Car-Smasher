@@ -374,6 +374,11 @@ public class FBKprojekt{
 	{
 		if (FB.IsLoggedIn){
 			FB.Feed("","https://play.google.com/store/apps/details?id=com.krzysiekprojekt.zombieCarSmasher","New Highscore "+Score,"", "I drove distance "+Score+". Can you beat me?","http://philon.pl/zombieCarSmasher/icon.png");
+			//FB.Feed("","https://www.facebook.com/ZombieCarSmasher","New Highscore "+Score,"", "I drove distance "+Score+" in Zombie Car Smasher. Can you beat me?","http://philon.pl/zombieCarSmasher/icon.png");
 		}
-	} 
+	}
+
+	public void Like(){
+		Application.OpenURL("https://www.facebook.com/ZombieCarSmasher");
+	}
 }
