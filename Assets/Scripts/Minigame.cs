@@ -151,7 +151,7 @@ public class Minigame : MonoBehaviour {
 		int place = HighScores.GetPlaceFor (_Distance);
 		if (place == 1) {
 			PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.gameObject.transform.position, 0.2f);
-			if (_Distance > 100){
+			if (_Distance > 50){
 				ShowNewHighScoreScreen = true;
 			}
 		} 
@@ -263,7 +263,7 @@ public class Minigame : MonoBehaviour {
 
 			} else {
 				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFontLeft, 0.1, 0.08, 0.8, 0.07);
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.08), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.1)), "click", GuiHelper.SmallFont)){
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.08), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.1)), "help", GuiHelper.SmallFont)){
 					ShowRideInfoScreen = true;
 				}
 				DrawTopScores(0.2f);

@@ -50,11 +50,11 @@ public class CarSmasherSocial : MonoBehaviour {
 		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_A_LITTLE_BIT_MORE, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 1)})));
 		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_I_DONT_NEED_FUEL_RIGHT_NOW, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 3)})));
 
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_TEMPORARY_EMPTINESS, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 10)})));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_EVERLASTING_POVERTY, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 50)})));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_TEMPORARY_EMPTINESS, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.NO_MATTER, 0)})));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_EVERLASTING_POVERTY, ACHIEVEMENT_TYPE.INCREMENTAL, SCORE_TYPE.FUEL_PICKED_WHEN_LOW, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.NO_MATTER, 0)})));
 
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 40), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 5), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 100) })));
-		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO_MARATHON, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 80), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 8), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 200) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 50), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 5), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 100) })));
+		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO_MARATHON, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 100), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 9), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 200) })));
 
 		LeaderBoards.Add (new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES));
 	}
@@ -91,6 +91,10 @@ public class CarSmasherSocial : MonoBehaviour {
 	public static void UpdateAchievements (Result[] results){
 		foreach (GoogleAchievement ach in Achievements) {
 			ach.Update(results);
+		}
+
+		foreach (GoogleLeaderboard l in LeaderBoards) {
+			l.Update(results);
 		}
 	}
 
@@ -130,7 +134,7 @@ public class CarSmasherSocial : MonoBehaviour {
 	}
 
 }
-class GoogleLeaderboard{
+public class GoogleLeaderboard{
 	public const string LEADERB_BEST_DISTANCES = "CgkI0eO__P0OEAIQAQ";
 
 	private string Id;
@@ -139,9 +143,13 @@ class GoogleLeaderboard{
 		Id = id;
 	}
 
-	public void Update(int distance){
+	public void Update(Result[] results){
 		if (CarSmasherSocial.Authenticated) {
-			Social.ReportScore (distance, Id, (bool success) => {});
+			foreach(Result r in results){
+				if (r.ScoreType == SCORE_TYPE.DISTANCE){
+					Social.ReportScore (r.Value, Id, (bool success) => {});
+				}
+			}
 		}
 	}
 }
@@ -183,7 +191,7 @@ public class AchievQuery : Result {
 		_Sign = sign;
 	}
 	
-	private bool IsTheSameType(Result r){
+	public bool IsTheSameType(Result r){
 		return ScoreType == r.ScoreType;
 	}
 	public bool CanAccept(Result r){
@@ -303,16 +311,27 @@ class GoogleAchievement {
 		bool allIsOk = true;
 		int score = -1;
 
-		foreach(Result result in results){
-			if (result.ScoreType == WhatIncrement){
-				score = result.Value;
-			}
-			foreach (AchievQuery query in Queries) {
+		foreach (AchievQuery query in Queries) {
+			//is there any query that wasn't set in the results?
+			bool wasChecked = false;
+			foreach(Result result in results){
+				if (result.ScoreType == WhatIncrement){
+					score = result.Value;
+				}
+				if (query.IsTheSameType(result)){
+					wasChecked = true;
+				}
+
 				if (!query.CanAccept(result)){
 					allIsOk = false;
 				}
 			}
+			//if there was no result for specific query, then this is no good
+			if (!wasChecked){
+				allIsOk = false;
+			}
 		}
+
 
 		if (allIsOk && score != -1) { //score is -1 when achievement and results have different scoreTypes. no worries, this is normal, when updating just some of achievements while game is running
 

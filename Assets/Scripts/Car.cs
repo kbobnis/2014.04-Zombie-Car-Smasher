@@ -86,6 +86,8 @@ public class Car : MonoBehaviour {
 			FuelPickedUpWhenLow ==1 || 
 			FuelPickedUpWhenLow == 3)  {
 			CarSmasherSocial.UnlockAchievements(new Result[]{
+				new Result(SCORE_TYPE.TURNS, TurnsMade),
+				new Result(SCORE_TYPE.DISTANCE, Minigame.Me.Distance),
 				new Result(SCORE_TYPE.FUEL_PICKED, FuelPickedUpThisGame),
 				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, FuelPickedUpInARow),
 				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, FuelPickedUpWhenLow)
