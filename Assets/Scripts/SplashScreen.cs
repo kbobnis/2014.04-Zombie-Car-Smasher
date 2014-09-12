@@ -29,9 +29,9 @@ public class SplashScreen : MonoBehaviour {
 
 			GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
-			GUIStyle gs = new GUIStyle();
+			GUIStyle gs = new GUIStyle();//("button");
 			gs.alignment = TextAnchor.MiddleCenter;
-			if(GUI.Button(new Rect(PercentW(0), PercentH(0.7), PercentW(1), PercentH(0.30)), SpriteManager.GetStartButton(), gs)){
+			if(GUI.Button(new Rect(PercentW(0.31), PercentH(0.7), PercentW(0.44), PercentH(0.25)), SpriteManager.GetStartButton(), gs)){
 				showingSplash = false;
 				GetComponent<MainLogic>().WantToStartGame();
 			} else {
@@ -40,6 +40,11 @@ public class SplashScreen : MonoBehaviour {
 		
 
 			GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.2, 0.05, 0.8, 0.2);
+
+			Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
+				Sounds.Mute(!Sounds.IsMuted());
+			}
 
 		}
 	}

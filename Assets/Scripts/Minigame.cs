@@ -42,7 +42,7 @@ public class Minigame : MonoBehaviour {
 	public const string SCREEN_GAME = "Screen game";
 	public const string SCREEN_FAIL = "Screen fail";
 
-	private int HowManyInTopScores = 5;
+	private int HowManyInTopScores = 4;
 	private bool ShowNewHighScoreScreen = false;
 	private bool ShowRideInfoScreen = false;
 
@@ -90,8 +90,8 @@ public class Minigame : MonoBehaviour {
 		GameObject previousStreet = null;
 		int carStartingStreet = 0;
 		int clearStreets =0;
-		int streetCount = 20;
-		for(int i=-1*streetCount; i < streetCount; i ++){
+		int streetCount = 8;
+		for(int i=-1; i < streetCount; i ++){
 			bool noObstacles = clearStreets-streetCount-carStartingStreet<=FirstClearStreets;
 			GameObject thisStreet = CreateStreet(i, previousStreet, noObstacles);
 			Streets.Add(i, thisStreet);
@@ -268,28 +268,28 @@ public class Minigame : MonoBehaviour {
 				}
 				DrawTopScores(0.2f);
 				
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.49), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
-					PrepareRace ();
-				}
-				
 				Texture achievements = SpriteManager.GetAchievements();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.07), GuiHelper.PercentH(0.6), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
 					CarSmasherSocial.ShowAchievements(_Distance);
 				}
 				
 				Texture leaderBoard = SpriteManager.GetLeaderboard();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.28), GuiHelper.PercentH(0.56), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
 					CarSmasherSocial.ShowLeaderBoard(_Distance);
 				}
 				
 				Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.52), GuiHelper.PercentH(0.56), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
 					Sounds.Mute(!Sounds.IsMuted());
 				}
 
 				Texture fbButton = SpriteManager.GetFbIcon();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.81), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), fbButton, GuiHelper.CustomButton)){
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.73), GuiHelper.PercentH(0.6), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), fbButton, GuiHelper.CustomButton)){
 					CarSmasherSocial.FB.Like();
+				}
+
+				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.67), GuiHelper.PercentW(0.45), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
+					PrepareRace ();
 				}
 			}
 

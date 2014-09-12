@@ -57,7 +57,7 @@ public class Car : MonoBehaviour {
 
 		Fuel fuel = gameObject.AddComponent<Fuel>(); 
 		fuel.MaxAmount = 100;
-		fuel.Amount = 70;
+		fuel.Amount = 85;
 
 		//Animator carAnimator = Resources.Load<Animator>("Images/carAnimator");
 
