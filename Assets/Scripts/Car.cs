@@ -15,16 +15,6 @@ public class Car : MonoBehaviour {
 	}
 
 	void Update(){
-		if (Minigame.Me != null && (Minigame.Me.Distance == 100 || Minigame.Me.Distance == 200)) { //because there are several achievements which have to be made in the distance 100 or 200
-			CarSmasherSocial.UnlockAchievements (new Result[]{
-				new Result(SCORE_TYPE.TURNS, TurnsMade),
-				new Result(SCORE_TYPE.DISTANCE, Minigame.Me.Distance),
-				new Result(SCORE_TYPE.FUEL_PICKED, FuelPickedUpThisGame),
-				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, FuelPickedUpInARow),
-				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, FuelPickedUpWhenLow)
-			});
-		}
-
 	}
 
 	public void Prepare(int gamePosX, int gamePosY, float carSpeed, float maxCarSpeed, float shooterProbability, float jumperProbability, float rideCost){
@@ -77,31 +67,11 @@ public class Car : MonoBehaviour {
 			FuelPickedUpWhenLow ++;
 		}
 
-		//this big if is to prevent to much requests to google play
-		if (FuelPickedUpThisGame == 5 || 
-			FuelPickedUpThisGame == 25 || 
-			FuelPickedUpThisGame == 50 || 
-			FuelPickedUpInARow == 10 || 
-			FuelPickedUpInARow == 25 || 
-			FuelPickedUpWhenLow ==1 || 
-			FuelPickedUpWhenLow == 3)  {
-			CarSmasherSocial.UnlockAchievements(new Result[]{
-				new Result(SCORE_TYPE.TURNS, TurnsMade),
-				new Result(SCORE_TYPE.DISTANCE, Minigame.Me.Distance),
-				new Result(SCORE_TYPE.FUEL_PICKED, FuelPickedUpThisGame),
-				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, FuelPickedUpInARow),
-				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, FuelPickedUpWhenLow)
-			});
-		}
 		GetComponent<Fuel> ().PickedUpFuel (buffOilValue);
-
 	}
 
 	public void JustMovedToAnotherTile(int newY){
 		int distance = Minigame.Me.Distance;
-		if (distance == 100 || distance == 250 || distance == 400 || distance == 1000 || distance == 1255) {
-			CarSmasherSocial.UnlockAchievements (new Result[]{ new Result (SCORE_TYPE.DISTANCE, distance)});
-		}
 
 		//checking if in the previous tile there wasn't any fuel
 		foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
@@ -121,12 +91,6 @@ public class Car : MonoBehaviour {
 
 	public void StartedTurning(){
 		TurnsMade ++;
-		if ((TurnsMade == 50 || TurnsMade == 75) && Minigame.Me.Distance < 100) {
-			CarSmasherSocial.UnlockAchievements (new Result[]{
-				new Result(SCORE_TYPE.TURNS, TurnsMade),
-				new Result(SCORE_TYPE.DISTANCE, Minigame.Me.Distance)
-			});
-		}
 	}
 }
 

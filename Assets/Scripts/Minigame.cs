@@ -46,6 +46,7 @@ public class Minigame : MonoBehaviour {
 	private bool ShowNewHighScoreScreen = false;
 	private bool ShowRideInfoScreen = false;
 
+	private Dictionary<int, Result[]> InGameAchievements = new Dictionary<int, Result[]> ();
 
 	public int Distance{
 		get { return _Distance;}
@@ -60,9 +61,6 @@ public class Minigame : MonoBehaviour {
 		InGamePosition.tileH = SpriteManager.GetCar().bounds.size.y*2;
 		InGamePosition.tileW = SpriteManager.GetCar().bounds.size.x*2.5f;
 		CarTurner.TurnSpeed = TurnSpeed;
-
-		CarSmasherSocial.InitializeSocial (false);
-
 	}
 
 	public void UnloadResources(){
@@ -90,7 +88,7 @@ public class Minigame : MonoBehaviour {
 		GameObject previousStreet = null;
 		int carStartingStreet = 0;
 		int clearStreets =0;
-		int streetCount = 8;
+		int streetCount = 10;
 		for(int i=-1; i < streetCount; i ++){
 			bool noObstacles = clearStreets-streetCount-carStartingStreet<=FirstClearStreets;
 			GameObject thisStreet = CreateStreet(i, previousStreet, noObstacles);
@@ -164,16 +162,20 @@ public class Minigame : MonoBehaviour {
 		GameOverReason = reason;
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 
-		int fuelPickedUp = Car.GetComponent<Car> ().FuelPickedUpThisGame;
-		int fuelPickedUpInARow = Car.GetComponent<Car> ().FuelPickedUpInARow;
-		int fuelPickedUpWhenLow = Car.GetComponent<Car> ().FuelPickedUpWhenLow;
-		int turns = Car.GetComponent<Car> ().TurnsMade;
-		CarSmasherSocial.UpdateAchievements (new Result[]{
+		//result to unlock achievement
+		foreach (KeyValuePair<int, Result[]> result in InGameAchievements) {
+
+			CarSmasherSocial.UnlockAchievements(result.Value);
+		}
+		InGameAchievements.Clear ();
+
+		//results to unlock and increment achievements (we don't want to increment achievements several times for one ride)
+		CarSmasherSocial.UpdateAchievements(new Result[]{
 			new Result(SCORE_TYPE.DISTANCE, Distance), 
-			new Result(SCORE_TYPE.FUEL_PICKED, fuelPickedUp), 
-			new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, fuelPickedUpWhenLow),
-			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, fuelPickedUpInARow),
-			new Result(SCORE_TYPE.TURNS, turns)
+			new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car> ().FuelPickedUpThisGame), 
+			new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car> ().FuelPickedUpWhenLow),
+			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car> ().FuelPickedUpInARow),
+			new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car> ().TurnsMade)
 		});
 
 	}
@@ -188,6 +190,17 @@ public class Minigame : MonoBehaviour {
 
 		if (Car == null){
 			return ;
+		}
+
+		if ((Distance == 100 || Distance == 200) && !InGameAchievements.ContainsKey(Distance)) { //because there are several achievements which have to be made in the distance 100 or 200
+			InGameAchievements.Add(Distance, new Result[]{
+				new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car>().TurnsMade),
+				new Result(SCORE_TYPE.DISTANCE, Distance),
+				new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car>().FuelPickedUpThisGame),
+				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car>().FuelPickedUpInARow),
+				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car>().FuelPickedUpWhenLow)
+			});
+
 		}
 
 		//car should be always in the middle of the road
@@ -270,12 +283,12 @@ public class Minigame : MonoBehaviour {
 				
 				Texture achievements = SpriteManager.GetAchievements();
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.07), GuiHelper.PercentH(0.6), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowAchievements(_Distance);
+					CarSmasherSocial.ShowAchievements();
 				}
 				
 				Texture leaderBoard = SpriteManager.GetLeaderboard();
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.28), GuiHelper.PercentH(0.56), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowLeaderBoard(_Distance);
+					CarSmasherSocial.ShowLeaderBoard();
 				}
 				
 				Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();

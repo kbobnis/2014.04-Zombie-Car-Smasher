@@ -4,9 +4,11 @@ using System.Collections;
 public class SplashScreen : MonoBehaviour {
 
 	public bool showingSplash;
+	public bool GooglePlayFinished;
 	// Use this for initialization
 	void Start () {
 		FB.Init(delegate {});
+		CarSmasherSocial.InitializeSocial(false, AfterGooglePlay, AfterGooglePlay);
 	}
 	
 	// Update is called once per frame
@@ -15,8 +17,6 @@ public class SplashScreen : MonoBehaviour {
 
 	public void ShowSplash(){
 		showingSplash = true;
-
-
 	}
 
 	void OnGUI(){
@@ -29,15 +29,20 @@ public class SplashScreen : MonoBehaviour {
 
 			GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
-			GUIStyle gs = new GUIStyle();//("button");
-			gs.alignment = TextAnchor.MiddleCenter;
-			if(GUI.Button(new Rect(PercentW(0.31), PercentH(0.7), PercentW(0.44), PercentH(0.25)), SpriteManager.GetStartButton(), gs)){
-				showingSplash = false;
-				GetComponent<MainLogic>().WantToStartGame();
+
+
+			if (GooglePlayFinished){
+				GUIStyle gs = new GUIStyle();//("button");
+				gs.alignment = TextAnchor.MiddleCenter;
+				if(GUI.Button(new Rect(PercentW(0.31), PercentH(0.7), PercentW(0.44), PercentH(0.25)), SpriteManager.GetStartButton(), gs)){
+					showingSplash = false;
+					GetComponent<MainLogic>().WantToStartGame();
+				}
 			} else {
-				GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_MAIN);
+				GuiHelper.DrawText("Authenticating\n google play. \nJust a second ", GuiHelper.SmallFont, 0, 0.7, 1, 0.4);
 			}
-		
+
+			GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_MAIN);
 
 			GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.2, 0.05, 0.8, 0.2);
 
@@ -45,9 +50,13 @@ public class SplashScreen : MonoBehaviour {
 			if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.66), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
 				Sounds.Mute(!Sounds.IsMuted());
 			}
-
 		}
 	}
+
+	private void AfterGooglePlay(){
+		GooglePlayFinished = true;
+	}
+
 
 	private void DrawElement(string slotName, double x, double y, double w, double h, double actualW=-1, double actualH=-1, bool downUp=false){
 		int tmpX = PercentW(x);

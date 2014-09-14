@@ -13,11 +13,10 @@ public class CarSmasherSocial : MonoBehaviour {
 	private static List<GoogleLeaderboard> LeaderBoards = new List<GoogleLeaderboard> ();
 
 	internal delegate int ProcessScore (int score);
-	private delegate void AfterAuthenticateD ();
+	public delegate void AfterAuthenticateD ();
 
 	internal static bool Authenticated;
 	public static FBKprojekt FB;
-	private static AfterAuthenticateD AfterAuthenticate;
 
 	static CarSmasherSocial(){
 		FB = new FBKprojekt ();
@@ -60,20 +59,24 @@ public class CarSmasherSocial : MonoBehaviour {
 	}
 
 
-	public static void InitializeSocial(bool forceUI, int distanceToSave=-1){
+	public static void InitializeSocial(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null){
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
 
-		if (CanIAsk() || forceUI) {
+		if (CanIAsk () || forceUI) {
 			Social.localUser.Authenticate ((bool success) => {
-				Debug.Log ("zalogowany " + (success ? "tak" : "nie"));
 				Authenticated = success;
-				SaveAnswerForAuthentication(success);
-				if (Authenticated && AfterAuthenticate != null) {
-					AfterAuthenticate ();
-					AfterAuthenticate = null;
+				SaveAnswerForAuthentication (success);
+				if (Authenticated){
+					if (afterSuccess != null) {
+						afterSuccess ();
+					}
+				} else {
+					afterFailure();
 				}
 			});
+		} else {
+			afterFailure();
 		}
 	}
 
@@ -109,13 +112,12 @@ public class CarSmasherSocial : MonoBehaviour {
 		}
 	}
 
-	public static void ShowLeaderBoard(int lastDistance){
-		AfterAuthenticate = ShowLeaderBoardInner;
+	public static void ShowLeaderBoard(){
 
 		if (Authenticated) {
 			ShowLeaderBoardInner();
 		}else {
-			InitializeSocial(true, lastDistance);
+			InitializeSocial(true, ShowLeaderBoardInner, delegate(){});
 		}
 	}
 
@@ -123,13 +125,12 @@ public class CarSmasherSocial : MonoBehaviour {
 		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
 	}
 
-	public static void ShowAchievements(int lastDistance){
-		AfterAuthenticate = Social.ShowAchievementsUI;
+	public static void ShowAchievements(){
 
 		if (Authenticated) {
 			Social.ShowAchievementsUI();
 		}else {
-			InitializeSocial(true, lastDistance);
+			InitializeSocial(true, Social.ShowAchievementsUI, delegate(){});
 		}
 	}
 
