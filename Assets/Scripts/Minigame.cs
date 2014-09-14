@@ -152,8 +152,7 @@ public class Minigame : MonoBehaviour {
 			if (_Distance > 50){
 				ShowNewHighScoreScreen = true;
 			}
-		} 
-
+		}
 
 		if (IsShowBanner()) {
 			GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
@@ -162,9 +161,13 @@ public class Minigame : MonoBehaviour {
 		GameOverReason = reason;
 		GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_FAIL);
 
+		//if someone had internet issues before, at least we can update high score with his best distance and come unlockable achievements
+		List<int> topScores = HighScores.GetTopScores (1);
+		int bestDistance = topScores.Count > 0 ? topScores [0] : 0;
+		InGameAchievements.Add(bestDistance, new Result[]{new Result (SCORE_TYPE.DISTANCE, bestDistance)});
+
 		//result to unlock achievement
 		foreach (KeyValuePair<int, Result[]> result in InGameAchievements) {
-
 			CarSmasherSocial.UnlockAchievements(result.Value);
 		}
 		InGameAchievements.Clear ();

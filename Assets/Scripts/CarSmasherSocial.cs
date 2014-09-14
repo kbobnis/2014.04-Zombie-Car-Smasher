@@ -96,8 +96,13 @@ public class CarSmasherSocial : MonoBehaviour {
 			ach.Update(results);
 		}
 
+		UpdateLeaderBoards (results);
+
+	}
+
+	private static void UpdateLeaderBoards(Result[] r){
 		foreach (GoogleLeaderboard l in LeaderBoards) {
-			l.Update(results);
+			l.Update(r);
 		}
 	}
 
@@ -110,6 +115,7 @@ public class CarSmasherSocial : MonoBehaviour {
 				ach.Update(results);
 			}
 		}
+		UpdateLeaderBoards (results);
 	}
 
 	public static void ShowLeaderBoard(){
@@ -145,9 +151,10 @@ public class GoogleLeaderboard{
 	}
 
 	public void Update(Result[] results){
-		if (CarSmasherSocial.Authenticated) {
-			foreach(Result r in results){
-				if (r.ScoreType == SCORE_TYPE.DISTANCE){
+		foreach(Result r in results){
+			if (r.ScoreType == SCORE_TYPE.DISTANCE){
+				Debug.Log("Reporting score "+ r.Value +" to leaderboard");
+				if (CarSmasherSocial.Authenticated) {
 					Social.ReportScore (r.Value, Id, (bool success) => {});
 				}
 			}
