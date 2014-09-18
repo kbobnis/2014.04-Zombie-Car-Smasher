@@ -1,14 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Minigame.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Reward.cs">
     <Files>
-      <File FileName="Assets\Scripts\CarSmasherSocial.cs" Line="282" Column="24" />
-      <File FileName="Assets\Scripts\Minigame.cs" Line="263" Column="6" />
-      <File FileName="Assets\Scripts\Car.cs" Line="19" Column="22" />
+      <File FileName="Assets\Scripts\Mission.cs" Line="60" Column="1" />
+      <File FileName="Assets\Scripts\Reward.cs" Line="19" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="D:\workspace\zombieCarSmasher\Assets\Scripts\Mission.cs" line="38" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

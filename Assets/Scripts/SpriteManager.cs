@@ -18,6 +18,8 @@ class SpriteManager {
 	private static Texture BackButton;
 	private static Texture FbShareButton;
 	private static Texture FbIcon;
+	private static Texture CarAdventure;
+	private static Texture CarDefault;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -34,6 +36,10 @@ class SpriteManager {
 		BackButton = Resources.Load<Texture> ("Images/back_arrow");
 		FbShareButton = Resources.Load<Texture> ("Images/fb_share");
 		FbIcon = Resources.Load<Texture> ("Images/fb");
+
+		CarAdventure = Resources.Load<Texture2D> ("Images/car_adventure");
+		CarDefault = Resources.Load<Texture> ("Images/icon");
+
 	}
 
 	static public Texture GetFbShareButton(){
@@ -64,8 +70,8 @@ class SpriteManager {
 		return Atlas[9];
 	}
 
-	static public Sprite GetCar() {
-		return Atlas [10];
+	static public Texture GetCar() {
+		return CarDefault;
 	}
 
 	static public Sprite GetCactus(){
@@ -105,5 +111,9 @@ class SpriteManager {
 
 	static public Texture GetFbIcon(){
 		return FbIcon;
+	}
+
+	static public Texture GetCarAdventure(){
+		return CarAdventure;
 	}
 }
