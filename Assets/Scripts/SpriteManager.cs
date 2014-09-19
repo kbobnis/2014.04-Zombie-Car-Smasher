@@ -21,6 +21,7 @@ class SpriteManager {
 	private static Texture CarAdventure;
 	private static Texture CarDefault;
 	private static Texture Coin;
+	private static Texture Shield;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -37,11 +38,14 @@ class SpriteManager {
 		BackButton = Resources.Load<Texture> ("Images/back_arrow");
 		FbShareButton = Resources.Load<Texture> ("Images/fb_share");
 		FbIcon = Resources.Load<Texture> ("Images/fb");
-
 		CarAdventure = Resources.Load<Texture2D> ("Images/car_adventure");
 		CarDefault = Resources.Load<Texture> ("Images/icon");
 		Coin = Resources.Load<Texture> ("Images/coin");
+		Shield = Resources.Load<Texture> ("Images/shield");
+	}
 
+	static public Texture GetShield(){
+		return Shield;
 	}
 
 	static public Texture GetCoin(){

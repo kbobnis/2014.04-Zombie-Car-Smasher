@@ -84,12 +84,16 @@ public class Street : MonoBehaviour {
 			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
 
-			tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole, canBeOil, env);
+			tmp2.transform.parent = gameObject.transform;
+			tmp2.InitMe(inGameY, i, canBeWall, canBeHole, canBeOil, env);
+
 
 			if (Random.value < 0.1){
 				GameObject cactus = new GameObject();
 				Tile tmp3 = cactus.AddComponent<Tile>();
-				tmp3.InitCactus(gameObject, Random.value<0.5?-2f:2f, inGameY);
+				tmp3.TileContent = TileContent.CACTUS;
+				tmp3.Lane = Random.value<0.5?-2:2;
+				tmp3.transform.parent = gameObject.transform;
 			}
 
 			Tiles.Add(i, Tile);

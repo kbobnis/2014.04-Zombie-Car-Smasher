@@ -29,6 +29,11 @@ public class Car : MonoBehaviour {
 
 		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
 		gameObject.transform.localScale = new Vector3(scale, scale);
+
+		if (carConfig.Shield.Count > 0) {
+			ShieldCompo sc = gameObject.AddComponent<ShieldCompo>();
+			sc.Prepare(carConfig.Shield);
+		}
 		
 		Speeder speeder = gameObject.AddComponent<Speeder>();
 		speeder.v = carConfig.StartingCarSpeed;

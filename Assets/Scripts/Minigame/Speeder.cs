@@ -61,28 +61,25 @@ public class Speeder : MonoBehaviour
 	public void GMIsOn(Tile tile){
 		//if crashed
 		if (tile.TileContent == TileContent.HOLE && GetComponent<Flyier>() == null){
-			GetComponent<HurtTaker>().TakeHurt(HurtTaker.FELL_INTO_HOLE);
+			GetComponent<HurtTaker>().TakeHurt(tile);
 		}
 		
 		if (tile.TileContent == TileContent.WALL ){
 			if (GetComponent<Destroyer>() != null){
-				tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				tile.TileContent  = TileContent.NONE;
 				Destroy(tile);
 			} else { 
-				GetComponent<HurtTaker>().TakeHurt(HurtTaker.CRASHED_INTO_WALL);
+				GetComponent<HurtTaker>().TakeHurt(tile);
 			}
 		}
 		
 		if (tile.TileContent == TileContent.BUFF_OIL){
 			
 			if (GetComponent<Destroyer>() != null){
-				tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				tile.TileContent  = TileContent.NONE;
 				Destroy(tile);
 			} else  if (GetComponent<Flyier>() == null){ //flying object don't pick up oil buffs
 				GetComponent<Car>().PickedUpFuel(tile);
-				tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				tile.TileContent = TileContent.NONE;
 			}
 		}

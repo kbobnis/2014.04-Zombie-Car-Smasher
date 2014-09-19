@@ -3,10 +3,6 @@ using System.Collections;
 
 public class HurtTaker : MonoBehaviour {
 
-	public const string CRASHED_INTO_WALL = "crashedIntoWall";
-	public const string FELL_INTO_HOLE = "fellIntoHole";
-	public const string OUT_OF_OIL = "outOfOil";
-
 	public bool HasLost;
 	public string LostReason;
 	// Use this for initialization
@@ -19,14 +15,25 @@ public class HurtTaker : MonoBehaviour {
 	
 	}
 
-	public void TakeHurt(string reason){
+	public void TakeHurt(Tile fromWhat){
 
-		if (reason == CRASHED_INTO_WALL || reason == FELL_INTO_HOLE) {
-			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Camera.main.transform.position);	
-		} else if (reason == OUT_OF_OIL){
-			PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Camera.main.transform.position, 0.4f);
+		ShieldCompo sc = GetComponent<ShieldCompo> ();
+		if (sc == null || !sc.TakeThis(fromWhat)){
+			Die (fromWhat);
 		}
+
+	}
+
+	private void Die(Tile fromWhat){
+		if (fromWhat.TileContent == TileContent.WALL || fromWhat.TileContent == TileContent.HOLE ) {
+			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Camera.main.transform.position);	
+		} 
 		HasLost = true;
-		LostReason = reason;
+	}
+
+	public void OutOfOil(){
+		PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Camera.main.transform.position, 0.4f);
+		Die (null);
+		HasLost = true;
 	}
 }

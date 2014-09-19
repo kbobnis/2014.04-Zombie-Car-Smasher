@@ -56,7 +56,7 @@ public class Fuel : MonoBehaviour {
 	void Update () {
 		if (Amount < 0){
 			Amount = 0;
-			GetComponent<HurtTaker>().TakeHurt(HurtTaker.OUT_OF_OIL);
+			GetComponent<HurtTaker>().OutOfOil();
 		}
 	}
 

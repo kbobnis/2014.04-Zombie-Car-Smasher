@@ -18,6 +18,6 @@ public class TopInfoBar : MonoBehaviour {
 
 		GuiHelper.DrawElement ("Images/topBarBackground", 0, 0, 1, 0.1);
 
-		GuiHelper.DrawText ("Coins: "+playerState.Coins+" Level: "+playerState.Level, GuiHelper.SmallFontLeft, 0.2, 0.02, 0.3, 0.1);
+		GuiHelper.DrawText ("Level: "+playerState.Level+" Coins: "+playerState.Coins, GuiHelper.SmallFontLeft, 0.2, 0.02, 0.3, 0.1);
 	}
 }

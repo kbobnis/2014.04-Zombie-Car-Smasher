@@ -11,6 +11,7 @@ public class Sounds : MonoBehaviour {
 	public static AudioClip LowFuelSignal;
 	public static AudioClip Fanfare;
 	public static AudioClip Coin;
+	public static AudioClip DoorSlam;
 
 	private static bool isMuted;
 
@@ -23,6 +24,7 @@ public class Sounds : MonoBehaviour {
 		LowFuelSignal = Resources.Load<AudioClip> ("Audio/ms_fuel2_ending");
 		Fanfare = Resources.Load<AudioClip> ("Audio/fanfare");
 		Coin = Resources.Load<AudioClip> ("Audio/coin");
+		DoorSlam = Resources.Load<AudioClip> ("Audio/doorSlam");
 
 		isMuted = PlayerPrefs.GetInt("audioMuted")>0;
 

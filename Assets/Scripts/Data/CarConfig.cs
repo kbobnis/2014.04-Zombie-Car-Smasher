@@ -46,6 +46,7 @@ public class CarConfig
 				Combustion.Level = 1;
 				StartingOil.Value = 35;
 				StartingOil.Level = 1;
+				Shield.Level = 1;
 				_CarTexture = SpriteManager.GetCarAdventure();
 				break;
 			}
