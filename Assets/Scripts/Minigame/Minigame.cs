@@ -21,7 +21,8 @@ public class Minigame : MonoBehaviour {
 	public GameObject Car;
 	public Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 	public int Distance =0;
-	public static Minigame Me;
+	
+
 	public static float BuffOilValue = 10;
 	public static float CactusChance = 0.05f;
 	public static float LinesChance = 0.01f;
@@ -31,10 +32,6 @@ public class Minigame : MonoBehaviour {
 	public const string SCREEN_FAIL = "Screen fail";
 
 	public delegate void AfterMinigameF(Dictionary<int, Result[]> unlockResults, Result[] incremenentResult, string endGameReason, int distance, Mission mission);
-
-	void Start () {
-		Me = this;
-	}
 
 	public void PrepareRace(CarConfig carConfig, AfterMinigameF afterMinigame, Mission mission){
 		AfterMinigame = afterMinigame;
@@ -61,7 +58,7 @@ public class Minigame : MonoBehaviour {
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
 
-		tmp.Prepare(carConfig);
+		tmp.Prepare(carConfig, Streets);
 		Destroy(Camera.main.camera.gameObject.GetComponent<FollowGM>());
 		FollowGM fgm = Camera.main.gameObject.AddComponent<FollowGM> ();
 		fgm.FollowWhom = Car;
@@ -96,7 +93,8 @@ public class Minigame : MonoBehaviour {
 			new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car> ().FuelPickedUpThisGame), 
 			new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car> ().FuelPickedUpWhenLow),
 			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car> ().FuelPickedUpInARow),
-			new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car> ().TurnsMade)
+			new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car> ().TurnsMade),
+			new Result(SCORE_TYPE.COINS, Car.GetComponent<Car>().PickedUpCoins)
 		};
 	
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission);
@@ -124,6 +122,9 @@ public class Minigame : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (Car.GetComponent<HurtTaker> ().HasLost) {
+			GameOver(Car.GetComponent<HurtTaker>().LostReason);
+		}
 
 		if (Input.GetKeyDown(KeyCode.Escape)){
 			Application.Quit(); 
@@ -143,7 +144,7 @@ public class Minigame : MonoBehaviour {
 				new Result(SCORE_TYPE.DISTANCE, Distance),
 				new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car>().FuelPickedUpThisGame),
 				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car>().FuelPickedUpInARow),
-				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car>().FuelPickedUpWhenLow)
+				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car>().FuelPickedUpWhenLow),
 			});
 
 		}

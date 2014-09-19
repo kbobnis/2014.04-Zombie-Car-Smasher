@@ -9,7 +9,7 @@ public class Shooter : CarBuff {
 
 	public override void DoAction(){
 
-		Minigame.Me.Car.GetComponent<Fuel>().Amount -= ShootCost;
+		GetComponent<Fuel>().Amount -= ShootCost;
 
 		GameObject g = new GameObject();
 		g.name = "bullet";
@@ -21,8 +21,8 @@ public class Shooter : CarBuff {
 		g.transform.localScale = new Vector3(InGamePosition.tileW / size.x / 3f, InGamePosition.tileH  / size.y / 3f);
 
 		InGamePosition tmp = g.AddComponent<InGamePosition>(); //to update position
-		tmp.x = Minigame.Me.Car.GetComponent<InGamePosition>().x;
-		tmp.y = Minigame.Me.Car.GetComponent<InGamePosition>().y;
+		tmp.x = GetComponent<InGamePosition>().x;
+		tmp.y = GetComponent<InGamePosition>().y;
 
 		Speeder speeder = g.AddComponent<Speeder>(); //to have speed
 		speeder.v = ShootSpeed;
@@ -36,7 +36,7 @@ public class Shooter : CarBuff {
 	}
 
 	public override bool CanDoAction(){
-		return Minigame.Me.Car.GetComponent<Fuel>().Amount >= ShootCost;
+		return GetComponent<Fuel>().Amount >= ShootCost;
 	}
 	public override string GetActionName(){
 		return "Shoot";

@@ -47,8 +47,8 @@ public class Speeder : MonoBehaviour
 				LastY = GetComponent<InGamePosition> ().y;
 			}
 		}
-		if (Minigame.Me.Streets != null){
-			foreach (KeyValuePair<int, GameObject> street in Minigame.Me.Streets) {
+		if (GetComponent<Car>().Streets != null){
+			foreach (KeyValuePair<int, GameObject> street in GetComponent<Car>().Streets) {
 				if (Mathf.Abs (gameObject.GetComponent<InGamePosition> ().y - street.Value.GetComponent<InGamePosition> ().y) < 0.15f) {
 					Street tmp = street.Value.GetComponent<Street> ();
 					GameObject tile = tmp.Tiles [Mathf.RoundToInt (gameObject.GetComponent<InGamePosition> ().x)];
@@ -85,6 +85,12 @@ public class Speeder : MonoBehaviour
 				tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				tile.TileContent = TileContent.NONE;
 			}
+		}
+
+		if (tile.TileContent == TileContent.COIN) {
+			GetComponent<Car>().PickedUpCoin();
+			tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			tile.TileContent = TileContent.NONE;
 		}
 	}
 

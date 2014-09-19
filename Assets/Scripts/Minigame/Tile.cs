@@ -5,7 +5,8 @@ public enum TileContent{
 	HOLE,
 	NONE,
 	BUFF_OIL,
-	CACTUS
+	CACTUS,
+	COIN
 }
 
 public class Tile : MonoBehaviour 
@@ -15,6 +16,7 @@ public class Tile : MonoBehaviour
 	public static float WallChance;
 	public static float HoleChance;
 	public static float BuffFuelChance;
+	public const float CoinChance = 0.01f;
 
 
 	public TileContent TileContent {
@@ -81,14 +83,25 @@ public class Tile : MonoBehaviour
 			TileContent = TileContent.WALL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = SpriteManager.GetWall();
-		} else if (canBeHole && ticket > WallChance && ticket < WallChance + HoleChance){
+		} 
+		ticket -= WallChance;
+		if (canBeHole && ticket > 0 && ticket < HoleChance){
 			TileContent = TileContent.HOLE;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = SpriteManager.GetHole();
-		} else if (canBeOil && ticket > WallChance + HoleChance && ticket < WallChance + HoleChance + BuffFuelChance){
+		} 
+		ticket -= HoleChance;
+		if (canBeOil && ticket > 0 && ticket < BuffFuelChance){
 			TileContent = TileContent.BUFF_OIL;
 			r = gameObject.AddComponent<SpriteRenderer>();
 			r.sprite = SpriteManager.GetOil();
+		} 
+		ticket -= BuffFuelChance;
+		if (ticket > 0 && ticket < CoinChance) {
+			TileContent = TileContent.COIN;
+			r = gameObject.AddComponent<SpriteRenderer>();
+			Texture2D coin = (Texture2D) SpriteManager.GetCoin();
+			r.sprite = Sprite.Create(coin, new Rect(0, 0, coin.width, coin.height), new Vector2(0.5f, 0.5f));
 		}
 
 		transform.localScale = new Vector3(1, 1, 1);

@@ -24,7 +24,7 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 		AfterGameResults = afterGameResults;
 		Passed = Mission.Passed(InGameResults, AfterGameResults);
 		if (Passed) {
-			mission.Reward.GiveItselfToPlayer(Game.Me.PlayerState);
+			mission.RewardPlayer(Game.Me.PlayerState);
 
 		}
 	}
@@ -45,7 +45,7 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 		if (Passed) {
 			text = "Congratulations, you have passed the mission. You are rewarded with " + Mission.Reward.Description;
 		} else {
-			text = "You can try again this mission and get the reward: " + Mission.Reward.Description;
+			text = "You can try again this mission and get the reward: " + Mission.Reward.Description + "\n\n Need more coins? You can find some in the classic mode";
 		}
 		GuiHelper.DrawBeneathLine(text);
 	}

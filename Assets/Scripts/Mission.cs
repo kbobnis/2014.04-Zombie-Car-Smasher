@@ -7,8 +7,13 @@ public class Mission{
 	private AchievQuery[] AfterGameReqs;
 	public Reward Reward;
 	public string Title, Description;
+	/**
+	 * Id is used to save data if this mission was done
+	 **/
+	public string Id;
 
-	public Mission(AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, string title){
+	public Mission(string id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, string title){
+		Id = id;
 		InGameReqs = inGameReqs;
 		AfterGameReqs = afterGameReqs;
 		Reward = reward;
@@ -22,6 +27,15 @@ public class Mission{
 				throw new UnityException ("ther is no description for score type : " + gameReq.ScoreType);
 			}
 		}
+	}
+
+	public static Mission Classic{
+		get { return new Mission ("classic", new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), ""); } 
+	}
+
+	public void RewardPlayer(PlayerState player){
+		Reward.GiveItselfToPlayer(player);
+		player.MissionDone (this);
 	}
 
 	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){

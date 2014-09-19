@@ -8,6 +8,8 @@ public class Car : MonoBehaviour {
 	public int FuelPickedUpThisGame;
 	public int FuelPickedUpWhenLow;
 	public int TurnsMade;
+	public Dictionary<int, GameObject> Streets;
+	public int PickedUpCoins;
 
 
 	public int FuelPickedUpInARow{
@@ -17,7 +19,8 @@ public class Car : MonoBehaviour {
 	void Update(){
 	}
 
-	public void Prepare(CarConfig carConfig){
+	public void Prepare(CarConfig carConfig, Dictionary<int, GameObject> streets){
+		Streets = streets;
 
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
 		Texture2D carT = (Texture2D)carConfig.CarTexture;
@@ -72,7 +75,7 @@ public class Car : MonoBehaviour {
 	public void JustMovedToAnotherTile(int newY){
 
 		//checking if in the previous tile there wasn't any fuel
-		foreach(KeyValuePair<int, GameObject> street in Minigame.Me.Streets){
+		foreach(KeyValuePair<int, GameObject> street in Streets){
 			if (newY - 1 == Mathf.FloorToInt(street.Value.GetComponent<InGamePosition>().y)){
 				foreach(KeyValuePair<int, GameObject> tilePair in street.Value.GetComponent<Street>().Tiles){
 					Tile tile = tilePair.Value.GetComponent<Tile>();
@@ -89,6 +92,11 @@ public class Car : MonoBehaviour {
 
 	public void StartedTurning(){
 		TurnsMade ++;
+	}
+
+	public void PickedUpCoin(){
+		PickedUpCoins ++;
+		PlaySingleSound.SpawnSound (Sounds.Coin, gameObject.transform.position);
 	}
 }
 

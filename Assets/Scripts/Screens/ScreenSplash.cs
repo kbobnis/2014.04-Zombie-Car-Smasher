@@ -33,7 +33,7 @@ public class ScreenSplash : MonoBehaviour {
 					ShowingSplash = false;
 					Minigame m = gameObject.AddComponent<Minigame>();
 					Destroy(this);
-					m.PrepareRace(Game.Me.ClassicCarConfig, ScreenAfterMinigameClassic.PrepareScreen, new Mission(new AchievQuery[]{}, new AchievQuery[]{}, new Reward(0, 0), "")) ;
+					m.PrepareRace(Game.Me.ClassicCarConfig, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic) ;
 				});
 
 

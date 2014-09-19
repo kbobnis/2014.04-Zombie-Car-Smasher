@@ -9,7 +9,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 	private string GameOverReason;
 	private bool ShowNewHighScoreScreen = false;
 	private bool ShowRideInfoScreen = false;
-	private int FuelPickedUp, FuelPickedUpInARow, FuelPickedUpWhenLow, Turns;
+	private int FuelPickedUp, FuelPickedUpInARow, FuelPickedUpWhenLow, Turns, CoinsPickedUp;
 	private Mission Mission;
 
 
@@ -52,8 +52,12 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 				case SCORE_TYPE.TURNS:
 					Turns = result.Value;
 					break;
+				case SCORE_TYPE.COINS:
+				CoinsPickedUp = result.Value;
+					break;
 			}
 		}
+		Game.Me.PlayerState.Coins += CoinsPickedUp;
 		//if someone had internet issues before, at least we can update high score with his best distance and come unlockable achievements
 		//we don't want this. this is sending best score for every day player is playing
 		//List<int> topScores = HighScores.GetTopScores (1);
@@ -121,7 +125,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 				
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.67), GuiHelper.PercentW(0.45), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
 					Minigame m = gameObject.AddComponent<Minigame>();
-					m.PrepareRace(Game.Me.ClassicCarConfig, ScreenAfterMinigameClassic.PrepareScreen, new Mission(new AchievQuery[]{}, new AchievQuery[]{}, new Reward(0, 0), ""));
+					m.PrepareRace(Game.Me.ClassicCarConfig, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic);
 					Destroy(this);
 				}
 				
