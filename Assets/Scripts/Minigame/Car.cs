@@ -50,7 +50,7 @@ public class Car : MonoBehaviour {
 		}
 
 		Fuel fuel = gameObject.AddComponent<Fuel>(); 
-		fuel.MaxAmount = carConfig.MaxFuel;
+		fuel.MaxAmount = carConfig.FuelTank.Capacity;
 		fuel.Amount = carConfig.StartingOil.Value;
 
 		CarTurner carTurner = gameObject.AddComponent<CarTurner>();

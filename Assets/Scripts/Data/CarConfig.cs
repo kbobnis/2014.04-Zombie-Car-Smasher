@@ -8,11 +8,11 @@ public class CarConfig
 	public float DefaultCarStartingSpeed;
 	public float MaxCarSpeed;
 
-	public float MaxFuel;
 	public Shield Shield;
 	public Combustion Combustion;
 	public Wheel Wheel;
 	public StartingOil StartingOil;
+	public FuelTank FuelTank;
 
 	public const string MODE_CLASSIC = "classic";
 	public const string MODE_ADV = "adventure";
@@ -22,12 +22,13 @@ public class CarConfig
 		Combustion = new Combustion ();
 		Wheel = new Wheel ();
 		StartingOil = new StartingOil ();
+		FuelTank = new FuelTank ();
 
 		switch (mode) {
 			case MODE_CLASSIC: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				MaxFuel = 100f;
+				FuelTank.Capacity = 100;
 				Wheel.Value =2f;
 				_CarTexture = SpriteManager.GetCar();
 				Combustion.Value = 0.85f;
@@ -37,7 +38,8 @@ public class CarConfig
 			case MODE_ADV: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				MaxFuel = 50f;
+				FuelTank.Capacity = 50;
+				FuelTank.Level = 1;
 				Wheel.Value =1f;
 				Wheel.Level = 1;
 				Combustion.Value = 1.5f;

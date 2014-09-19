@@ -50,7 +50,7 @@ public class Mission{
 		get { return new Mission ("classic", new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), "", new Environment()); } 
 	}
 
-	private bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){
+	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){
 
 		bool passed = true;
 		foreach (KeyValuePair<int, Result[]> kvp in InGameResults) {

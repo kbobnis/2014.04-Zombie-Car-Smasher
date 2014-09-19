@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Minigame\Tile.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Screens\ScreenAdvModeStart.cs">
     <Files>
-      <File FileName="Assets\Scripts\Minigame\Street.cs" Line="87" Column="11" />
-      <File FileName="Assets\Scripts\Minigame\Tile.cs" Line="105" Column="18" />
+      <File FileName="Assets\Scripts\Screens\ScreenSelectMission.cs" Line="38" Column="44" />
+      <File FileName="Assets\Scripts\Screens\ScreenAdvModeStart.cs" Line="26" Column="47" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

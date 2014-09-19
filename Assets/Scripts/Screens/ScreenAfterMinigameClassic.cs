@@ -11,17 +11,19 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 	private bool ShowRideInfoScreen = false;
 	private int FuelPickedUp, FuelPickedUpInARow, FuelPickedUpWhenLow, Turns, CoinsPickedUp;
 	private Mission Mission;
+	private PlayerState Player;
 
 
-	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission){
+	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameClassic samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameClassic> ();
-		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission);
+		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission, player);
 	}
 
-	public void PrepareMe(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission){
+	public void PrepareMe(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		Distance = distance;
 		GameOverReason = reason;
 		Mission = mission;
+		Player = player;
 		HighScores.AddScore (distance);
 		int place = HighScores.GetPlaceFor (distance);
 		if (place == 1) {

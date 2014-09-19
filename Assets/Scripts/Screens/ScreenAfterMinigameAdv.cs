@@ -11,17 +11,21 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 	private Result[] AfterGameResults;
 	private bool Passed;
 
-	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission){
+	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameAdv samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameAdv> ();
-		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission);
+		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission, player);
 	}
 	
-	public void PrepareMe(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission){
+	public void PrepareMe(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		Distance = distance;
 		GameOverReason = reason;
 		Mission = mission;
 		InGameResults = inGameResults;
 		AfterGameResults = afterGameResults;
+
+		if (Passed = Mission.Passed (InGameResults, AfterGameResults)) {
+			player.MissionDone (Mission);
+		}
 
 	}
 
@@ -35,6 +39,7 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 			gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
 		});
+
 
 		GuiHelper.DrawAtTop (Passed ? "Congratulations!" : "You have failed");
 		string text = "";

@@ -22,7 +22,7 @@ public class ScreenSelectMission : MonoBehaviour {
 			Destroy (this);
 		});
 
-		Mission mission1 = new Mission("dist1", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 30)}, new Reward(10, 1), "Distance 1", Environment.ClassicMission);
+		Mission mission1 = new Mission("dist1", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 20)}, new Reward(10, 1), "Distance 1", Environment.ClassicMission);
 		Mission mission2 = new Mission("dist2", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 50)}, new Reward(20, 2), "Distance 2", Environment.ClassicMission);
 		Mission mission3 = new Mission("dist3", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 70)}, new Reward(30, 2), "Distance 3", Environment.ClassicMission);
 		Mission mission4 = new Mission("dist4", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 90)}, new Reward(40, 2), "Distance 4", Environment.ClassicMission);

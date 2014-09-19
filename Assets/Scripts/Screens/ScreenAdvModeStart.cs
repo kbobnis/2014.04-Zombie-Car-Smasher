@@ -39,15 +39,21 @@ public class ScreenAdvModeStart : MonoBehaviour {
 			Destroy(this);
 		});
 
-		GuiHelper.DrawButton ("Wheel: " + state.CarConfig.Wheel.Value, GuiHelper.MicroFont, 0.1, 0.6, 0.3, 0.15, delegate() {
+		GuiHelper.DrawButton ("Wheel: " + state.CarConfig.Wheel.Value, GuiHelper.MicroFont, 0.1, 0.55, 0.3, 0.15, delegate() {
 			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 			su.PrepareWith(state.CarConfig.Wheel);
 			Destroy(this);
 		});
 
-		GuiHelper.DrawButton ("Starting oil: " + state.CarConfig.StartingOil.Value, GuiHelper.MicroFont, 0.55, 0.6, 0.3, 0.15, delegate() {
+		GuiHelper.DrawButton ("Starting oil: " + state.CarConfig.StartingOil.Value, GuiHelper.MicroFont, 0.55, 0.55, 0.3, 0.15, delegate() {
 			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 			su.PrepareWith(state.CarConfig.StartingOil);
+			Destroy(this);
+		});
+
+		GuiHelper.DrawButton ("Fuel tank: " + state.CarConfig.FuelTank.Capacity, GuiHelper.MicroFont, 0.55, 0.65, 0.3, 0.15, delegate() {
+			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
+			su.PrepareWith(state.CarConfig.FuelTank);
 			Destroy(this);
 		});
 

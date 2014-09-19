@@ -17,7 +17,7 @@ public class Minigame : MonoBehaviour {
 	public Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 	public PlayerState Player;
 
-	public delegate void AfterMinigameF(Dictionary<int, Result[]> unlockResults, Result[] incremenentResult, string endGameReason, int distance, Mission mission);
+	public delegate void AfterMinigameF(Dictionary<int, Result[]> unlockResults, Result[] incremenentResult, string endGameReason, int distance, Mission mission, PlayerState player);
 
 	public void PrepareRace(PlayerState player, AfterMinigameF afterMinigame, Mission mission, CarConfig chosenCar){
 		AfterMinigame = afterMinigame;
@@ -83,7 +83,7 @@ public class Minigame : MonoBehaviour {
 
 		Mission.RewardHim (InGameAchievements, afterGameAchievements, Player);
 
-		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission);
+		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
 
 		UnloadResources ();
 		Destroy (this);
