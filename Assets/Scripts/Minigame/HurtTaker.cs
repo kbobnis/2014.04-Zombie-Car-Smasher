@@ -5,15 +5,6 @@ public class HurtTaker : MonoBehaviour {
 
 	public bool HasLost;
 	public string LostReason;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void TakeHurt(Tile fromWhat){
 
@@ -25,7 +16,8 @@ public class HurtTaker : MonoBehaviour {
 	}
 
 	private void Die(Tile fromWhat){
-		if (fromWhat.TileContent == TileContent.WALL || fromWhat.TileContent == TileContent.HOLE ) {
+		//null is when out of oil
+		if (fromWhat != null && (fromWhat.TileContent == TileContent.WALL || fromWhat.TileContent == TileContent.HOLE) ) {
 			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Camera.main.transform.position);	
 		} 
 		HasLost = true;

@@ -71,5 +71,15 @@ public class CarConfig
 	public Texture CarTexture{
 		get { return _CarTexture; }
 	}
+
+	public void UpdateCar(Result[] afterGameResults){
+		foreach (Result result in afterGameResults) {
+			switch(result.ScoreType){
+				case SCORE_TYPE.SHIELDS_USED:
+					Shield.Count -= result.Value;
+					break;
+			}
+		}
+	}
 }
 

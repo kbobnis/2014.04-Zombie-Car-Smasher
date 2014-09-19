@@ -1,8 +1,18 @@
-
+using UnityEngine;
 
 public class Shield : CarStatistic{
 
-	public int Count;
+	private int _Count;
+
+	public int Count{
+		get { return _Count; }
+		set {
+			_Count = value;
+			if (_Count < 0) {
+				Debug.Log ("Why shield count is lower than zero?!");
+			}
+		}
+	}
 
 	override public int UpgradeCost(){
 		return 10;
@@ -10,7 +20,7 @@ public class Shield : CarStatistic{
 
 	override public string Info(bool canAffordUpgrade){
 
-		string text = "Shield destroys an obstacle and itself when drove into it.\n";
+		string text = "Shield destroys an obstacle. One shield is for one use only.\n";
 		if (canAffordUpgrade){
 			text += BuyText();
 		} else {

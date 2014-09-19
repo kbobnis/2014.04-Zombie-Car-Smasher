@@ -10,6 +10,7 @@ public class Car : MonoBehaviour {
 	public int TurnsMade;
 	public Dictionary<int, GameObject> Streets;
 	public int PickedUpCoins;
+	public int ShieldsUsed;
 
 
 	public int FuelPickedUpInARow{

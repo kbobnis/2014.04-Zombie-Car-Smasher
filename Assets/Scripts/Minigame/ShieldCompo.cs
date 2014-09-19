@@ -38,6 +38,7 @@ public class ShieldCompo : MonoBehaviour {
 	public bool TakeThis(Tile tile){
 		ShieldCount--;
 		PlaySingleSound.SpawnSound (Sounds.DoorSlam, gameObject.transform.position);
+		GetComponent<Car> ().ShieldsUsed++;
 		tile.TileContent = TileContent.NONE;
 		return true;
 	}

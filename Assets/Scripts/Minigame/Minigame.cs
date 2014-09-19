@@ -16,6 +16,7 @@ public class Minigame : MonoBehaviour {
 	public GameObject Car;
 	public Dictionary<int, GameObject> Streets = new Dictionary<int, GameObject>();
 	public PlayerState Player;
+	private CarConfig CarConfig;
 
 	public delegate void AfterMinigameF(Dictionary<int, Result[]> unlockResults, Result[] incremenentResult, string endGameReason, int distance, Mission mission, PlayerState player);
 
@@ -23,6 +24,7 @@ public class Minigame : MonoBehaviour {
 		AfterMinigame = afterMinigame;
 		Mission = mission;
 		Player = player;
+		CarConfig = chosenCar;
 
 		InGamePosition.tileH = SpriteManager.GetCar().height / 70f;
 		InGamePosition.tileW = SpriteManager.GetCar().width / 70f;
@@ -78,10 +80,12 @@ public class Minigame : MonoBehaviour {
 			new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car> ().FuelPickedUpWhenLow),
 			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car> ().FuelPickedUpInARow),
 			new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car> ().TurnsMade),
-			new Result(SCORE_TYPE.COINS, Car.GetComponent<Car>().PickedUpCoins)
+			new Result(SCORE_TYPE.COINS, Car.GetComponent<Car>().PickedUpCoins),
+			new Result(SCORE_TYPE.SHIELDS_USED, Car.GetComponent<Car>().ShieldsUsed)
 		};
 
 		Mission.RewardHim (InGameAchievements, afterGameAchievements, Player);
+		CarConfig.UpdateCar (afterGameAchievements);
 
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
 
