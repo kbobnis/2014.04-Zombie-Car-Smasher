@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ScreenUpgrade : MonoBehaviour {
@@ -22,7 +22,7 @@ public class ScreenUpgrade : MonoBehaviour {
 			Destroy(this);
 		});
 
-		PlayerState ps = Game.Me.PlayerState;
+		PlayerState ps = Game.Me.Player;
 		bool canAffordUpgrade =  ps.Coins >= CarStatistic.UpgradeCost ();
 		string topText = CarStatistic.TopText ();
 		string bottomText = CarStatistic.Info (canAffordUpgrade);

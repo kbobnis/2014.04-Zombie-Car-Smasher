@@ -57,7 +57,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 					break;
 			}
 		}
-		Game.Me.PlayerState.Coins += CoinsPickedUp;
+		Game.Me.Player.Coins += CoinsPickedUp;
 		//if someone had internet issues before, at least we can update high score with his best distance and come unlockable achievements
 		//we don't want this. this is sending best score for every day player is playing
 		//List<int> topScores = HighScores.GetTopScores (1);
@@ -125,7 +125,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 				
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.67), GuiHelper.PercentW(0.45), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
 					Minigame m = gameObject.AddComponent<Minigame>();
-					m.PrepareRace(Game.Me.ClassicCarConfig, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic);
+					m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 					Destroy(this);
 				}
 				

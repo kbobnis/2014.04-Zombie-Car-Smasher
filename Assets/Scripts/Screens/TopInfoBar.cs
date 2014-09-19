@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class TopInfoBar : MonoBehaviour {
@@ -14,7 +14,7 @@ public class TopInfoBar : MonoBehaviour {
 	}
 
 	void OnGUI () {
-		PlayerState playerState = Game.Me.PlayerState;
+		PlayerState playerState = Game.Me.Player;
 
 		GuiHelper.DrawElement ("Images/topBarBackground", 0, 0, 1, 0.1);
 

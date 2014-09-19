@@ -81,7 +81,7 @@ public class Speeder : MonoBehaviour
 				tile.TileContent  = TileContent.NONE;
 				Destroy(tile);
 			} else  if (GetComponent<Flyier>() == null){ //flying object don't pick up oil buffs
-				GetComponent<Car>().PickedUpFuel();
+				GetComponent<Car>().PickedUpFuel(tile);
 				tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 				tile.TileContent = TileContent.NONE;
 			}

@@ -62,14 +62,14 @@ public class Car : MonoBehaviour {
 		gameObject.AddComponent<HurtTaker> ();
 	}
 
-	public void PickedUpFuel(){
+	public void PickedUpFuel(Tile fuelTile){
 		FuelPickedUpThisGame ++;
 		_FuelPickedUpInARow ++;
 		if (GetComponent<Fuel> ().IsLowFuel ()) {
 			FuelPickedUpWhenLow ++;
 		}
 
-		GetComponent<Fuel> ().PickedUpFuel (Minigame.BuffOilValue);
+		GetComponent<Fuel> ().PickedUpFuel ((int)fuelTile.Value);
 	}
 
 	public void JustMovedToAnotherTile(int newY){

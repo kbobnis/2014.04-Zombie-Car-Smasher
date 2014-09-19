@@ -22,11 +22,7 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 		Mission = mission;
 		InGameResults = inGameResults;
 		AfterGameResults = afterGameResults;
-		Passed = Mission.Passed(InGameResults, AfterGameResults);
-		if (Passed) {
-			mission.RewardPlayer(Game.Me.PlayerState);
 
-		}
 	}
 
 	void OnGUI(){

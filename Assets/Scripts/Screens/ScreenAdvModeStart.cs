@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ScreenAdvModeStart : MonoBehaviour {
@@ -15,7 +15,7 @@ public class ScreenAdvModeStart : MonoBehaviour {
 
 	void OnGUI(){
 
-		PlayerState state = Game.Me.PlayerState;
+		PlayerState state = Game.Me.Player;
 
 		GuiHelper.DrawBackground (delegate() {
 			gameObject.AddComponent<ScreenSplash>();

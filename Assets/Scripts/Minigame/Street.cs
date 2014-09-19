@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
-
 public class Street : MonoBehaviour {
 
 	public Dictionary<int, GameObject> Tiles = new Dictionary<int, GameObject>();
@@ -17,7 +15,7 @@ public class Street : MonoBehaviour {
 	void Update () {
 	}
 
-	public void Prepare(int inGameY, GameObject previousStreet, bool noObstacles){
+	public void Prepare(int inGameY, GameObject previousStreet, bool noObstacles, Environment env){
 		SpriteRenderer streetRenderer = gameObject.AddComponent<SpriteRenderer>();
 		streetRenderer.sprite = StreetSprite;
 		streetRenderer.sortingLayerName = "Layer1";
@@ -86,7 +84,7 @@ public class Street : MonoBehaviour {
 			GameObject Tile = new GameObject();
 			Tile tmp2 = Tile.AddComponent<Tile>();
 
-			tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole, canBeOil);
+			tmp2.InitMe(gameObject, i, inGameY, canBeWall, canBeHole, canBeOil, env);
 
 			if (Random.value < 0.1){
 				GameObject cactus = new GameObject();

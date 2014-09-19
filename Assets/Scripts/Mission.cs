@@ -7,12 +7,14 @@ public class Mission{
 	private AchievQuery[] AfterGameReqs;
 	public Reward Reward;
 	public string Title, Description;
+	public Environment Env;
 	/**
 	 * Id is used to save data if this mission was done
 	 **/
 	public string Id;
 
-	public Mission(string id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, string title){
+	public Mission(string id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, string title, Environment env){
+		Env = env;
 		Id = id;
 		InGameReqs = inGameReqs;
 		AfterGameReqs = afterGameReqs;
@@ -29,16 +31,26 @@ public class Mission{
 		}
 	}
 
+	public void RewardHim (Dictionary<int, Result[]> inGameAchievements, Result[] afterGameAchievements, PlayerState player){
+		//just what he collected
+		foreach (Result result in afterGameAchievements) {
+			switch(result.ScoreType){
+				case SCORE_TYPE.COINS:
+					player.Coins += result.Value;
+					break;
+			}
+		}
+
+		if (Passed (inGameAchievements, afterGameAchievements)) {
+			Reward.GiveToPlayer(player);
+		}
+	}
+
 	public static Mission Classic{
-		get { return new Mission ("classic", new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), ""); } 
+		get { return new Mission ("classic", new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), "", new Environment()); } 
 	}
 
-	public void RewardPlayer(PlayerState player){
-		Reward.GiveItselfToPlayer(player);
-		player.MissionDone (this);
-	}
-
-	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){
+	private bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){
 
 		bool passed = true;
 		foreach (KeyValuePair<int, Result[]> kvp in InGameResults) {
@@ -54,7 +66,7 @@ public class Mission{
 		return passed && Check (AfterGameReqs, AfterGameResults);
 	}
 
-	public static bool Check(AchievQuery[] reqs, Result[] results){
+	private static bool Check(AchievQuery[] reqs, Result[] results){
 		bool allIsOk = true;
 
 		foreach (AchievQuery query in reqs) {

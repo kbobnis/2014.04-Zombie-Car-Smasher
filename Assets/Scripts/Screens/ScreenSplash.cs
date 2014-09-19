@@ -33,7 +33,7 @@ public class ScreenSplash : MonoBehaviour {
 					ShowingSplash = false;
 					Minigame m = gameObject.AddComponent<Minigame>();
 					Destroy(this);
-					m.PrepareRace(Game.Me.ClassicCarConfig, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic) ;
+					m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 				});
 
 
@@ -47,7 +47,7 @@ public class ScreenSplash : MonoBehaviour {
 				GuiHelper.DrawText("Authenticating\n google play. \nJust a second ", GuiHelper.SmallFont, 0, 0.7, 1, 0.4);
 			}
 
-			GoogleAnalyticsKProjekt.LogScreenOnce (Minigame.SCREEN_MAIN);
+			GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.SPLASH);
 
 			GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.2, 0, 0.6, 0.17);
 

@@ -63,7 +63,7 @@ public class CarSmasherSocial : MonoBehaviour {
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
 
-		if (CanIAsk () || forceUI) {
+		if (!Authenticated && (CanIAsk () || forceUI)) {
 			Social.localUser.Authenticate ((bool success) => {
 				Authenticated = success;
 				SaveAnswerForAuthentication (success);

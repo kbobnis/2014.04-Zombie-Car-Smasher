@@ -1,13 +1,29 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+public enum ANALYTICS_SCREENS {
+	GAME, FAIL, SPLASH
+}
+
 public class GoogleAnalyticsKProjekt {
 
 	private static string LastLogged = "";
 	private static bool IsActive = true;
-	private const string SCREEN_INACTIVE = "Screen inactive";
 
-	public static void LogScreenOnce(string name){
+	public static void LogScreenOnce(ANALYTICS_SCREENS screen){
+
+		string name = "";
+		switch (screen) {
+			case ANALYTICS_SCREENS.GAME: 
+				name = "Screen game";
+				break;
+			case ANALYTICS_SCREENS.FAIL: 
+				name = "Screen fail";
+				break;
+			case ANALYTICS_SCREENS.SPLASH:
+				name = "Screen splash";
+				break;
+		}
 		if (GoogleAnalytics.instance && name != LastLogged ) {
 			if (IsActive){
 				LastLogged = name;
@@ -27,14 +43,5 @@ public class GoogleAnalyticsKProjekt {
 
 	public static void LogIsActive(bool isActive){
 		return; // i dont want screen inactive
-		if (GoogleAnalytics.instance && isActive != IsActive ) {
-			IsActive = isActive;
-
-			if (IsActive){
-				LogScreen(LastLogged);
-			} else {
-				LogScreen(GoogleAnalyticsKProjekt.SCREEN_INACTIVE);
-			}
-		}
 	}
 }
