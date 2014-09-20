@@ -59,7 +59,6 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 					break;
 			}
 		}
-		Game.Me.Player.Coins += CoinsPickedUp;
 		//if someone had internet issues before, at least we can update high score with his best distance and come unlockable achievements
 		//we don't want this. this is sending best score for every day player is playing
 		//List<int> topScores = HighScores.GetTopScores (1);

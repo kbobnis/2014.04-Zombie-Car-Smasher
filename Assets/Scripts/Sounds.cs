@@ -16,19 +16,21 @@ public class Sounds : MonoBehaviour {
 	private static bool isMuted;
 
 	public static void LoadSounds(){
-		CartonImpact = Resources.Load<AudioClip> ("Audio/car_crash3");
-		PickUpFuel = Resources.Load<AudioClip> ("Audio/water_drop");
-		TurnCar = Resources.Load<AudioClip> ("Audio/ms_page_turn");
-		NoMoreFuel = Resources.Load<AudioClip> ("Audio/engine_stop3");
-		CarDrive = Resources.Load<AudioClip> ("Audio/ms_auto_running");
-		LowFuelSignal = Resources.Load<AudioClip> ("Audio/ms_fuel2_ending");
-		Fanfare = Resources.Load<AudioClip> ("Audio/fanfare");
-		Coin = Resources.Load<AudioClip> ("Audio/coin");
-		DoorSlam = Resources.Load<AudioClip> ("Audio/doorSlam");
+		if (CartonImpact == null) {
+			CartonImpact = Resources.Load<AudioClip> ("Audio/car_crash3");
+			PickUpFuel = Resources.Load<AudioClip> ("Audio/water_drop");
+			TurnCar = Resources.Load<AudioClip> ("Audio/ms_page_turn");
+			NoMoreFuel = Resources.Load<AudioClip> ("Audio/engine_stop3");
+			CarDrive = Resources.Load<AudioClip> ("Audio/ms_auto_running");
+			LowFuelSignal = Resources.Load<AudioClip> ("Audio/ms_fuel2_ending");
+			Fanfare = Resources.Load<AudioClip> ("Audio/fanfare");
+			Coin = Resources.Load<AudioClip> ("Audio/coin");
+			DoorSlam = Resources.Load<AudioClip> ("Audio/doorSlam");
 
-		isMuted = PlayerPrefs.GetInt("audioMuted")>0;
+			isMuted = PlayerPrefs.GetInt ("audioMuted") > 0;
 
-		Mute (isMuted);
+			Mute (isMuted);
+		}
 	}
 
 	public static void Mute(bool mute){

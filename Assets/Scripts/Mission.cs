@@ -5,20 +5,20 @@ public class Mission{
 
 	private AchievQuery[] InGameReqs;
 	private AchievQuery[] AfterGameReqs;
-	public Reward Reward;
+	private Reward _Reward;
 	public string Title, Description;
-	public Environment Env;
+	private Environment _Env;
 	/**
 	 * Id is used to save data if this mission was done
 	 **/
 	public string Id;
 
 	public Mission(string id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, string title, Environment env){
-		Env = env;
+		_Env = env;
 		Id = id;
 		InGameReqs = inGameReqs;
 		AfterGameReqs = afterGameReqs;
-		Reward = reward;
+		_Reward = reward;
 		Title = title;
 		foreach (AchievQuery gameReq in afterGameReqs) {
 			switch (gameReq.ScoreType) {
@@ -31,20 +31,15 @@ public class Mission{
 		}
 	}
 
-	public void RewardHim (Dictionary<int, Result[]> inGameAchievements, Result[] afterGameAchievements, PlayerState player){
-		//just what he collected
-		foreach (Result result in afterGameAchievements) {
-			switch(result.ScoreType){
-				case SCORE_TYPE.COINS:
-					player.Coins += result.Value;
-					break;
-			}
-		}
-
-		if (Passed (inGameAchievements, afterGameAchievements)) {
-			Reward.GiveToPlayer(player);
-		}
+	public Reward Reward{
+		get { return _Reward; }
 	}
+
+	public Environment Env{
+		get { return _Env; }
+	}
+
+
 
 	public static Mission Classic{
 		get { return new Mission ("classic", new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), "", new Environment()); } 

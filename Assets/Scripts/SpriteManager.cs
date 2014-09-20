@@ -22,6 +22,10 @@ class SpriteManager {
 	private static Texture CarDefault;
 	private static Texture Coin;
 	private static Texture Shield;
+	private static Texture Intro;
+	private static Texture GooglePlay;
+	private static Texture InactiveGooglePlay;
+	private static Texture LoadingScreen;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -42,6 +46,26 @@ class SpriteManager {
 		CarDefault = Resources.Load<Texture> ("Images/icon");
 		Coin = Resources.Load<Texture> ("Images/coin");
 		Shield = Resources.Load<Texture> ("Images/shield");
+		Intro = Resources.Load<Texture> ("Images/intro");
+		GooglePlay = Resources.Load<Texture> ("Images/googlePlay");
+		InactiveGooglePlay = Resources.Load<Texture> ("Images/googlePlayInactive");
+		LoadingScreen = Resources.Load<Texture> ("Images/LoadingScreen");
+	}
+
+	static public Texture GetInactiveGooglePlay(){
+		return InactiveGooglePlay;
+	}
+
+	static public Texture GetLoadingScreen(){
+		return LoadingScreen;
+	}
+
+	static public Texture GetGooglePlay(){
+		return GooglePlay;
+	}
+
+	static public Texture GetIntro(){
+		return Intro;
 	}
 
 	static public Texture GetShield(){

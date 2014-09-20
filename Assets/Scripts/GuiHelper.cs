@@ -65,7 +65,8 @@ public class GuiHelper : MonoBehaviour {
 
 			SmallFontBrown.fontSize = 37 * Screen.width / 480;
 			SmallFontBrown.font = (Font)Resources.Load ("Fluf");
-			SmallFontBrown.normal.textColor = new Color (227 / 255f, 6 / 255f, 19 / 255f);
+			SmallFontBrown.normal.textColor = new Color (41 / 255f, 41 / 255f, 41 / 255f);
+			SmallFontBrown.alignment = TextAnchor.MiddleCenter;
 		}
 	}
 

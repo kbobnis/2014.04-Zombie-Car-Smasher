@@ -3,9 +3,9 @@ using System.Collections;
 using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
 using System.Collections.Generic;
-using System;
 
 delegate int ProcessScore (int score);
+public delegate void AfterAuthenticateD ();
 
 public class CarSmasherSocial : MonoBehaviour {
 
@@ -13,7 +13,6 @@ public class CarSmasherSocial : MonoBehaviour {
 	private static List<GoogleLeaderboard> LeaderBoards = new List<GoogleLeaderboard> ();
 
 	internal delegate int ProcessScore (int score);
-	public delegate void AfterAuthenticateD ();
 
 	internal static bool Authenticated;
 	public static FBKprojekt FB;
@@ -58,12 +57,23 @@ public class CarSmasherSocial : MonoBehaviour {
 		LeaderBoards.Add (new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES));
 	}
 
+	public static void InitializeOrLogOut(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null){
+		if (!Authenticated) {
+			InitializeSocial (forceUI, afterSuccess, afterFailure); 
+		} else {
+			((PlayGamesPlatform) Social.Active).SignOut();
+			Authenticated = false;
+			if (afterSuccess != null){
+				afterSuccess();
+			}
+		}
+	}
 
 	public static void InitializeSocial(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null){
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
 
-		if (!Authenticated && (CanIAsk () || forceUI)) {
+		if (!Authenticated && (HasPreviouslyAccepted () || forceUI)) {
 			Social.localUser.Authenticate ((bool success) => {
 				Authenticated = success;
 				SaveAnswerForAuthentication (success);
@@ -72,18 +82,22 @@ public class CarSmasherSocial : MonoBehaviour {
 						afterSuccess ();
 					}
 				} else {
-					afterFailure();
+					if (afterFailure != null){
+						afterFailure();
+					}
 				}
 			});
 		} else {
-			afterFailure();
+			if (afterFailure != null){
+				afterFailure();
+			}
 		}
 	}
 
 	/**
 	 * We automatically ask only for the first time
 	 **/
-	private static bool CanIAsk(){
+	private static bool HasPreviouslyAccepted(){
 		return PlayerPrefs.GetString ("hasPreviouslyAccepted", "yes") == "yes";
 	}
 
@@ -213,7 +227,7 @@ public class AchievQuery : Result {
 		case SIGN.SMALLER_EQUAL : return r.Value <= Value;
 		case SIGN.NO_MATTER: return true;
 		default:
-			throw new Exception("There is no operation for sign: " + Sign);
+			throw new UnityException("There is no operation for sign: " + Sign);
 		}
 	}
 	
@@ -305,7 +319,9 @@ class GoogleAchievement {
 	public static void UnlockAchievement(string id){
 		Debug.Log ("[UnlockAchievement] " + GoogleAchievement.GetNameForId(id));
 		if (CarSmasherSocial.Authenticated) {
-			Social.ReportProgress (id, 100.0f, (bool success) => {});
+			Social.ReportProgress (id, 100.0f, (bool success) => {
+
+			});
 		} 
 	}
 	public static void IncrementAchievement(string id, int value){

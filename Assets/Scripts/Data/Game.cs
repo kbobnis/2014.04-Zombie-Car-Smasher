@@ -11,12 +11,8 @@ public class Game{
 	static Game(){
 		Me = new Game ();
 
-		Me.Player = new PlayerState ();
-		Me.Player.CarConfig = new CarConfig (CarConfig.MODE_ADV);
-		Me.Player.Coins = 20;
-
+		Me.Player = new PlayerState (new CarConfig (CarConfig.MODE_ADV), 20);
 		Me.ClassicCarConfig = new CarConfig (CarConfig.MODE_CLASSIC);
-
 		Me.ClassicEnvironment = new Environment ();
 	}
 }

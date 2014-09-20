@@ -41,7 +41,7 @@ public class Tile : MonoBehaviour
 
 			SpriteRenderer r = gameObject.AddComponent<SpriteRenderer>();
 			gameObject.transform.localScale = new Vector3(1, 1, 1);
-			r.sortingLayerName = "Layer4";
+			r.sortingLayerName = "Layer3";
 			switch(value){
 			case TileContent.CACTUS:
 				r.sprite = SpriteManager.GetCactus();

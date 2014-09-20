@@ -11,8 +11,5 @@ public class Reward{
 		get { return Coins + " Coins, "+Exp+" Exp"; }
 	}
 	
-	public void GiveToPlayer(PlayerState p){
-		p.Coins += Coins;
-		p.Exp += Exp;
-	}
+
 }

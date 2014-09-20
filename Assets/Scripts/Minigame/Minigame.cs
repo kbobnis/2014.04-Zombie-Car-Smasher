@@ -84,7 +84,7 @@ public class Minigame : MonoBehaviour {
 			new Result(SCORE_TYPE.SHIELDS_USED, Car.GetComponent<Car>().ShieldsUsed)
 		};
 
-		Mission.RewardHim (InGameAchievements, afterGameAchievements, Player);
+		Player.RewardHim (Mission, InGameAchievements, afterGameAchievements);
 		CarConfig.UpdateCar (afterGameAchievements);
 
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
@@ -117,9 +117,7 @@ public class Minigame : MonoBehaviour {
 			GameOver(Car.GetComponent<HurtTaker>().LostReason);
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape)){
-			Application.Quit(); 
-		}
+
 
 		if (Car == null) {
 			return ;
