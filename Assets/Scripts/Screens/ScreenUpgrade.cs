@@ -32,6 +32,7 @@ public class ScreenUpgrade : MonoBehaviour {
 		if (canAffordUpgrade) {
 			GuiHelper.ButtonWithText(0.4, 0.8, 0.3, 0.3, "Yes", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
 				ps.BuyAndUpgrade(CarStatistic);
+				ps.Save();
 			});
 		}
 	}

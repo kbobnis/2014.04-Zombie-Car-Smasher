@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScreenSelectMission : MonoBehaviour {
 
@@ -22,15 +23,19 @@ public class ScreenSelectMission : MonoBehaviour {
 			Destroy (this);
 		});
 
-		Mission mission1 = new Mission("dist1", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 20)}, new Reward(10, 1), "Distance 1", Environment.ClassicMission);
-		Mission mission2 = new Mission("dist2", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 50)}, new Reward(20, 2), "Distance 2", Environment.ClassicMission);
-		Mission mission3 = new Mission("dist3", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 70)}, new Reward(30, 2), "Distance 3", Environment.ClassicMission);
-		Mission mission4 = new Mission("dist4", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 90)}, new Reward(40, 2), "Distance 4", Environment.ClassicMission);
-		Mission mission5 = new Mission("dist5", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 110)}, new Reward(50, 2), "Distance 5", Environment.ClassicMission);
-		Mission mission6 = new Mission("dist6", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 130)}, new Reward(60, 2), "Distance 6", Environment.ClassicMission);
-		Mission mission7 = new Mission("dist7", new AchievQuery[] { }, new AchievQuery[] { new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 150)}, new Reward(70, 2), "Distance 7", Environment.ClassicMission);
-
-		Mission[] missions = new Mission[]{ mission1, mission2, mission3, mission4, mission5, mission6, mission7 };
+		List<Mission> missions = new List<Mission> ();
+		missions.Add (new Mission (MissionId.D1, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 20)}, new Reward (10, 1), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.F1, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.BIGGER_EQUAL, 2)}, new Reward (20, 2), Environment.FuelMission));
+		missions.Add (new Mission (MissionId.D2, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 30)}, new Reward (20, 2), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D3, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 40)}, new Reward (30, 3), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D4, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 50)}, new Reward (40, 4), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D5, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 60)}, new Reward (50, 5), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D6, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 70)}, new Reward (70, 6), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D7, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 80)}, new Reward (80, 7), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D8, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 90)}, new Reward (90, 7), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D9, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 100)}, new Reward (100, 7), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D10, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 110)}, new Reward (110, 7), Environment.ClassicMission));
+		missions.Add (new Mission (MissionId.D11, new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 120)}, new Reward (120, 7), Environment.ClassicMission));
 
 		int i = 1; 
 		foreach (Mission mission in missions) {

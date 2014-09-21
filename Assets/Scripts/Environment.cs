@@ -26,4 +26,8 @@ public class Environment{
 	public static Environment ClassicMission{
 		get { return new Environment (0, 0); }
 	}
+
+	public static Environment FuelMission{
+		get { return new Environment (0.0f, 0.03f); }
+	}
 }

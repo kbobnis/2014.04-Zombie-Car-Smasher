@@ -1,22 +1,13 @@
+using UnityEngine;
 
 public class Wheel : CarStatistic
 {
-	public float Value;
-
 	override public int UpgradeCost(){
 		return 10 * Level;
 	}
 	
-	override public string Info(bool canAffordUpgrade){
-		
-		string text = "Wheel determines how fast the car is changing lanes.\n";
-		if (canAffordUpgrade){
-			text += BuyText();
-		} else {
-			text += NotAffordText();
-		}
-		
-		return text;
+	override protected string Description(){
+		return "Wheel determines how fast the car is changing lanes.";
 	}
 	
 	override protected string BuyText(){

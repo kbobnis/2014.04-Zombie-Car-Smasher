@@ -26,6 +26,7 @@ class SpriteManager {
 	private static Texture GooglePlay;
 	private static Texture InactiveGooglePlay;
 	private static Texture LoadingScreen;
+	private static Texture RemoveIcon;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -50,6 +51,10 @@ class SpriteManager {
 		GooglePlay = Resources.Load<Texture> ("Images/googlePlay");
 		InactiveGooglePlay = Resources.Load<Texture> ("Images/googlePlayInactive");
 		LoadingScreen = Resources.Load<Texture> ("Images/LoadingScreen");
+		RemoveIcon = Resources.Load<Texture> ("Images/remove");
+	}
+	static public Texture GetRemoveIcon(){
+		return RemoveIcon;
 	}
 
 	static public Texture GetInactiveGooglePlay(){

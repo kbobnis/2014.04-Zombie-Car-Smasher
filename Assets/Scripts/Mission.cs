@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MissionId{
+	D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11,
+	F1,
+	CLASSIC
+}
+
 public class Mission{
 
 	private AchievQuery[] InGameReqs;
@@ -11,22 +17,30 @@ public class Mission{
 	/**
 	 * Id is used to save data if this mission was done
 	 **/
-	public string Id;
+	public MissionId Id;
 
-	public Mission(string id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, string title, Environment env){
+	public Mission(MissionId id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env){
 		_Env = env;
 		Id = id;
 		InGameReqs = inGameReqs;
 		AfterGameReqs = afterGameReqs;
 		_Reward = reward;
-		Title = title;
 		foreach (AchievQuery gameReq in afterGameReqs) {
 			switch (gameReq.ScoreType) {
 			case SCORE_TYPE.DISTANCE:
 				Description = "Drive distance " + gameReq.Value;
+				Title = "Distance " + gameReq.Value;
+				break;
+			case SCORE_TYPE.COINS:
+				Description = "Collect " + gameReq.Value + " coins ";
+				Title = "Coins " + gameReq.Value;
+				break;
+			case SCORE_TYPE.FUEL_PICKED:
+				Description = "Collect " + gameReq.Value + " oil drops";
+				Title = "Oil drops " + gameReq.Value;
 				break;
 			default:
-				throw new UnityException ("ther is no description for score type : " + gameReq.ScoreType);
+				throw new UnityException ("ther is no description and title for score type : " + gameReq.ScoreType);
 			}
 		}
 	}
@@ -42,7 +56,7 @@ public class Mission{
 
 
 	public static Mission Classic{
-		get { return new Mission ("classic", new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), "", new Environment()); } 
+		get { return new Mission (MissionId.CLASSIC, new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), new Environment()); } 
 	}
 
 	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){

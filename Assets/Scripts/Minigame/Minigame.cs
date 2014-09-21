@@ -86,6 +86,7 @@ public class Minigame : MonoBehaviour {
 
 		Player.RewardHim (Mission, InGameAchievements, afterGameAchievements);
 		CarConfig.UpdateCar (afterGameAchievements);
+		Player.Save ();
 
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
 

@@ -28,7 +28,7 @@ public class CarConfig
 			case MODE_CLASSIC: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				FuelTank.Capacity = 100;
+				FuelTank.Value = 100;
 				Wheel.Value =2f;
 				_CarTexture = SpriteManager.GetCar();
 				Combustion.Value = 0.85f;
@@ -38,7 +38,7 @@ public class CarConfig
 			case MODE_ADV: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				FuelTank.Capacity = 50;
+				FuelTank.Value = 50;
 				FuelTank.Level = 1;
 				Wheel.Value =1f;
 				Wheel.Level = 1;
@@ -76,10 +76,29 @@ public class CarConfig
 		foreach (Result result in afterGameResults) {
 			switch(result.ScoreType){
 				case SCORE_TYPE.SHIELDS_USED:
-					Shield.Count -= result.Value;
+					Shield.Value -= result.Value;
 					break;
 			}
 		}
+	}
+
+	internal string Serialize(){
+		Dictionary<string, string> dict = new Dictionary<string, string> ();
+		dict ["shield"] = ""+Shield.Serialize();
+		dict ["combustion"] = "" + Combustion.Serialize ();
+		dict ["wheel"] = "" + Wheel.Serialize();
+		dict ["startingOil"] = "" + StartingOil.Serialize ();
+		dict ["fuelTank"] = "" + FuelTank.Serialize ();
+		return MiniJSON.Json.Serialize(dict);
+	}
+
+	internal void Deserialize(string serialized){
+		Dictionary<string, object> dict = (Dictionary<string, object>)MiniJSON.Json.Deserialize (serialized);
+		Shield.Deserialize((string)dict["shield"]);
+		Combustion.Deserialize((string)dict["combustion"]);
+		Wheel.Deserialize((string)dict["wheel"]);
+		StartingOil.Deserialize((string)dict["startingOil"]);
+		FuelTank.Deserialize ((string)dict ["fuelTank"]);
 	}
 }
 

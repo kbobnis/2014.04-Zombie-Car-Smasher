@@ -19,7 +19,7 @@ public class ShieldCompo : MonoBehaviour {
 	}
 
 	public void Prepare(Shield shield){
-		ShieldCount = shield.Count;
+		ShieldCount = (int)shield.Value;
 		ShieldRenderer = new GameObject ();
 		SpriteRenderer r = ShieldRenderer.AddComponent<SpriteRenderer>();
 		Texture2D shieldT = (Texture2D)SpriteManager.GetShield ();

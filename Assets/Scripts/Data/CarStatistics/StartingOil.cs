@@ -1,22 +1,13 @@
+using UnityEngine;
 
 public class StartingOil : CarStatistic
 {
-	public float Value;
-	
 	override public int UpgradeCost(){
 		return Level;
 	}
 	
-	override public string Info(bool canAffordUpgrade){
-		
-		string text = "Starting oil determines how much oil is in the car at start of the race.\n";
-		if (canAffordUpgrade){
-			text += BuyText();
-		} else {
-			text += NotAffordText();
-		}
-		
-		return text;
+	override protected string Description(){
+		return "Starting oil determines how much oil is in the car at start of the race.";
 	}
 	
 	override protected string BuyText(){

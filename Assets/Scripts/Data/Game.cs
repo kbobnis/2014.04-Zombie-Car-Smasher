@@ -10,9 +10,10 @@ public class Game{
 
 	static Game(){
 		Me = new Game ();
-
-		Me.Player = new PlayerState (new CarConfig (CarConfig.MODE_ADV), 20);
 		Me.ClassicCarConfig = new CarConfig (CarConfig.MODE_CLASSIC);
 		Me.ClassicEnvironment = new Environment ();
+		Me.Player = new PlayerState(null, 0);
+		Me.Player.Reset ();
 	}
+
 }

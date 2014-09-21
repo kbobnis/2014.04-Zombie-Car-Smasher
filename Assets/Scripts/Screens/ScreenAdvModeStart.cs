@@ -27,7 +27,7 @@ public class ScreenAdvModeStart : MonoBehaviour {
 
 		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.3), GuiHelper.PercentH (0.5), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
-		GuiHelper.DrawButton ("Shields: " + state.CarConfig.Shield.Count, GuiHelper.MicroFont, 0.55, 0.43, 0.3, 0.15, delegate() {
+		GuiHelper.DrawButton ("Shields: " + state.CarConfig.Shield.Value, GuiHelper.MicroFont, 0.55, 0.43, 0.3, 0.15, delegate() {
 			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 			su.PrepareWith(state.CarConfig.Shield);
 			Destroy(this);
@@ -51,7 +51,7 @@ public class ScreenAdvModeStart : MonoBehaviour {
 			Destroy(this);
 		});
 
-		GuiHelper.DrawButton ("Fuel tank: " + state.CarConfig.FuelTank.Capacity, GuiHelper.MicroFont, 0.55, 0.65, 0.3, 0.15, delegate() {
+		GuiHelper.DrawButton ("Fuel tank: " + state.CarConfig.FuelTank.Value, GuiHelper.MicroFont, 0.55, 0.65, 0.3, 0.15, delegate() {
 			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 			su.PrepareWith(state.CarConfig.FuelTank);
 			Destroy(this);

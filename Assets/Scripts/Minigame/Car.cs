@@ -31,7 +31,7 @@ public class Car : MonoBehaviour {
 		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
 		gameObject.transform.localScale = new Vector3(scale, scale);
 
-		if (carConfig.Shield.Count > 0) {
+		if (carConfig.Shield.Value > 0) {
 			ShieldCompo sc = gameObject.AddComponent<ShieldCompo>();
 			sc.Prepare(carConfig.Shield);
 		}
@@ -56,7 +56,7 @@ public class Car : MonoBehaviour {
 		}
 
 		Fuel fuel = gameObject.AddComponent<Fuel>(); 
-		fuel.MaxAmount = carConfig.FuelTank.Capacity;
+		fuel.MaxAmount = carConfig.FuelTank.Value;
 		fuel.Amount = carConfig.StartingOil.Value;
 
 		CarTurner carTurner = gameObject.AddComponent<CarTurner>();

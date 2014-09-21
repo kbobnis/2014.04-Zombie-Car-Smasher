@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using GooglePlayGames;
 
@@ -13,6 +13,7 @@ public class ScreenSplash : MonoBehaviour {
 			sl.Text = "Logging into google games";
 			CarSmasherSocial.InitializeSocial (false, sl.EndMe, sl.EndMe);
 		}
+		Game.Me.Player.Load ();
 		Sounds.LoadSounds ();
 	}
 	
@@ -54,10 +55,14 @@ public class ScreenSplash : MonoBehaviour {
 
 		Texture googlePlay = CarSmasherSocial.Authenticated ? SpriteManager.GetGooglePlay () : SpriteManager.GetInactiveGooglePlay ();
 		if (GUI.Button(new Rect(GuiHelper.PercentW(0.06), GuiHelper.PercentH(0.3), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), googlePlay, GuiHelper.CustomButton)){
-
 			ScreenLoading sl = gameObject.AddComponent<ScreenLoading> ();
 			sl.Text = CarSmasherSocial.Authenticated?"Logging out of google games":"Logging into google games";
 			CarSmasherSocial.InitializeOrLogOut(true, sl.EndMe, sl.EndMe);
+		}
+
+		if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.3), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), SpriteManager.GetRemoveIcon (), GuiHelper.CustomButton)){
+			Game.Me.Player.Reset();
+			Game.Me.Player.Save();
 		}
 	}
 
