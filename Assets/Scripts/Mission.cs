@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum MissionId{
-	D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11,
-	F1,
+	D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, DREN,
+	F1, F2, F3, FREN,
 	CLASSIC
 }
 
@@ -14,12 +14,14 @@ public class Mission{
 	private Reward _Reward;
 	public string Title, Description;
 	private Environment _Env;
+	private bool Renewable;
 	/**
 	 * Id is used to save data if this mission was done
 	 **/
 	public MissionId Id;
 
-	public Mission(MissionId id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env){
+	public Mission(MissionId id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env, bool renewable=false){
+		Renewable = renewable;
 		_Env = env;
 		Id = id;
 		InGameReqs = inGameReqs;
@@ -96,7 +98,10 @@ public class Mission{
 			}
 		}
 		return allIsOk;
+	}
 
+	public bool IsRenewable(){
+		return Renewable;
 	}
 }
 

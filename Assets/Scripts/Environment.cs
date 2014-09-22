@@ -4,8 +4,8 @@ public class Environment{
 
 	private float _CoinChance;
 
-	public float WallChance = 0.12f;
-	public float HoleChance = 0.12f;
+	public float WallChance;
+	public float HoleChance;
 	public float BuffFuelChance;
 	public int FirstClearStreets = 5;
 	public float BuffOilValue = 10;
@@ -17,17 +17,19 @@ public class Environment{
 		return coinChance;
 	}
 
-	public Environment(float coinChance=0.01f, float buffFuelChance=0.037f){
+	public Environment(float coinChance=0.01f, float buffFuelChance=0.037f, float wallChance=0.12f, float holeChance=0.12f){
 		_CoinChance = coinChance;
 		BuffFuelChance = buffFuelChance;
+		WallChance = wallChance;
+		HoleChance = holeChance;
 	}
 
 
 	public static Environment ClassicMission{
-		get { return new Environment (0, 0); }
+		get { return new Environment (0, 0.004f); }
 	}
 
 	public static Environment FuelMission{
-		get { return new Environment (0.0f, 0.03f); }
+		get { return new Environment (0.0f, 0.03f, 0.4f, 0.4f); }
 	}
 }

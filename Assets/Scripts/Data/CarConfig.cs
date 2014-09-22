@@ -40,7 +40,7 @@ public class CarConfig
 				MaxCarSpeed = 6.5f;
 				FuelTank.Value = 50;
 				FuelTank.Level = 1;
-				Wheel.Value =1f;
+				Wheel.Value =0.75f;
 				Wheel.Level = 1;
 				Combustion.Value = 1.5f;
 				Combustion.Level = 1;

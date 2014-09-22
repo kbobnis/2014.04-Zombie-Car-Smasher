@@ -42,6 +42,11 @@ public class ShieldCompo : MonoBehaviour {
 		tile.TileContent = TileContent.NONE;
 		return true;
 	}
+	void OnGUI(){
+		if (ShieldCount > 0){
+			GuiHelper.DrawText("shield: "+ShieldCount, GuiHelper.SmallFontLeft, 0.1, 0.1, 0.3, 0.15);
+		}
+	}
 
 
 }

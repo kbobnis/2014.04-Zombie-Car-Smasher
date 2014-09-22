@@ -3,7 +3,7 @@ using UnityEngine;
 public class FuelTank : CarStatistic{
 	
 	override public int UpgradeCost(){
-		return (int)(2 * Value);
+		return (int)(Value / 5);
 	}
 	override protected string Description(){
 		return "Fuel tank lets you gather more fuel at a time.";
