@@ -28,25 +28,20 @@ public class CarConfig
 			case MODE_CLASSIC: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				FuelTank.Value = 100;
-				Wheel.Value =2f;
+				FuelTank.SetValue( 100 );
+				Wheel.SetValue(2f);
 				_CarTexture = SpriteManager.GetCar();
-				Combustion.Value = 0.85f;
-				StartingOil.Value = 85;
+				Combustion.SetValue(0.85f);
+				StartingOil.SetValue( 85 );
 				break;
 			}
 			case MODE_ADV: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				FuelTank.Value = 50;
-				FuelTank.Level = 1;
-				Wheel.Value =0.75f;
-				Wheel.Level = 1;
-				Combustion.Value = 1.5f;
-				Combustion.Level = 1;
-				StartingOil.Value = 35;
-				StartingOil.Level = 1;
-				Shield.Level = 1;
+				FuelTank.SetValue( 50 );
+				Wheel.SetValue (0.75f);
+				Combustion.SetValue(  1.5f );
+				StartingOil.SetValue( 35 );
 				_CarTexture = SpriteManager.GetCarAdventure();
 				break;
 			}
@@ -76,7 +71,7 @@ public class CarConfig
 		foreach (Result result in afterGameResults) {
 			switch(result.ScoreType){
 				case SCORE_TYPE.SHIELDS_USED:
-					Shield.Value -= result.Value;
+					Shield.Used(result.Value);
 					break;
 			}
 		}

@@ -19,7 +19,7 @@ public class Wheel : CarStatistic
 	}
 
 	override protected void InnerUpgrade(){
-		Value = ValueAfterUpgrade ();
+		_Value = ValueAfterUpgrade ();
 	}
 
 	override public string TopText(){

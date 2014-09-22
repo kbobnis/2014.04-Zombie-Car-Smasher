@@ -20,7 +20,7 @@ public class Combustion : CarStatistic
 	}
 
 	override protected void InnerUpgrade(){
-		Value = ValueAfterUpgrade ();
+		SetValue( ValueAfterUpgrade () );
 	}
 
 	override public string TopText(){

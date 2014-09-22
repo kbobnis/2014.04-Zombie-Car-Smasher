@@ -14,7 +14,7 @@ public class FuelTank : CarStatistic{
 	}
 	
 	override protected void InnerUpgrade(){
-		Value += 1;
+		_Value += 1;
 	}
 	
 	override public string TopText(){
