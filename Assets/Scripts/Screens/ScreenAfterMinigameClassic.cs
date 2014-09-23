@@ -120,11 +120,6 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 					CarSmasherSocial.ShowLeaderBoard();
 				}
 				
-				Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.52), GuiHelper.PercentH(0.56), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
-					Sounds.Mute(!Sounds.IsMuted());
-				}
-				
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.67), GuiHelper.PercentW(0.45), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
 					Minigame m = gameObject.AddComponent<Minigame>();
 					m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);

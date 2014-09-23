@@ -93,6 +93,9 @@ public class Minigame : MonoBehaviour {
 		CarConfig.UpdateCar (afterGameAchievements);
 		Player.Save ();
 		Destroy (Car.GetComponent<Fuel> ());
+		if (Car.GetComponent<ShieldCompo>() != null){
+			Destroy (Car.GetComponent<ShieldCompo> ());
+		}
 
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
 	}
