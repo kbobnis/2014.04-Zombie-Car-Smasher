@@ -85,7 +85,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 			} else if (ShowRideInfoScreen){
 				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
 				
-				GuiHelper.DrawText ("Collect oil drops to replenish fuel tank. Omit obstacles.\n"+
+				GuiHelper.DrawText ("Collect oil drops to replenish fuel tank. Avoid obstacles.\n"+
 				                    "\nDistance made: "+Distance+
 				                    "\nTurns made: "+Turns+
 				                    "\nFuel picked up: "+FuelPickedUp+" "+
