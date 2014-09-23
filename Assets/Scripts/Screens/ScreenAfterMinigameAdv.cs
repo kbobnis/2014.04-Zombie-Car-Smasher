@@ -10,6 +10,10 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 	private Dictionary<int, Result[]> InGameResults;
 	private Result[] AfterGameResults;
 	private bool Passed;
+	private int CoinsCollected;
+	private int TaskDoneAmount;
+	private int TaskToBeDoneAmount;
+	private SCORE_TYPE TaskToBeDone;
 
 	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameAdv samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameAdv> ();
@@ -26,6 +30,19 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 		if (Passed = Mission.Passed (InGameResults, AfterGameResults)) {
 			player.MissionDone (Mission);
 		}
+		foreach(AchievQuery aq in Mission.AfterGameReqs){
+			TaskToBeDone = aq.ScoreType;
+			TaskToBeDoneAmount = aq.Value;
+		}
+
+		foreach(Result r in afterGameResults){
+			if (r.ScoreType == SCORE_TYPE.COINS){
+				CoinsCollected = r.Value;
+			}
+			if (r.ScoreType == TaskToBeDone){
+				TaskDoneAmount = r.Value;
+			}
+		}
 
 	}
 
@@ -41,13 +58,16 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 		});
 
 
-		GuiHelper.DrawAtTop (Passed ? "Congratulations!" : "You have failed");
-		string text = "";
+		GuiHelper.DrawAtTop ("Mission " + (Passed ? "Completed" : "Failed"));
+		string text = "Done " + TaskDoneAmount + "/" + TaskToBeDoneAmount + " of ("+ Mission.Description + ")\n";
+
 		if (Passed) {
-			text = "Congratulations, you have passed the mission. You are rewarded with " + Mission.Reward.Description;
+			text += "Reward:  " + Mission.Reward.Description+"\n\n";
 		} else {
-			text = "You can try again this mission and get the reward: " + Mission.Reward.Description + "\n\n Need more coins? You can find some in the classic mode";
+			text += "Try again and get the reward: " + Mission.Reward.Description+"\n\n";
 		}
+		text += "Coins collected: " + CoinsCollected + "\n";
+		text += "Distance driven: " + Distance + "\n\n";
 		GuiHelper.DrawBeneathLine(text);
 	}
 }

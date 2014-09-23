@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GuiHelper.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Screens\ScreenAfterMinigameAdv.cs">
     <Files>
-      <File FileName="Assets\Scripts\Minigame\BeingHit.cs" Line="15" Column="4" />
-      <File FileName="Assets\Scripts\GuiHelper.cs" Line="205" Column="31" />
+      <File FileName="Assets\Scripts\Screens\ScreenAfterMinigameClassic.cs" Line="5" Column="1" />
+      <File FileName="Assets\Scripts\Screens\ScreenAfterMinigameAdv.cs" Line="69" Column="53" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -20,6 +20,7 @@ public class GuiHelper : MonoBehaviour {
 	public static GUIStyle SmallFontBrown = new GUIStyle ();
 	public static GUIStyle MicroFont;
 	public static GUIStyle MicroFontLeft;
+	public static GUIStyle MicroFontTop;
 
 	void Update () {
 		foreach(MyKeyValue one in blinking) {
@@ -65,6 +66,14 @@ public class GuiHelper : MonoBehaviour {
 			MicroFontLeft.font = (Font)Resources.Load ("Fluf");
 			MicroFontLeft.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			MicroFontLeft.alignment = TextAnchor.UpperLeft;
+
+			MicroFontTop = new GUIStyle();//("button");
+			MicroFontTop.fontSize = 25 * Screen.width / 480;
+			MicroFontTop.font = (Font)Resources.Load ("Fluf");
+			MicroFontTop.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+			MicroFontTop.alignment = TextAnchor.UpperCenter;
+			MicroFontTop.wordWrap = true;
+
 
 			CustomButton = new GUIStyle ();//("button");
 			CustomButton.fontSize = 30 * Screen.width / 480;
@@ -191,14 +200,14 @@ public class GuiHelper : MonoBehaviour {
 		GuiHelper.DrawText (text, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
 	}
 	public static void DrawBeneathLine(string text){
-		GuiHelper.DrawText (text, GuiHelper.MicroFont, 0.1, 0.3, 0.75, 0.07);
+		GuiHelper.DrawText (text, GuiHelper.MicroFontTop, 0.1, 0.25, 0.75, 0.07);
 	}
 	public static void DrawMissionLabel(int slot, string name, string detail, string reward, AfterButton afterButton){
 		double y = 0.1 + slot * 0.15;
-		GuiHelper.DrawText (name, MicroFont, 0.1, y, 0.3, 0.15); 
-		GuiHelper.DrawText (detail, MicroFont, 0.3, y-0.02, 0.5, 0.15);
-		GuiHelper.DrawText (reward, MicroFont, 0.3, y+0.02, 0.5, 0.15);
-		GuiHelper.ButtonWithText(0.8, y + 0.07, 0.15, 0.15, "Race", SpriteManager.GetRoundButton(), SmallFont, afterButton);
+		GuiHelper.DrawText (name, MicroFontLeft, 0.1, y, 0.3, 0.15); 
+		GuiHelper.DrawText (detail, MicroFontLeft, 0.37, y-0.02, 0.5, 0.15);
+		GuiHelper.DrawText (reward, MicroFontLeft, 0.37, y+0.02, 0.5, 0.15);
+		GuiHelper.ButtonWithText(0.82, y + 0.02, 0.15, 0.15, "Race", SpriteManager.GetRoundButton(), SmallFont, afterButton);
 	}
 
 	public static void YesButton(AfterYesM afterYes, string text="Yes"){
