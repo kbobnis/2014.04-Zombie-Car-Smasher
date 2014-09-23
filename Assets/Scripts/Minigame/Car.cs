@@ -31,15 +31,18 @@ public class Car : MonoBehaviour {
 		float scale = InGamePosition.tileH / carRenderer.bounds.size.y ;
 		gameObject.transform.localScale = new Vector3(scale, scale);
 
-		if (carConfig.Shield.Value > 0) {
+
+		if (carConfig.CarStatistics[CarStatisticType.SHIELD].Value > 0) {
 			ShieldCompo sc = gameObject.AddComponent<ShieldCompo>();
-			sc.Prepare(carConfig.Shield);
+			sc.Prepare(carConfig.CarStatistics[CarStatisticType.SHIELD]);
 		}
-		
+	
 		Speeder speeder = gameObject.AddComponent<Speeder>();
-		speeder.v = carConfig.StartingCarSpeed;
-		speeder.RideCost = carConfig.Combustion.Value;
-		
+		speeder.Prepare(carConfig.CarStatistics[CarStatisticType.COMBUSTION], carConfig.StartingCarSpeed);
+
+		Fuel fuel = gameObject.AddComponent<Fuel>(); 
+		fuel.Prepare (carConfig.CarStatistics [CarStatisticType.FUEL_TANK], carConfig.CarStatistics [CarStatisticType.STARTING_OIL]);
+
 		gameObject.AddComponent<InGamePosition>();
 
 		float shooterProbability = 0;
@@ -55,12 +58,8 @@ public class Car : MonoBehaviour {
 			gameObject.AddComponent<Shooter>();
 		}
 
-		Fuel fuel = gameObject.AddComponent<Fuel>(); 
-		fuel.MaxAmount = carConfig.FuelTank.Value;
-		fuel.Amount = carConfig.StartingOil.Value;
-
 		CarTurner carTurner = gameObject.AddComponent<CarTurner>();
-		carTurner.TurnSpeed = carConfig.Wheel.Value;
+		carTurner.Prepare (carConfig.CarStatistics [CarStatisticType.WHEEL]);
 
 		Accelerator accelerator = gameObject.AddComponent<Accelerator> ();
 		accelerator.Prepare (carConfig.MaxCarSpeed, 300);

@@ -14,6 +14,10 @@ public class CarTurner : MonoBehaviour {
 
 	public float TurnSpeed;
 
+	public void Prepare(CarStatistic wheel){
+		TurnSpeed = wheel.Value;
+
+	}
 	// Update is called once per frame
 	void Update () {
 

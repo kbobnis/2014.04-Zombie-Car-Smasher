@@ -19,7 +19,7 @@ public class PlayerState  {
 	}
 
 	public void Reset(){
-		Initialize (new CarConfig (CarConfig.MODE_ADV), 20);
+		Initialize (new CarConfig (CarConfig.MODE_ADV), 2220);
 		MissionsDone.Clear ();
 	}
 
@@ -73,6 +73,7 @@ public class PlayerState  {
 		dict ["missionsDone"] = MiniJSON.Json.Serialize (MissionsDone);
 		dict ["carConfig"] = CarConfig.Serialize ();
 		string state = MiniJSON.Json.Serialize (dict);
+		Debug.Log ("serialize player state: " + state);
 		return state;
 	}
 

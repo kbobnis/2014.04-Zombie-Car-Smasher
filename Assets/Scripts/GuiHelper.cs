@@ -19,6 +19,7 @@ public class GuiHelper : MonoBehaviour {
 	public static GUIStyle CustomButton ;
 	public static GUIStyle SmallFontBrown = new GUIStyle ();
 	public static GUIStyle MicroFont;
+	public static GUIStyle MicroFontLeft;
 
 	void Update () {
 		foreach(MyKeyValue one in blinking) {
@@ -57,6 +58,13 @@ public class GuiHelper : MonoBehaviour {
 			MicroFont.font = (Font)Resources.Load ("Fluf");
 			MicroFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			MicroFont.alignment = TextAnchor.MiddleCenter;
+			MicroFont.wordWrap = true;
+
+			MicroFontLeft = new GUIStyle();//("button");
+			MicroFontLeft.fontSize = 20 * Screen.width / 480;
+			MicroFontLeft.font = (Font)Resources.Load ("Fluf");
+			MicroFontLeft.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
+			MicroFontLeft.alignment = TextAnchor.UpperLeft;
 
 			CustomButton = new GUIStyle ();//("button");
 			CustomButton.fontSize = 30 * Screen.width / 480;
@@ -183,7 +191,7 @@ public class GuiHelper : MonoBehaviour {
 		GuiHelper.DrawText (text, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
 	}
 	public static void DrawBeneathLine(string text){
-		GuiHelper.DrawText (text, GuiHelper.SmallFontTop, 0.1, 0.2, 0.75, 0.07);
+		GuiHelper.DrawText (text, GuiHelper.MicroFont, 0.1, 0.3, 0.75, 0.07);
 	}
 	public static void DrawMissionLabel(int slot, string name, string detail, string reward, AfterButton afterButton){
 		double y = 0.1 + slot * 0.15;

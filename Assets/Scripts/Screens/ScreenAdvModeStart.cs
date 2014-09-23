@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScreenAdvModeStart : MonoBehaviour {
 
@@ -25,38 +26,18 @@ public class ScreenAdvModeStart : MonoBehaviour {
 		GuiHelper.DrawAtTop ("Adventure mode");
 		GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFont, 0.1, 0.1, 0.8, 0.4);
 
-		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.3), GuiHelper.PercentH (0.5), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
+		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.6), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
-		GuiHelper.DrawButton ("Shields: " + state.CarConfig.Shield.Value, GuiHelper.MicroFont, 0.55, 0.43, 0.3, 0.15, delegate() {
-			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
-			su.PrepareWith(state.CarConfig.Shield);
-			Destroy(this);
-		});
-
-		GuiHelper.DrawButton ("Combustion: " + state.CarConfig.Combustion.Value, GuiHelper.MicroFont, 0.1, 0.43, 0.3, 0.15, delegate() {
-			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
-			su.PrepareWith(state.CarConfig.Combustion);
-			Destroy(this);
-		});
-
-		GuiHelper.DrawButton ("Wheel: " + state.CarConfig.Wheel.Value, GuiHelper.MicroFont, 0.1, 0.55, 0.3, 0.15, delegate() {
-			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
-			su.PrepareWith(state.CarConfig.Wheel);
-			Destroy(this);
-		});
-
-		GuiHelper.DrawButton ("Starting oil: " + state.CarConfig.StartingOil.Value, GuiHelper.MicroFont, 0.55, 0.55, 0.3, 0.15, delegate() {
-			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
-			su.PrepareWith(state.CarConfig.StartingOil);
-			Destroy(this);
-		});
-
-		GuiHelper.DrawButton ("Fuel tank: " + state.CarConfig.FuelTank.Value, GuiHelper.MicroFont, 0.55, 0.65, 0.3, 0.15, delegate() {
-			ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
-			su.PrepareWith(state.CarConfig.FuelTank);
-			Destroy(this);
-		});
-
+		float y = 0.42f;
+		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
+			CarStatistic cs = kvp.Value;
+			GuiHelper.DrawButton (cs.Type.Name()+": "+ cs.Value + " " + (cs.CanUpgrade(state.Coins)?"(Upgrade for "+cs.UpgradeCost()+")":""), GuiHelper.MicroFontLeft, 0.1, y, 0.6, 0.04, delegate() {
+				ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
+				su.PrepareWith(cs);
+				Destroy(this);
+			});
+			y += 0.07f;
+		}
 
 		GuiHelper.ButtonWithText(0.45, 0.85, 0.3, 0.3, "Select mission", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
 			ScreenSelectMission ssm = gameObject.AddComponent<ScreenSelectMission>();

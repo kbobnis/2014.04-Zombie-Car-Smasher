@@ -8,40 +8,41 @@ public class CarConfig
 	public float DefaultCarStartingSpeed;
 	public float MaxCarSpeed;
 
-	public Shield Shield;
-	public Combustion Combustion;
-	public Wheel Wheel;
-	public StartingOil StartingOil;
-	public FuelTank FuelTank;
+	public Dictionary<CarStatisticType, CarStatistic> CarStatistics = new Dictionary<CarStatisticType, CarStatistic>();
 
 	public const string MODE_CLASSIC = "classic";
 	public const string MODE_ADV = "adventure";
 
 	public CarConfig(string mode){
-		Shield = new Shield ();
-		Combustion = new Combustion ();
-		Wheel = new Wheel ();
-		StartingOil = new StartingOil ();
-		FuelTank = new FuelTank ();
+
+		CarStatistic combustion = new CarStatistic (CarStatisticType.COMBUSTION);
+		CarStatistic fuelTank = new CarStatistic (CarStatisticType.FUEL_TANK);
+		CarStatistic shield = new CarStatistic (CarStatisticType.SHIELD);
+		CarStatistic wheel = new CarStatistic (CarStatisticType.WHEEL);
+		CarStatistic startingOil = new CarStatistic ( CarStatisticType.STARTING_OIL);
+		startingOil.AddDependency (new Dependency (fuelTank, CarStatisticParam.Value, SIGN.BIGGER, startingOil));
+
+		CarStatistics.Add (CarStatisticType.COMBUSTION, combustion);
+		CarStatistics.Add (CarStatisticType.FUEL_TANK, fuelTank);
+		CarStatistics.Add (CarStatisticType.SHIELD, shield);
+		CarStatistics.Add (CarStatisticType.WHEEL, wheel);
+		CarStatistics.Add (CarStatisticType.STARTING_OIL, startingOil);
 
 		switch (mode) {
 			case MODE_CLASSIC: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				FuelTank.SetValue( 100 );
-				Wheel.SetValue(2f);
+				startingOil.Value = 85;
+				fuelTank.Value =  100 ;
+				wheel.Value = 2f;
 				_CarTexture = SpriteManager.GetCar();
-				Combustion.SetValue(0.85f);
-				StartingOil.SetValue( 85 );
+				combustion.Value = 0.85f;
+				
 				break;
 			}
 			case MODE_ADV: {
 				DefaultCarStartingSpeed = 5f;
 				MaxCarSpeed = 6.5f;
-				FuelTank.SetValue( 50 );
-				Wheel.SetValue (0.75f);
-				Combustion.SetValue(  1.5f );
-				StartingOil.SetValue( 35 );
 				_CarTexture = SpriteManager.GetCarAdventure();
 				break;
 			}
@@ -68,32 +69,24 @@ public class CarConfig
 	}
 
 	public void UpdateCar(Result[] afterGameResults){
-		foreach (Result result in afterGameResults) {
-			switch(result.ScoreType){
-				case SCORE_TYPE.SHIELDS_USED:
-					Shield.Used(result.Value);
-					break;
-			}
-		}
 	}
 
 	internal string Serialize(){
 		Dictionary<string, string> dict = new Dictionary<string, string> ();
-		dict ["shield"] = ""+Shield.Serialize();
-		dict ["combustion"] = "" + Combustion.Serialize ();
-		dict ["wheel"] = "" + Wheel.Serialize();
-		dict ["startingOil"] = "" + StartingOil.Serialize ();
-		dict ["fuelTank"] = "" + FuelTank.Serialize ();
+		foreach (KeyValuePair<CarStatisticType, CarStatistic> cs in CarStatistics) {
+			dict[""+cs.Key.ToString()] = "" + cs.Value.Serialize();
+		}
 		return MiniJSON.Json.Serialize(dict);
 	}
 
 	internal void Deserialize(string serialized){
 		Dictionary<string, object> dict = (Dictionary<string, object>)MiniJSON.Json.Deserialize (serialized);
-		Shield.Deserialize((string)dict["shield"]);
-		Combustion.Deserialize((string)dict["combustion"]);
-		Wheel.Deserialize((string)dict["wheel"]);
-		StartingOil.Deserialize((string)dict["startingOil"]);
-		FuelTank.Deserialize ((string)dict ["fuelTank"]);
+		foreach (KeyValuePair<string, object> kvp in dict) {
+			CarStatistic cs = CarStatistic.Deserialize((string)kvp.Value);
+			if (cs != null){
+				CarStatistics[cs.Type] = cs;
+			}
+		}
 	}
 }
 

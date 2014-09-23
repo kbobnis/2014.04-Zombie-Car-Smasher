@@ -1,26 +1,56 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-abstract public class CarStatistic
+public class CarStatistic
 {
-	protected int Level;
-	protected float _Value;
+	public CarStatisticType Type;
+	private List<Dependency> Dependencies = new List<Dependency> ();
+	private int _Level;
+	private float ManuallySetValue = -1;
 
-	abstract public string TopText();
-	abstract protected string BuyText ();
-	abstract protected void InnerUpgrade ();
-	abstract public int UpgradeCost();
-	abstract protected string Description();
-
-	public CarStatistic(){
+	public CarStatistic(CarStatisticType type){
+		Type = type;
 		Level = 1;
 	}
 
-	public float Value{
-		get { return _Value; }
+	public int Level{
+		set { 
+			_Level = value; 
+			if (Level < 1) {
+				throw new UnityException("You can not have level lower than 1: " + Level);
+			}
+		}
+		get { return _Level; }
 	}
 
-	virtual public void SetValue(float v){
-		_Value = v;
+	public float Value{
+		get { return ManuallySetValue!=-1?ManuallySetValue:Type.ValueForLevel (_Level); }
+		set { ManuallySetValue = value; }
+	}
+
+
+	public bool CanUpgrade(int coins){
+		bool canAfford = Type.UpgradeCost(Level+1) < coins;
+
+		bool dependenciesOk = true;
+		foreach (Dependency dependency in Dependencies) {
+			if (!dependency.IsMet()){
+				dependenciesOk = false;
+			}
+		}
+		return canAfford && dependenciesOk;
+	}
+
+	public int UpgradeCost(){
+		return Type.UpgradeCost (Level + 1);
+	}
+
+	public string TopText(){
+		return "Upgrade " + Type.Name();
+	}
+
+	public void AddDependency(Dependency dependency){
+		Dependencies.Add (dependency);
 	}
 
 	protected string NotAffordText(){
@@ -29,31 +59,54 @@ abstract public class CarStatistic
 
 	public void Upgrade (){
 		Level++;
-		InnerUpgrade ();
+	}
+
+	public void Downgrade(int howManyLevels){ 
+		Level -= howManyLevels;
 	}
 
 	public string Serialize(){
-		return MiniJSON.Json.Serialize( new List<string>(){ ""+Level, ""+Value} );
+		Dictionary<string, string> dict = new Dictionary<string, string> ();
+		dict ["Type"] = Type.ToString ();
+		dict ["Level"] = "" + Level;
+		return MiniJSON.Json.Serialize(dict);
 	}
 
-	public void Deserialize(string serialized){
-		List<object> list = (List<object>)MiniJSON.Json.Deserialize(serialized);
-		Level = int.Parse( (string)list[0] );
-		SetValue( float.Parse( (string)list [1]) );
+	public static CarStatistic Deserialize(string serialized){
+		Dictionary<string, object> dict = (Dictionary<string, object>)MiniJSON.Json.Deserialize(serialized);
+		CarStatistic cs = null;
+		if (dict.ContainsKey ("Type")) {
+			CarStatisticType type = (CarStatisticType)System.Enum.Parse(typeof(CarStatisticType), (string)dict["Type"]);
+			cs = new CarStatistic(type);
+			cs.Level = int.Parse((string) dict["Level"]);
+		}
+		return cs;
 	}
 
 	public string Info(bool canAffordUpgrade){
 		
-		string text = Description()+"\n";
-		if (canAffordUpgrade){
-			text += BuyText();
-		} else {
+		string text = Type.Description()+"\n\n";
+		bool dependenciesOk = true;
+		string dependencyText = "";
+		foreach (Dependency dependency in Dependencies) {
+			if (!dependency.IsMet()){
+				dependenciesOk = false;
+				dependencyText = dependency.FailText;
+			}
+		}
+
+		if (canAffordUpgrade && dependenciesOk){
+			text += Type.UpgradeText();
+		} else if (!dependenciesOk){
+			text += dependencyText;
+		} else if (!canAffordUpgrade){
 			text += NotAffordText();
 		}
+
+		text = text.Replace("{value}", ""+Value);
+		text = text.Replace("{valueAfterUpgrade}", ""+Type.ValueForLevel(Level+1));
+		text = text.Replace("{upgradeCost}", ""+UpgradeCost());
 		return text;
 	}
-
-
-
 }
 

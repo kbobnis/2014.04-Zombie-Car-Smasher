@@ -22,6 +22,12 @@ public class Speeder : MonoBehaviour
 		get{ return _v; }
 	}
 
+	public void Prepare(CarStatistic combustion, float startingCarSpeed){
+		v = startingCarSpeed;
+		RideCost = combustion.Value;
+
+	}
+
 	void Start () {
 		DriveSound = gameObject.AddComponent<AudioSource> ();
 		DriveSound.clip = Sounds.CarDrive;

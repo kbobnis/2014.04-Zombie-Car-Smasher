@@ -178,57 +178,99 @@ public class GoogleLeaderboard{
 public enum SCORE_TYPE{
 	DISTANCE, FUEL_PICKED, FUEL_PICKED_WHEN_LOW, TURNS, FUEL_PICKED_IN_ROW, COINS, SHIELDS_USED
 }
+
 public enum SIGN{
-	SMALLER_EQUAL, EQUAL, BIGGER_EQUAL, NO_MATTER
+	SMALLER_EQUAL, EQUAL, BIGGER_EQUAL, NO_MATTER, SMALLER, BIGGER
+}
+public static class SIGNMETHODS {
+	public static bool IsMet(this SIGN s1, float v1, float v2){
+		switch (s1) {
+			case SIGN.BIGGER_EQUAL:
+				return v1 >= v2;
+			case SIGN.EQUAL:
+				return v1 == v2;
+			case SIGN.NO_MATTER: 
+				return true;
+			case SIGN.SMALLER_EQUAL:
+				return v1 <= v2;
+			case SIGN.SMALLER:
+				return v1 < v2;
+			case SIGN.BIGGER:
+				return v1 > v2;
+			default:
+				throw new UnityException("There is no sign: " + s1);
+		}
+	}
+
+	public static string Text(this SIGN s1){
+		switch (s1) {
+			case SIGN.BIGGER_EQUAL:
+				return "bigger or equal";
+			case SIGN.SMALLER_EQUAL:
+				return "smaller or equal";
+			case SIGN.EQUAL:
+				return "equal";
+			case SIGN.NO_MATTER:
+				return "no matter";
+			case SIGN.SMALLER:
+				return "smaller";
+			case SIGN.BIGGER:
+				return "bigger";
+			default:
+				throw new UnityException("There is no sign: " + s1);
+		}
+	}
+
 }
 enum ACHIEVEMENT_TYPE{
 	INCREMENTAL, UNLOCKABLE
 }
 
-public class Result{
-	protected SCORE_TYPE _ScoreType;
+public class Result: BaseResult<SCORE_TYPE>{
+	public Result(SCORE_TYPE scoreType, int value):base(scoreType, value){
+	}
+}
+public class BaseResult<T>{
+	protected T _ScoreType;
 	protected int _Value;
 	
-	public SCORE_TYPE ScoreType{
+	public T ScoreType{
 		get { return _ScoreType; }
 	}
 	public int Value {
 		get { return _Value; }
 	}
 	
-	public Result(SCORE_TYPE scoreType, int value){
+	public BaseResult(T scoreType, int value){
 		_ScoreType = scoreType;
 		_Value = value;
 	}
 }
+public class AchievQuery : BaseAchievQuery<SCORE_TYPE>{
+	public AchievQuery(SCORE_TYPE scoreType, SIGN sign, int value):base(scoreType, sign, value){
+	}
+}
 
-public class AchievQuery : Result {
+public class BaseAchievQuery<T> : BaseResult<T> {
 	private SIGN _Sign;
 	
 	public SIGN Sign {
 		get { return _Sign; }
 	}
 	
-	public AchievQuery(SCORE_TYPE scoreType, SIGN sign, int value):base(scoreType, value){
+	public BaseAchievQuery(T scoreType, SIGN sign, int value):base(scoreType, value){
 		_Sign = sign;
 	}
 	
-	public bool IsTheSameType(Result r){
-		return ScoreType == r.ScoreType;
+	public bool IsTheSameType(BaseResult<T> r){
+		return ScoreType.Equals(r.ScoreType);
 	}
-	public bool CanAccept(Result r){
-		if (!IsTheSameType (r)) {
+	public bool CanAccept(BaseResult<T> r){
+		if (!IsTheSameType (r)){
 			return true;
 		}
-		
-		switch (Sign) {
-		case SIGN.BIGGER_EQUAL: return r.Value >= Value;
-		case SIGN.EQUAL : return Value == r.Value;
-		case SIGN.SMALLER_EQUAL : return r.Value <= Value;
-		case SIGN.NO_MATTER: return true;
-		default:
-			throw new UnityException("There is no operation for sign: " + Sign);
-		}
+
+		return Sign.IsMet (r.Value, Value);
 	}
 	
 }

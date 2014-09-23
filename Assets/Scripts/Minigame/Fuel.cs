@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Fuel : MonoBehaviour {
 
-	private float LowAmountFrom = 20;
+	private float LowAmountFrom = 0.2f;
 	private AudioSource LowFuelAudioSource;
 
 	private float _Amount;
@@ -10,9 +10,6 @@ public class Fuel : MonoBehaviour {
 		get { return _Amount; }
 		set {
 			_Amount = value;
-			if (_Amount > 100){
-				_Amount = 100;
-			} 
 			if (IsLowFuel() ){
 				if (LowFuelAudioSource != null && !LowFuelAudioSource.isPlaying){
 					LowFuelAudioSource.Play();
@@ -35,6 +32,12 @@ public class Fuel : MonoBehaviour {
 		}
 	}
 
+	public void Prepare (CarStatistic fuelTank, CarStatistic startingOil){
+		MaxAmount = (int)fuelTank.Value;
+		Amount = (int)startingOil.Value;
+	}
+
+
 	public void PickedUpFuel(float fuelAmount){
 		Amount += fuelAmount;
 		PlaySingleSound.SpawnSound (Sounds.PickUpFuel, gameObject.transform.position);
@@ -49,7 +52,7 @@ public class Fuel : MonoBehaviour {
 	}
 
 	public bool IsLowFuel(){
-		return Amount <= LowAmountFrom;
+		return Amount / (float)MaxAmount < LowAmountFrom;
 	}
 	
 	// Update is called once per frame
@@ -62,7 +65,7 @@ public class Fuel : MonoBehaviour {
 
 	void OnGUI(){
 
-		if (Amount <= LowAmountFrom) {
+		if (IsLowFuel()) {
 			GuiHelper.DrawElementBlink ("images/fuel", 0.015, 0.114, 0.07, 0.55, -1 , 0.55 * Amount / MaxAmount, true); 
 			GuiHelper.DrawElementBlink ("images/border", 0.01, 0.1, 0.1, 0.55);
 		} else {
