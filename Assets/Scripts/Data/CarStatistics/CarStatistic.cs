@@ -103,8 +103,9 @@ public class CarStatistic
 			text += NotAffordText();
 		}
 
-		text = text.Replace("{value}", ""+Value);
-		text = text.Replace("{valueAfterUpgrade}", ""+Type.ValueForLevel(Level+1));
+
+		text = text.Replace("{value}", ""+string.Format("{0:0.00}", Value));
+		text = text.Replace("{valueAfterUpgrade}", ""+string.Format("{0:0.00}", Type.ValueForLevel(Level+1)));
 		text = text.Replace("{upgradeCost}", ""+UpgradeCost());
 		return text;
 	}

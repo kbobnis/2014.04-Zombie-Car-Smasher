@@ -57,7 +57,7 @@ static public class CarStatisticTypeMethods{
 	public static float ValueForLevel(this CarStatisticType type, float _level){
 		float level = _level - 1; // because we start from level 1 not zero
 		switch(type){
-		case CarStatisticType.COMBUSTION: return type.StartingValue() - (level * 0.1f) ;
+		case CarStatisticType.COMBUSTION: return type.StartingValue() - (level * 0.05f) ;
 		case CarStatisticType.FUEL_TANK: return type.StartingValue() + (level * 1);
 		case CarStatisticType.SHIELD: return type.StartingValue() + (level * 1);
 		case CarStatisticType.WHEEL: return type.StartingValue() + (level * 0.15f);
@@ -69,7 +69,7 @@ static public class CarStatisticTypeMethods{
 	
 	public static int UpgradeCost(this CarStatisticType type, int level){
 		switch(type){
-		case CarStatisticType.COMBUSTION: return level * 10;
+		case CarStatisticType.COMBUSTION: return 100 + level * 20;
 		case CarStatisticType.FUEL_TANK: return Mathf.RoundToInt( type.ValueForLevel(level) / 5 );
 		case CarStatisticType.SHIELD: return 10 * level;
 		case CarStatisticType.WHEEL: return 10 * level;

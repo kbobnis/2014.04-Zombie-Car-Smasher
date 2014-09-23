@@ -34,7 +34,7 @@ public class ScreenAdvModeStart : MonoBehaviour {
 		float y = 0.42f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
 			CarStatistic cs = kvp.Value;
-			GuiHelper.DrawButton (cs.Type.Name()+": "+ cs.Value + " " + (cs.CanUpgrade(state.Coins)?"(Upgrade for "+cs.UpgradeCost()+")":""), GuiHelper.MicroFontLeft, 0.1, y, 0.6, 0.04, delegate() {
+			GuiHelper.DrawButton (cs.Type.Name()+": "+ string.Format("{0:0.00}", cs.Value) + " " + (cs.CanUpgrade(state.Coins)?"(Upgrade for "+cs.UpgradeCost()+")":""), GuiHelper.MicroFontLeft, 0.1, y, 0.6, 0.04, delegate() {
 				ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 				su.PrepareWith(cs);
 				Destroy(this);
