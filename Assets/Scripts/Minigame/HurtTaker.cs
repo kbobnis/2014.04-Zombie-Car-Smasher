@@ -3,8 +3,23 @@ using System.Collections;
 
 public class HurtTaker : MonoBehaviour {
 
+	private float FadeTime = 3;
+	private float LostTime;
 	public bool HasLost;
 	public string LostReason;
+
+	void Update(){
+		if (LostTime != 0 &&  LostTime + FadeTime < Time.time) {
+			HasLost = true;
+		}
+	}
+
+	void OnGUI(){
+		if (LostReason != null){
+			GuiHelper.DrawText(LostReason, GuiHelper.SmallFont, 0.2, 0.4, 0.6, 0.1);
+		}
+	}
+
 
 	public void TakeHurt(Tile fromWhat){
 
@@ -21,13 +36,14 @@ public class HurtTaker : MonoBehaviour {
 			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Camera.main.transform.position);	
 		} 
 		LostReason = "Hit into obstacle";
-		HasLost = true;
+		LostTime = Time.time;
+		Destroy (GetComponent<Speeder> ());
+		Destroy (GetComponent<CarTurner> ());
 	}
 
 	public void OutOfOil(){
 		PlaySingleSound.SpawnSound(Sounds.NoMoreFuel, Camera.main.transform.position, 0.4f);
 		Die (null);
 		LostReason = "Out of fuel";
-		HasLost = true;
 	}
 }

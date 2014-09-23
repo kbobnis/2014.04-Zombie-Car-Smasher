@@ -58,7 +58,7 @@ public class CarConfig
 			float bestScore =  topScores.Count==0?0:topScores[0];
 			float carStartingSpeed = DefaultCarStartingSpeed;
 			if (bestScore < 200){
-				carStartingSpeed = 3 + bestScore/200 * 2;
+				//carStartingSpeed = 3 + bestScore/200 * 2;
 			}
 			return carStartingSpeed;
 		}
