@@ -13,11 +13,11 @@ public class Environment{
 	public float CactusChance = 0.05f;
 
 	public float GetCoinChance(int distance){
-		float coinChance = _CoinChance + distance / 10000f;
+		float coinChance = _CoinChance>0?_CoinChance + distance / 10000f:0;
 		return coinChance;
 	}
 
-	public Environment(float coinChance=0.01f, float buffFuelChance=0.037f, float wallChance=0.12f, float holeChance=0.12f){
+	public Environment(float coinChance=0.0f, float buffFuelChance=0.037f, float wallChance=0.12f, float holeChance=0.12f){
 		_CoinChance = coinChance;
 		BuffFuelChance = buffFuelChance;
 		WallChance = wallChance;
