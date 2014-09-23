@@ -9,8 +9,8 @@ public enum MissionId{
 
 public class Mission{
 
-	private AchievQuery[] InGameReqs;
-	private AchievQuery[] AfterGameReqs;
+	private List<AchievQuery> InGameReqs = new List<AchievQuery>();
+	public List<AchievQuery> AfterGameReqs = new List<AchievQuery>();
 	private Reward _Reward;
 	public string Title, Description;
 	private Environment _Env;
@@ -24,8 +24,19 @@ public class Mission{
 		Renewable = renewable;
 		_Env = env;
 		Id = id;
-		InGameReqs = inGameReqs;
-		AfterGameReqs = afterGameReqs;
+
+
+		if (inGameReqs != null) {
+			foreach(AchievQuery aq in inGameReqs){
+				InGameReqs.Add(aq);
+			}
+		}
+		if (afterGameReqs != null){
+			foreach(AchievQuery aq in afterGameReqs){
+				AfterGameReqs.Add(aq);
+			}
+		}
+
 		_Reward = reward;
 		foreach (AchievQuery gameReq in afterGameReqs) {
 			switch (gameReq.ScoreType) {
@@ -45,6 +56,42 @@ public class Mission{
 				throw new UnityException ("ther is no description and title for score type : " + gameReq.ScoreType);
 			}
 		}
+	}
+
+	public int GetAmountDone(Result[] results){
+		int amountDone = 0;
+
+		SCORE_TYPE type = GetScoreType();
+		foreach(Result r in results){
+			if (r.ScoreType == type){
+				amountDone = r.Value;
+			}
+		}
+		return amountDone;
+	}
+
+	public SCORE_TYPE GetAmountType(){
+		SCORE_TYPE s = SCORE_TYPE.COINS; //it can't be null
+		foreach(AchievQuery aq in AfterGameReqs){
+			s = aq.ScoreType;
+		}
+		return s;
+	}
+
+	public int GetAmountFull(){
+		int amountFull = 0;
+		foreach(AchievQuery aq in AfterGameReqs){
+			amountFull = aq.Value;
+		}
+		return amountFull;
+	}
+
+	private SCORE_TYPE GetScoreType(){
+		SCORE_TYPE type = SCORE_TYPE.COINS; //it can't be null
+		foreach(AchievQuery aq in AfterGameReqs){
+			type = aq.ScoreType;
+		}
+		return type;
 	}
 
 	public Reward Reward{
@@ -70,14 +117,14 @@ public class Mission{
 				break;
 			}
 		}
-		if (InGameResults.Count == 0 && InGameReqs.Length > 0) {
+		if (InGameResults.Count == 0 && InGameReqs.Count > 0) {
 			passed = false;
 		}
 
 		return passed && Check (AfterGameReqs, AfterGameResults);
 	}
 
-	private static bool Check(AchievQuery[] reqs, Result[] results){
+	private static bool Check(List<AchievQuery> reqs, Result[] results){
 		bool allIsOk = true;
 
 		foreach (AchievQuery query in reqs) {

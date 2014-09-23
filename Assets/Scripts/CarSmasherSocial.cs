@@ -199,6 +199,16 @@ public class GoogleLeaderboard{
 public enum SCORE_TYPE{
 	DISTANCE, FUEL_PICKED, FUEL_PICKED_WHEN_LOW, TURNS, FUEL_PICKED_IN_ROW, COINS, SHIELDS_USED
 }
+public static class ScoreTypeMethods{
+	public static string HumanName(this SCORE_TYPE s){
+		switch(s){
+			case SCORE_TYPE.DISTANCE: return "Distance";
+			case SCORE_TYPE.COINS: return "Coins";
+			case SCORE_TYPE.FUEL_PICKED: return "Fuel";
+			default: return s.ToString();
+		}
+	}
+}
 
 public enum SIGN{
 	SMALLER_EQUAL, EQUAL, BIGGER_EQUAL, NO_MATTER, SMALLER, BIGGER

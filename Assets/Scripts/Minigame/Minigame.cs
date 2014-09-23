@@ -9,6 +9,7 @@ public class Minigame : MonoBehaviour {
 	private int LastCarWasAt = 0;
 	private bool Pressed = false;
 	public int Distance =0;
+	private string MissionInfo = "";
 
 	private Dictionary<int, Result[]> InGameAchievements = new Dictionary<int, Result[]> ();
 	private AfterMinigameF AfterMinigame;
@@ -161,6 +162,24 @@ public class Minigame : MonoBehaviour {
 				Streets.Add(maxStreet+1, CreateStreet(maxStreet+1, Streets[maxStreet], false, Mission.Env));
 			}
 
+			MissionInfo = null;
+			//update mission query
+			if (Mission.AfterGameReqs.Count > 0){
+				
+				int amountDone = Mission.GetAmountDone(new Result[]{
+					new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car>().TurnsMade),
+					new Result(SCORE_TYPE.DISTANCE, Distance),
+					new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car>().FuelPickedUpThisGame),
+					new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car>().FuelPickedUpInARow),
+					new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car>().FuelPickedUpWhenLow)
+				});
+				int amountFull = Mission.GetAmountFull();
+				string amountType = Mission.GetAmountType().HumanName();
+
+				if (amountFull != 0){
+					MissionInfo = "" + amountDone + " / " + amountFull + " " + amountType;
+				}
+			}
 		}
 
 	}
@@ -171,8 +190,10 @@ public class Minigame : MonoBehaviour {
 	}
 
 	void OnGUI () {
-		GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
-		GUI.Label (new Rect (GuiHelper.oneTenthW*5, GuiHelper.oneTenthH/2, Screen.width, Screen.height), "Coins: " + Car.GetComponent<Car>().PickedUpCoins, GuiHelper.SmallFontLeft);
+
+		string m = MissionInfo != null ? MissionInfo : "Distance: " + Distance;
+		GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), m, GuiHelper.SmallFontLeft);
+
 	}
 
 }
