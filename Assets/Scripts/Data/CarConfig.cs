@@ -87,6 +87,11 @@ public class CarConfig
 				CarStatistics[cs.Type] = cs;
 			}
 		}
+
+		//dependencies. those car statistics must to be in every carConfig.
+		CarStatistic startingOil = CarStatistics[CarStatisticType.STARTING_OIL];
+		CarStatistic fuelTank = CarStatistics[CarStatisticType.FUEL_TANK];
+		startingOil.AddDependency (new Dependency (fuelTank, CarStatisticParam.Value, SIGN.BIGGER, startingOil));
 	}
 }
 
