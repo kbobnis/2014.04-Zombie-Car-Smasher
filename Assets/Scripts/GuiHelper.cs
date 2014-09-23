@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public delegate void AfterButton();
+
 public class GuiHelper : MonoBehaviour {
 
 	private static List<MyKeyValue> blinking = new List<MyKeyValue>();
 	private static Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
 
-	public delegate void AfterButton();
 	public static int oneThirdW = Screen.width/3;
 	public static int oneThirdH = Screen.height/3;
 	public static int oneTenthW = Screen.width/10;
@@ -191,9 +192,16 @@ public class GuiHelper : MonoBehaviour {
 		}
 	}
 
-	public static void DrawBackground(AfterButton afterButton){
+	public static void DrawBackground(AfterButton afterButton, bool showSettings=true){
 		GuiHelper.DrawElement("Images/popupWindow", 0.01, 0.03, 0.98, 1);
 		GuiHelper.ButtonWithText (0.9, 0.92, 0.4, 0.2, "", SpriteManager.GetBackButton (), GuiHelper.CustomButton, afterButton);
+
+		if (showSettings && GUI.Button(new Rect(GuiHelper.PercentW(0.8), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.2)), SpriteManager.GetSettingsIcon(), GuiHelper.CustomButton)){
+			ScreenOptions so = Camera.main.gameObject.AddComponent<ScreenOptions>();
+			so.Prepare(delegate(){
+				Destroy(so);
+			});
+		}
 	}
 
 	public static void DrawAtTop(string text){

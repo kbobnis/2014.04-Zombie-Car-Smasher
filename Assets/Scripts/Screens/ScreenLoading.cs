@@ -27,6 +27,7 @@ public class ScreenLoading : MonoBehaviour {
 		if (Now > EndTime) {
 			Destroy (this);
 		}
+		GUI.depth = 0;
 	}
 
 	public void EndMe(){

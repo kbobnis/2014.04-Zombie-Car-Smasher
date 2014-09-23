@@ -11,6 +11,8 @@ public class Minigame : MonoBehaviour {
 	public int Distance =0;
 	private string MissionInfo = "";
 	private bool FanfarePlayed;
+	private bool IsGameOver;
+	public static Minigame Me;
 
 	private Dictionary<int, Result[]> InGameAchievements = new Dictionary<int, Result[]> ();
 	private AfterMinigameF AfterMinigame;
@@ -23,6 +25,10 @@ public class Minigame : MonoBehaviour {
 	public delegate void AfterMinigameF(Dictionary<int, Result[]> unlockResults, Result[] incremenentResult, string endGameReason, int distance, Mission mission, PlayerState player);
 
 	public void PrepareRace(PlayerState player, AfterMinigameF afterMinigame, Mission mission, CarConfig chosenCar){
+		if (Me != null) {
+			Me.UnloadResources();
+		}
+		Me = this;
 		AfterMinigame = afterMinigame;
 		Mission = mission;
 		Player = player;
@@ -69,7 +75,7 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void GameOver(string reason){
-
+		IsGameOver = true;
 		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.FAIL);
 
 		//results to unlock and increment achievements (we don't want to increment achievements several times for one ride)
@@ -86,11 +92,9 @@ public class Minigame : MonoBehaviour {
 		Player.RewardHim (Mission, InGameAchievements, afterGameAchievements);
 		CarConfig.UpdateCar (afterGameAchievements);
 		Player.Save ();
+		Destroy (Car.GetComponent<Fuel> ());
 
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
-
-		UnloadResources ();
-		Destroy (this);
 	}
 
 	public void UnloadResources(){
@@ -113,11 +117,10 @@ public class Minigame : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Car.GetComponent<HurtTaker> ().HasLost) {
+		if (Car != null && Car.GetComponent<HurtTaker>() != null && Car.GetComponent<HurtTaker> ().HasLost) {
+			Destroy(Car.GetComponent<HurtTaker>());
 			GameOver(Car.GetComponent<HurtTaker>().LostReason);
 		}
-
-
 
 		if (Car == null) {
 			return ;
@@ -196,8 +199,10 @@ public class Minigame : MonoBehaviour {
 
 	void OnGUI () {
 
-		string m = MissionInfo != null ? MissionInfo : "Distance: " + Distance;
-		GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), m, GuiHelper.SmallFontLeft);
+		if (!IsGameOver){
+			string m = MissionInfo != null ? MissionInfo : "Distance: " + Distance;
+			GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), m, GuiHelper.SmallFontLeft);
+		}
 
 	}
 

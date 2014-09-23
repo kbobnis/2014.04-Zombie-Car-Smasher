@@ -1,16 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Screens\ScreenAfterMinigameAdv.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Screens\ScreenSplash.cs">
     <Files>
-      <File FileName="Assets\Scripts\Screens\ScreenAfterMinigameClassic.cs" Line="5" Column="1" />
-      <File FileName="Assets\Scripts\Screens\ScreenAfterMinigameAdv.cs" Line="69" Column="53" />
+      <File FileName="Assets\Scripts\Screens\ScreenSplash.cs" Line="51" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="D:\workspace\zombieCarSmasher\Assets\Scripts\CarSmasherSocial.cs" line="78" />
-      <Breakpoint file="D:\workspace\zombieCarSmasher\Assets\Scripts\Screens\ScreenAsk.cs" line="19" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
