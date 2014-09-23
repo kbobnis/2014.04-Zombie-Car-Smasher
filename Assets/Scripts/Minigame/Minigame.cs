@@ -10,6 +10,7 @@ public class Minigame : MonoBehaviour {
 	private bool Pressed = false;
 	public int Distance =0;
 	private string MissionInfo = "";
+	private bool FanfarePlayed;
 
 	private Dictionary<int, Result[]> InGameAchievements = new Dictionary<int, Result[]> ();
 	private AfterMinigameF AfterMinigame;
@@ -178,6 +179,10 @@ public class Minigame : MonoBehaviour {
 
 				if (amountFull != 0){
 					MissionInfo = "" + amountDone + " / " + amountFull + " " + amountType;
+					if (amountDone >= amountFull && !FanfarePlayed){
+						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position);
+						FanfarePlayed = true;
+					}
 				}
 			}
 		}
