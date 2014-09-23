@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
 	public TileContent _TileContent;
 	public float Value;
 	private GameObject Parent;
+	public bool Conflicting = true;
 
 	public float Lane{
 		set {

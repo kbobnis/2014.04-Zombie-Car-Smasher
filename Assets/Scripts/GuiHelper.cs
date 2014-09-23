@@ -201,8 +201,8 @@ public class GuiHelper : MonoBehaviour {
 		GuiHelper.ButtonWithText(0.8, y + 0.07, 0.15, 0.15, "Race", SpriteManager.GetRoundButton(), SmallFont, afterButton);
 	}
 
-	public static void YesButton(AfterYesM afterYes){
-		GuiHelper.ButtonWithText(0.4, 0.8, 0.3, 0.3, "Yes", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
+	public static void YesButton(AfterYesM afterYes, string text="Yes"){
+		GuiHelper.ButtonWithText(0.5, 0.85, 0.4, 0.3, text, SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
 			afterYes();
 		});
 	}

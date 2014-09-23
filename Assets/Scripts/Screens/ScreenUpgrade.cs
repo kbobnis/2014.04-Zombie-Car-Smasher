@@ -17,7 +17,7 @@ public class ScreenUpgrade : MonoBehaviour {
 		GuiHelper.DrawAtTop (CarStatistic.TopText ());
 		GuiHelper.DrawBeneathLine (CarStatistic.Info (canUpgrade));
 		if (canUpgrade) {
-			GuiHelper.ButtonWithText(0.4, 0.8, 0.3, 0.3, "Yes", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
+			GuiHelper.YesButton(delegate() {
 				ps.BuyAndUpgrade(CarStatistic);
 				ps.Save();
 			});

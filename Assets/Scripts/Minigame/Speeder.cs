@@ -66,7 +66,7 @@ public class Speeder : MonoBehaviour
 
 	public void GMIsOn(Tile tile){
 		//if crashed
-		if (tile.TileContent == TileContent.HOLE && GetComponent<Flyier>() == null){
+		if (tile.TileContent == TileContent.HOLE && GetComponent<Flyier>() == null && tile.Conflicting){
 			GetComponent<HurtTaker>().TakeHurt(tile);
 		}
 		
@@ -74,7 +74,7 @@ public class Speeder : MonoBehaviour
 			if (GetComponent<Destroyer>() != null){
 				tile.TileContent  = TileContent.NONE;
 				Destroy(tile);
-			} else { 
+			} else if (tile.Conflicting){ 
 				GetComponent<HurtTaker>().TakeHurt(tile);
 			}
 		}

@@ -48,9 +48,10 @@ public class ScreenAdvModeStart : MonoBehaviour {
 			y += 0.06f;
 		}
 
-		GuiHelper.ButtonWithText(0.45, 0.85, 0.3, 0.3, "Select mission", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
+
+		GuiHelper.YesButton(delegate() {
 			ScreenSelectMission ssm = gameObject.AddComponent<ScreenSelectMission>();
 			Destroy(this);
-		});
+		}, "Select Mission");
 	}
 }

@@ -39,7 +39,8 @@ public class ShieldCompo : MonoBehaviour {
 		ShieldStatistic.Downgrade (1);
 		PlaySingleSound.SpawnSound (Sounds.DoorSlam, gameObject.transform.position);
 		GetComponent<Car> ().ShieldsUsed++;
-		tile.TileContent = TileContent.NONE;
+		BeingHit bh = tile.gameObject.AddComponent<BeingHit> ();
+		bh.Prepare (GetComponent<Speeder> ().v);
 		return true;
 	}
 	void OnGUI(){
