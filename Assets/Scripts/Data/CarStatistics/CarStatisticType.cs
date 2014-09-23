@@ -73,7 +73,7 @@ static public class CarStatisticTypeMethods{
 		case CarStatisticType.FUEL_TANK: return Mathf.RoundToInt( type.ValueForLevel(level) / 5 );
 		case CarStatisticType.SHIELD: return 10 * level;
 		case CarStatisticType.WHEEL: return 10 * level;
-		case CarStatisticType.STARTING_OIL: return 10 * level;
+		case CarStatisticType.STARTING_OIL: return 1 * level;
 		default: 
 			throw new UnityException("there is no type: " + type);
 		}

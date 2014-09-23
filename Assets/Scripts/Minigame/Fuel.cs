@@ -5,11 +5,15 @@ public class Fuel : MonoBehaviour {
 	private float LowAmountFrom = 0.2f;
 	private AudioSource LowFuelAudioSource;
 
-	private float _Amount;
+	//public for _Amount visible in unity editor
+	public float _Amount;
 	public float Amount{
 		get { return _Amount; }
 		set {
 			_Amount = value;
+			if (_Amount > MaxAmount){
+				_Amount = MaxAmount;
+			}
 			if (IsLowFuel() ){
 				if (LowFuelAudioSource != null && !LowFuelAudioSource.isPlaying){
 					LowFuelAudioSource.Play();
