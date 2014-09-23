@@ -83,6 +83,11 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 				}
 				
 			} else if (ShowRideInfoScreen){
+				GuiHelper.DrawBackground(delegate() {
+					ShowRideInfoScreen = false;
+				});
+
+
 				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
 				
 				GuiHelper.DrawText ("Collect oil drops to replenish fuel tank. Avoid obstacles.\n"+
@@ -92,10 +97,6 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 				                    "(in a row: "+FuelPickedUpInARow+") "+
 				                    "(when low: "+FuelPickedUpWhenLow+") "
 				                    , GuiHelper.SmallFont, 0.1, 0.5, 0.75, 0.07);
-				GuiHelper.ButtonWithText(0.9, 0.92, 0.4, 0.2, "", SpriteManager.GetBackButton(), GuiHelper.CustomButton, delegate() {
-					ShowRideInfoScreen = false;
-				});
-				
 			} else {
 
 				GuiHelper.DrawBackground(delegate() {
