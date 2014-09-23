@@ -58,7 +58,7 @@ public class Mission{
 
 
 	public static Mission Classic{
-		get { return new Mission (MissionId.CLASSIC, new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0, 0), new Environment()); } 
+		get { return new Mission (MissionId.CLASSIC, new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0), new Environment()); } 
 	}
 
 	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){

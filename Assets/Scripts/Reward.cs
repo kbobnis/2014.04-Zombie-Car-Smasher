@@ -2,13 +2,12 @@ public class Reward{
 	public int Coins;
 	public int Exp;
 	
-	public Reward(int coins, int exp){
+	public Reward(int coins){
 		Coins = coins;
-		Exp = exp;
 	}
 	
 	public string Description{
-		get { return Coins + " Coins, "+Exp+" Exp"; }
+		get { return Coins + " Coins"; }
 	}
 	
 

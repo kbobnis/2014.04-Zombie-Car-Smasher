@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class PlayerState  {
 
 	private int _Coins;
-	private int Exp;
 	private Dictionary<MissionId, bool> MissionsDone = new Dictionary<MissionId, bool>();
 	public CarConfig CarConfig;
 
@@ -26,10 +25,6 @@ public class PlayerState  {
 	public void BuyAndUpgrade(CarStatistic cs){
 		_Coins -= cs.UpgradeCost ();
 		cs.Upgrade ();
-	}
-
-	public int Level{
-		get { return Mathf.FloorToInt( Exp / 10) + 1; }
 	}
 
 	public int Coins{
@@ -63,13 +58,11 @@ public class PlayerState  {
 
 	private void GetReward(Reward r){
 		_Coins += r.Coins;
-		Exp += r.Exp;
 	}
 
 	private string Serialize(){
 		Dictionary<string, string> dict = new Dictionary<string, string> ();
 		dict ["coins"] = ""+_Coins;
-		dict ["exp"] = ""+Exp;
 		dict ["missionsDone"] = MiniJSON.Json.Serialize (MissionsDone);
 		dict ["carConfig"] = CarConfig.Serialize ();
 		string state = MiniJSON.Json.Serialize (dict);
@@ -90,7 +83,6 @@ public class PlayerState  {
 	private void Deserialize(string serialized){
 		Dictionary<string, object> dict =  (Dictionary<string, object>)MiniJSON.Json.Deserialize (serialized);
 		_Coins = int.Parse( (string)dict ["coins"]);
-		Exp = int.Parse( (string)dict ["exp"]);
 		Dictionary<string, object> tmp = (Dictionary<string, object>)MiniJSON.Json.Deserialize ((string)dict ["missionsDone"]);
 		foreach (KeyValuePair<string, object> kvp in tmp) {
 			MissionId parsed = (MissionId)System.Enum.Parse(typeof(MissionId), kvp.Key);

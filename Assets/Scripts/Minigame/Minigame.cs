@@ -52,8 +52,6 @@ public class Minigame : MonoBehaviour {
 		GetComponent<GoogleMobileAdsKProjekt> ().HideBanner ();
 
 		GoogleAnalyticsKProjekt.LogScreenOnce(ANALYTICS_SCREENS.GAME);
-		gameObject.GetComponent<TopInfoBar> ().enabled = false;
-
 	}
 
 	void OnApplicationFocus(bool pauseStatus){
@@ -69,7 +67,6 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void GameOver(string reason){
-		GetComponent<TopInfoBar> ().enabled = true;
 
 		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.FAIL);
 

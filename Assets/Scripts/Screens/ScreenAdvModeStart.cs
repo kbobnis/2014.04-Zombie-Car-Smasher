@@ -24,7 +24,10 @@ public class ScreenAdvModeStart : MonoBehaviour {
 		});
 
 		GuiHelper.DrawAtTop ("Adventure mode");
-		GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFont, 0.1, 0.1, 0.8, 0.4);
+
+		GuiHelper.DrawText ("Available coins: " + state.Coins, GuiHelper.SmallFontTop, 0.1, 0.2, 0.8, 0.1);
+		GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFontTop, 0.1, 0.27, 0.8, 0.1);
+
 
 		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.6), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
