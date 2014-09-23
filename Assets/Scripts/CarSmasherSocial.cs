@@ -4,6 +4,7 @@ using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
 using System.Collections.Generic;
 
+
 delegate int ProcessScore (int score);
 public delegate void AfterAuthenticateD ();
 
@@ -57,9 +58,9 @@ public class CarSmasherSocial : MonoBehaviour {
 		LeaderBoards.Add (new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES));
 	}
 
-	public static void InitializeOrLogOut(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null){
+	public static void InitializeOrLogOut(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null, MonoBehaviour mb=null){
 		if (!Authenticated) {
-			InitializeSocial (forceUI, afterSuccess, afterFailure); 
+			InitializeSocial (forceUI, afterSuccess, afterFailure, mb); 
 		} else {
 			((PlayGamesPlatform) Social.Active).SignOut();
 			Authenticated = false;
@@ -69,14 +70,28 @@ public class CarSmasherSocial : MonoBehaviour {
 		}
 	}
 
-	public static void InitializeSocial(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null){
+	public static void InitializeSocial(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null, MonoBehaviour mb=null){
 		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
 
-		if (!Authenticated && (HasPreviouslyAccepted () || forceUI)) {
+		AuthenticationAnswer aa = GetPreviousAnswer ();
+		if (!Authenticated && aa == AuthenticationAnswer.NeverAsked && mb != null) {
+			ScreenAsk sa = mb.gameObject.AddComponent<ScreenAsk>();
+			Destroy(mb);
+			sa.Prepare(delegate(){
+				CarSmasherSocial.SaveAnswerForAuthentication(CarSmasherSocial.AuthenticationAnswer.Accepted);
+				sa.gameObject.AddComponent<ScreenSplash>();
+				Destroy(sa);
+				
+			}, delegate() {
+				CarSmasherSocial.SaveAnswerForAuthentication(CarSmasherSocial.AuthenticationAnswer.Denied);
+				sa.gameObject.AddComponent<ScreenSplash>();
+				Destroy(sa);
+			});
+		} else if (!Authenticated && (aa == AuthenticationAnswer.Accepted || forceUI)) {
 			Social.localUser.Authenticate ((bool success) => {
 				Authenticated = success;
-				SaveAnswerForAuthentication (success);
+				SaveAnswerForAuthentication (success?AuthenticationAnswer.Accepted:AuthenticationAnswer.Denied);
 				if (Authenticated){
 					if (afterSuccess != null) {
 						afterSuccess ();
@@ -94,16 +109,20 @@ public class CarSmasherSocial : MonoBehaviour {
 		}
 	}
 
-	/**
-	 * We automatically ask only for the first time
-	 **/
-	private static bool HasPreviouslyAccepted(){
-		return PlayerPrefs.GetString ("hasPreviouslyAccepted", "yes") == "yes";
+	public static AuthenticationAnswer GetPreviousAnswer(){
+		string previousAnswer = PlayerPrefs.GetString ("previousAnswer");
+		AuthenticationAnswer aa = previousAnswer == "" ? AuthenticationAnswer.NeverAsked : (AuthenticationAnswer)System.Enum.Parse (typeof(AuthenticationAnswer), previousAnswer);
+		return aa;
 	}
 
-	private static void SaveAnswerForAuthentication(bool answer){
-		PlayerPrefs.SetString ("hasPreviouslyAccepted", answer ? "yes" : "no");
+	public enum AuthenticationAnswer {
+		Accepted, Denied, NeverAsked
 	}
+
+	public static void SaveAnswerForAuthentication(AuthenticationAnswer answer){
+		PlayerPrefs.SetString ("previousAnswer", answer.ToString());
+	}
+
 
 	public static void UpdateAchievements (Result[] results){
 		foreach (GoogleAchievement ach in Achievements) {
@@ -153,6 +172,8 @@ public class CarSmasherSocial : MonoBehaviour {
 			InitializeSocial(true, Social.ShowAchievementsUI, delegate(){});
 		}
 	}
+
+
 
 }
 public class GoogleLeaderboard{

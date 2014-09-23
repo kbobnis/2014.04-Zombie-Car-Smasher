@@ -22,7 +22,7 @@ public class ScreenLoading : MonoBehaviour {
 	void OnGUI(){
 		GUI.depth = -1;
 		GuiHelper.DrawElement ("Images/LoadingScreen", 0, 0, 1, 1);
-		GuiHelper.DrawText (Text+"\n"+Dots, GuiHelper.SmallFontBrown, 0, 0, 1, 1);
+		GuiHelper.DrawText (Text+"\n"+string.Format("{0:0.0}", Dots), GuiHelper.SmallFontBrown, 0, 0, 1, 1);
 		float Now = System.DateTime.Now.Second;
 		if (Now > EndTime) {
 			Destroy (this);
@@ -31,8 +31,14 @@ public class ScreenLoading : MonoBehaviour {
 
 	public void EndMe(){
 		System.DateTime time = System.DateTime.Now;
-		EndTime = time.Second;// + 3;
+		EndTime = time.Second;
 		Dots = 4f;
+	}
+
+	public void EndMeIn(int seconds){
+		System.DateTime time = System.DateTime.Now;
+		EndTime = time.Second + seconds;
+		Dots = seconds;
 	}
 
 	public static float Round(float value, int digits)

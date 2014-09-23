@@ -29,7 +29,7 @@ public class ScreenAdvModeStart : MonoBehaviour {
 		GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFontTop, 0.1, 0.27, 0.8, 0.1);
 
 
-		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.6), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
+		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.65), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
 		float y = 0.44f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){

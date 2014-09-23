@@ -54,14 +54,14 @@ public class GuiHelper : MonoBehaviour {
 			SmallFontLeft.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
 			MicroFont = new GUIStyle();//("button");
-			MicroFont.fontSize = 20 * Screen.width / 480;
+			MicroFont.fontSize = 25 * Screen.width / 480;
 			MicroFont.font = (Font)Resources.Load ("Fluf");
 			MicroFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			MicroFont.alignment = TextAnchor.MiddleCenter;
 			MicroFont.wordWrap = true;
 
 			MicroFontLeft = new GUIStyle();//("button");
-			MicroFontLeft.fontSize = 20 * Screen.width / 480;
+			MicroFontLeft.fontSize = 25 * Screen.width / 480;
 			MicroFontLeft.font = (Font)Resources.Load ("Fluf");
 			MicroFontLeft.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			MicroFontLeft.alignment = TextAnchor.UpperLeft;
@@ -200,6 +200,13 @@ public class GuiHelper : MonoBehaviour {
 		GuiHelper.DrawText (reward, MicroFont, 0.3, y+0.02, 0.5, 0.15);
 		GuiHelper.ButtonWithText(0.8, y + 0.07, 0.15, 0.15, "Race", SpriteManager.GetRoundButton(), SmallFont, afterButton);
 	}
+
+	public static void YesButton(AfterYesM afterYes){
+		GuiHelper.ButtonWithText(0.4, 0.8, 0.3, 0.3, "Yes", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
+			afterYes();
+		});
+	}
+
 }
 
 public class MyKeyValue

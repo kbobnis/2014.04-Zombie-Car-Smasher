@@ -2,19 +2,19 @@ using UnityEngine;
 using System.Collections;
 using GooglePlayGames;
 
+
 public class ScreenSplash : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
 		FB.Init(delegate {});
 
-		if (!CarSmasherSocial.Authenticated){
-			ScreenLoading sl = gameObject.AddComponent<ScreenLoading> ();
-			sl.Text = "Logging into google games";
-			CarSmasherSocial.InitializeSocial (false, sl.EndMe, sl.EndMe);
+		if (!CarSmasherSocial.Authenticated && CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.NeverAsked || CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.Accepted){
+			CarSmasherSocial.InitializeSocial (false, null, null, this);
 		}
 		Game.Me.Player.Load ();
 		Sounds.LoadSounds ();
+
 	}
 	
 	// Update is called once per frame
@@ -42,7 +42,7 @@ public class ScreenSplash : MonoBehaviour {
 
 		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.SPLASH);
 
-		GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.2, 0, 0.6, 0.17);
+		GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.1, 0, 0.8, 0.17);
 
 		Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
 		if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.5), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), soundButton, GuiHelper.CustomButton)){
@@ -55,15 +55,17 @@ public class ScreenSplash : MonoBehaviour {
 
 		Texture googlePlay = CarSmasherSocial.Authenticated ? SpriteManager.GetGooglePlay () : SpriteManager.GetInactiveGooglePlay ();
 		if (GUI.Button(new Rect(GuiHelper.PercentW(0.06), GuiHelper.PercentH(0.3), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), googlePlay, GuiHelper.CustomButton)){
-			ScreenLoading sl = gameObject.AddComponent<ScreenLoading> ();
-			sl.Text = CarSmasherSocial.Authenticated?"Logging out of google games":"Logging into google games";
-			CarSmasherSocial.InitializeOrLogOut(true, sl.EndMe, sl.EndMe);
+			CarSmasherSocial.InitializeOrLogOut(true, null, null, this);
 		}
 
 		if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.3), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), SpriteManager.GetRemoveIcon (), GuiHelper.CustomButton)){
+			//Game.Me.Player.Reset();
+			//Game.Me.Player.Save();
+			PlayerPrefs.DeleteAll();
 			Game.Me.Player.Reset();
-			Game.Me.Player.Save();
 		}
 	}
+
+
 
 }
