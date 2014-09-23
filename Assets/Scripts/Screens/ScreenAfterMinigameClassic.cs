@@ -75,7 +75,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 				});
 				
 				GuiHelper.DrawText ("New High Score!", GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
-				GuiHelper.DrawText ("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFont, 0.1, 0.2, 0.75, 0.07);
+				GuiHelper.DrawText ("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFontTop, 0.1, 0.2, 0.77, 0.07);
 				
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.11)), SpriteManager.GetFbShareButton(), GuiHelper.CustomButton)){
 					CarSmasherSocial.FB.FeedHighScore(Distance);
