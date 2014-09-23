@@ -31,15 +31,21 @@ public class ScreenAdvModeStart : MonoBehaviour {
 
 		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.6), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
-		float y = 0.42f;
+		float y = 0.44f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
 			CarStatistic cs = kvp.Value;
-			GuiHelper.DrawButton (cs.Type.Name()+": "+ string.Format("{0:0.00}", cs.Value) + " " + (cs.CanUpgrade(state.Coins)?"(Upgrade for "+cs.UpgradeCost()+")":""), GuiHelper.MicroFontLeft, 0.1, y, 0.6, 0.04, delegate() {
+			string inBrackets = "";
+			if (!cs.Type.AboveMinimum(cs.Type.ValueForLevel( cs.Level+1))){
+				inBrackets = "(Best)";
+			} else if (cs.CanUpgrade(state.Coins)){
+				inBrackets = "(Upgrade for "+cs.UpgradeCost()+")";
+			}
+			GuiHelper.DrawButton (cs.Type.Name()+": "+ string.Format("{0:0.00}", cs.Value) + " " + inBrackets, GuiHelper.MicroFontLeft, 0.1, y, 0.6, 0.04, delegate() {
 				ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 				su.PrepareWith(cs);
 				Destroy(this);
 			});
-			y += 0.07f;
+			y += 0.06f;
 		}
 
 		GuiHelper.ButtonWithText(0.45, 0.85, 0.3, 0.3, "Select mission", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {

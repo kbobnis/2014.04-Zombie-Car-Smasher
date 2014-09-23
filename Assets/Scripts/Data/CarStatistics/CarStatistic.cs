@@ -38,7 +38,10 @@ public class CarStatistic
 				dependenciesOk = false;
 			}
 		}
-		return canAfford && dependenciesOk;
+
+		bool aboveMinimum = Type.AboveMinimum ( Type.ValueForLevel(Level + 1));
+
+		return canAfford && dependenciesOk && aboveMinimum;
 	}
 
 	public int UpgradeCost(){
@@ -94,9 +97,12 @@ public class CarStatistic
 				dependencyText = dependency.FailText;
 			}
 		}
+		bool minimumOk = Type.AboveMinimum (Type.ValueForLevel (Level + 1));
 
-		if (canAffordUpgrade && dependenciesOk){
+		if (canAffordUpgrade && dependenciesOk && minimumOk){
 			text += Type.UpgradeText();
+		} else if (!minimumOk){
+			text += "This statistic has best possible value";
 		} else if (!dependenciesOk){
 			text += dependencyText;
 		} else if (!canAffordUpgrade){

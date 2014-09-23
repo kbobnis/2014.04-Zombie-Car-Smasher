@@ -78,4 +78,17 @@ static public class CarStatisticTypeMethods{
 			throw new UnityException("there is no type: " + type);
 		}
 	}
+
+	public static bool AboveMinimum(this CarStatisticType type, float value){
+		switch(type){
+		case CarStatisticType.COMBUSTION: return value > 0.6;
+		case CarStatisticType.FUEL_TANK: return true;
+		case CarStatisticType.SHIELD: return true;
+		case CarStatisticType.WHEEL: return value < 3;
+		case CarStatisticType.STARTING_OIL: return true;
+		default: 
+			throw new UnityException("there is no type: " + type);
+		}
+	}
+
 }
