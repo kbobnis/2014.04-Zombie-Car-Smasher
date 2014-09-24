@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScreenAfterMinigameClassic : MonoBehaviour {
+public class ScreenAfterMinigameClassic : BaseScreen {
 
 	private int Distance;
 	private int HowManyInTopScores = 4;
@@ -16,6 +16,10 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 
 	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameClassic samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameClassic> ();
+		samc.Prepare (delegate() {
+			ScreenSplash ss = samc.gameObject.AddComponent<ScreenSplash> ();
+			Destroy (samc);
+		});
 		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission, player);
 	}
 
@@ -66,7 +70,7 @@ public class ScreenAfterMinigameClassic : MonoBehaviour {
 		//InGameAchievements.Add(bestDistance, new Result[]{new Result (SCORE_TYPE.DISTANCE, bestDistance)});
 	}
 
-	void OnGUI(){
+	override protected void OnGUIInner(){
 			
 			if (ShowNewHighScoreScreen){
 				

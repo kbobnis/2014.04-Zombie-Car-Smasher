@@ -1,0 +1,36 @@
+﻿using UnityEngine;
+using System.Collections;
+
+abstract public class BaseScreen : MonoBehaviour {
+
+	protected AfterButton AfterButton;
+	private bool ShowBackground;
+
+	public void Prepare (AfterButton afterButton, bool showBackground=true){
+		AfterButton = afterButton;
+		ShowBackground = showBackground;
+	}
+
+	virtual protected void UpdateInner(){
+	}
+
+	abstract protected void OnGUIInner();
+
+	void Update () {
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			AfterButton();
+		}
+		UpdateInner ();
+	}
+
+	void OnGUI(){
+		if (ShowBackground){
+			GuiHelper.DrawBackground (delegate() {
+				AfterButton();
+			});
+		}
+		OnGUIInner ();
+	}
+
+
+}

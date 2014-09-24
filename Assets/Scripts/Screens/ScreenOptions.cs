@@ -1,17 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScreenOptions : MonoBehaviour {
+public class ScreenOptions : BaseScreen {
 
-	private AfterButton AfterButton;
-
-	public void Prepare(AfterButton afterButton){
-		AfterButton = afterButton;
-	}
-
-	void OnGUI(){
+	override protected void OnGUIInner(){
 		GUI.depth = -1;
-		GuiHelper.DrawBackground (AfterButton, false);
 		GuiHelper.DrawAtTop ("Settings");
 
 		Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScreenAfterMinigameAdv : MonoBehaviour {
+public class ScreenAfterMinigameAdv : BaseScreen {
 
 	private int Distance;
 	private string GameOverReason;
@@ -17,6 +17,14 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 
 	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameAdv samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameAdv> ();
+		samc.Prepare (delegate() {
+			ScreenAdvModeStart sams = samc.gameObject.AddComponent<ScreenAdvModeStart>();
+			sams.Prepare(delegate() {
+				sams.gameObject.AddComponent<ScreenSplash>();
+				Destroy(sams);
+			});
+			Destroy(samc);
+		});
 		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission, player);
 	}
 	
@@ -46,14 +54,18 @@ public class ScreenAfterMinigameAdv : MonoBehaviour {
 
 	}
 
-	void OnGUI(){
+	override protected void OnGUIInner(){
 
 		GuiHelper.DrawBackground(delegate() {
 			gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
 		});
 		GuiHelper.ButtonWithText(0.5, 0.8, 0.3, 0.3, "Continue", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
-			gameObject.AddComponent<ScreenAdvModeStart>();
+			ScreenAdvModeStart sams = gameObject.AddComponent<ScreenAdvModeStart>();
+			sams.Prepare(delegate() {
+				sams.gameObject.AddComponent<ScreenSplash>();
+				Destroy(sams);
+			});
 			Destroy(this);
 		});
 

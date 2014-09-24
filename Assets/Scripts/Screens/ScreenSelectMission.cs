@@ -2,26 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScreenSelectMission : MonoBehaviour {
+public class ScreenSelectMission : BaseScreen {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-	void OnGUI(){
+	override protected void OnGUIInner(){
 		
 		PlayerState player = Game.Me.Player;
 
-		GuiHelper.DrawBackground (delegate() {
-			gameObject.AddComponent<ScreenAdvModeStart> ();
-			Destroy (this);
-		});
 		GuiHelper.DrawAtTop ("Select mission");
 
 		List<Mission> missions = new List<Mission> ();

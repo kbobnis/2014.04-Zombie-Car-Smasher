@@ -2,33 +2,15 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScreenAdvModeStart : MonoBehaviour {
+public class ScreenAdvModeStart : BaseScreen {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-	void OnGUI(){
+	override protected void OnGUIInner(){
 
 		PlayerState state = Game.Me.Player;
 
-		GuiHelper.DrawBackground (delegate() {
-			gameObject.AddComponent<ScreenSplash>();
-			Destroy(this);
-		});
-
 		GuiHelper.DrawAtTop ("Adventure mode");
-
 		GuiHelper.DrawText ("Available coins: " + state.Coins, GuiHelper.SmallFontTop, 0.1, 0.2, 0.8, 0.1);
 		GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFontTop, 0.1, 0.27, 0.8, 0.1);
-
-
 		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.65), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
 		float y = 0.44f;
@@ -51,6 +33,16 @@ public class ScreenAdvModeStart : MonoBehaviour {
 
 		GuiHelper.YesButton(delegate() {
 			ScreenSelectMission ssm = gameObject.AddComponent<ScreenSelectMission>();
+			ssm.Prepare(delegate() {
+				ScreenAdvModeStart sams = ssm.gameObject.AddComponent<ScreenAdvModeStart> ();
+				sams.Prepare(delegate() {
+					sams.gameObject.AddComponent<ScreenSplash>();
+					Destroy(sams);
+				});
+				Destroy (ssm);
+			});
+
+
 			Destroy(this);
 		}, "Select Mission");
 	}

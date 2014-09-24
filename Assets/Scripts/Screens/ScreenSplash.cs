@@ -3,7 +3,7 @@ using System.Collections;
 using GooglePlayGames;
 
 
-public class ScreenSplash : MonoBehaviour {
+public class ScreenSplash : BaseScreen {
 
 	// Use this for initialization
 	void Start () {
@@ -15,13 +15,18 @@ public class ScreenSplash : MonoBehaviour {
 		Game.Me.Player.Load ();
 		Sounds.LoadSounds ();
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
+		Prepare(delegate() {
+			ScreenQuit sq = gameObject.AddComponent<ScreenQuit>();
+			sq.Prepare(delegate(){
+				sq.gameObject.AddComponent<ScreenSplash>();
+				Destroy(sq);
+			});
+			Destroy(this);
+		}, false);
+
 	}
 
-	void OnGUI(){
+	override protected void OnGUIInner(){
 		Texture texture = SpriteManager.GetIntro();
 		float scale = (float)Screen.height / (float)texture.height;
 		int height =  Mathf.RoundToInt( scale * texture.height);
@@ -36,7 +41,13 @@ public class ScreenSplash : MonoBehaviour {
 		});
 
 		GuiHelper.ButtonWithText(0.75, 0.85, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
-			gameObject.AddComponent<ScreenAdvModeStart>();
+
+			ScreenAdvModeStart sams = gameObject.AddComponent<ScreenAdvModeStart>();
+			sams.Prepare(delegate() {
+				sams.gameObject.AddComponent<ScreenSplash>();
+				Destroy(sams);
+			});
+
 			Destroy(this);
 		});
 

@@ -78,7 +78,7 @@ public class CarSmasherSocial : MonoBehaviour {
 		if (!Authenticated && aa == AuthenticationAnswer.NeverAsked && mb != null) {
 			ScreenAsk sa = mb.gameObject.AddComponent<ScreenAsk>();
 			Destroy(mb);
-			sa.Prepare(delegate(){
+			sa.PrepareMe(delegate(){
 				CarSmasherSocial.SaveAnswerForAuthentication(CarSmasherSocial.AuthenticationAnswer.Accepted);
 				sa.gameObject.AddComponent<ScreenSplash>();
 				Destroy(sa);
