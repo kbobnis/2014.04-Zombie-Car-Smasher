@@ -15,16 +15,16 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 	private int TaskToBeDoneAmount;
 	private SCORE_TYPE TaskToBeDone;
 
+	override protected void StartInner (){
+		Prepare (delegate() {
+			gameObject.AddComponent<ScreenAdvModeStart>();
+			Destroy(this);
+		});
+	}
+
 	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameAdv samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameAdv> ();
-		samc.Prepare (delegate() {
-			ScreenAdvModeStart sams = samc.gameObject.AddComponent<ScreenAdvModeStart>();
-			sams.Prepare(delegate() {
-				sams.gameObject.AddComponent<ScreenSplash>();
-				Destroy(sams);
-			});
-			Destroy(samc);
-		});
+
 		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission, player);
 	}
 	
@@ -62,24 +62,23 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 		});
 		GuiHelper.ButtonWithText(0.5, 0.8, 0.3, 0.3, "Continue", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
 			ScreenAdvModeStart sams = gameObject.AddComponent<ScreenAdvModeStart>();
-			sams.Prepare(delegate() {
-				sams.gameObject.AddComponent<ScreenSplash>();
-				Destroy(sams);
-			});
 			Destroy(this);
 		});
 
 
 		GuiHelper.DrawAtTop ("Mission " + (Passed ? "Completed" : "Failed"));
-		string text = "Done " + TaskDoneAmount + "/" + TaskToBeDoneAmount + " of ("+ Mission.Description + ")\n";
+		string text = "";
 
 		if (Passed) {
-			text += "Reward:  " + Mission.Reward.Description+"\n\n";
+			text += "Mission completed, reward:  " + Mission.Reward.Description+"\n";
 		} else {
-			text += "Try again and get the reward: " + Mission.Reward.Description+"\n\n";
+			text += "Mission failed\n";
 		}
+		text += "" + TaskDoneAmount + " / " + TaskToBeDoneAmount + " ( "+ Mission.Description + " )\n\n";
+
 		text += "Coins collected: " + CoinsCollected + "\n";
-		text += "Distance driven: " + Distance + "\n\n";
+		//text += "Distance driven: " + Distance + "\n\n";
+
 		GuiHelper.DrawBeneathLine(text);
 	}
 }

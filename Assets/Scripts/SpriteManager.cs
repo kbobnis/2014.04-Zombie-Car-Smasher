@@ -28,6 +28,7 @@ class SpriteManager {
 	private static Texture LoadingScreen;
 	private static Texture RemoveIcon;
 	private static Texture SettingsIcon;
+	private static Texture RectangleButton;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -54,6 +55,10 @@ class SpriteManager {
 		LoadingScreen = Resources.Load<Texture> ("Images/LoadingScreen");
 		RemoveIcon = Resources.Load<Texture> ("Images/remove");
 		SettingsIcon = Resources.Load<Texture> ("Images/settings");
+		RectangleButton = Resources.Load<Texture> ("Images/rectangleButton");
+	}
+	static public Texture GetRectangleButton(){
+		return RectangleButton;
 	}
 
 	static public Texture GetSettingsIcon(){

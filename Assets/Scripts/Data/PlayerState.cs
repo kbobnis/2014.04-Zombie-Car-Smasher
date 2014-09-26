@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class PlayerState  {
 
 	private int _Coins;
-	private Dictionary<MissionId, bool> MissionsDone = new Dictionary<MissionId, bool>();
+	private Dictionary<string, bool> MissionsDone = new Dictionary<string, bool>();
 	public CarConfig CarConfig;
 
 	public PlayerState(CarConfig carConfig, int coins){
@@ -18,7 +18,7 @@ public class PlayerState  {
 	}
 
 	public void Reset(){
-		Initialize (new CarConfig (CarConfig.MODE_ADV), 50220);
+		Initialize (new CarConfig (CarConfig.MODE_ADV), 20);
 		MissionsDone.Clear ();
 	}
 
@@ -85,7 +85,8 @@ public class PlayerState  {
 		_Coins = int.Parse( (string)dict ["coins"]);
 		Dictionary<string, object> tmp = (Dictionary<string, object>)MiniJSON.Json.Deserialize ((string)dict ["missionsDone"]);
 		foreach (KeyValuePair<string, object> kvp in tmp) {
-			MissionId parsed = (MissionId)System.Enum.Parse(typeof(MissionId), kvp.Key);
+			//MissionId parsed = (MissionId)System.Enum.Parse(typeof(MissionId), kvp.Key);
+			string parsed = (string)kvp.Key;
 			if (!MissionsDone.ContainsKey(parsed)){
 				MissionsDone.Add(parsed, true);
 			}

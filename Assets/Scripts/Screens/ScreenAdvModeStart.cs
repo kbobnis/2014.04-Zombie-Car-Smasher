@@ -4,16 +4,24 @@ using System.Collections.Generic;
 
 public class ScreenAdvModeStart : BaseScreen {
 
+	override protected void StartInner (){
+		 Prepare(delegate() {
+			gameObject.AddComponent<ScreenSplash>();
+			Destroy(this);
+		});
+	}
+
+
 	override protected void OnGUIInner(){
 
 		PlayerState state = Game.Me.Player;
 
 		GuiHelper.DrawAtTop ("Adventure mode");
 		GuiHelper.DrawText ("Available coins: " + state.Coins, GuiHelper.SmallFontTop, 0.1, 0.2, 0.8, 0.1);
-		GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFontTop, 0.1, 0.27, 0.8, 0.1);
-		GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.65), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
+		//GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFontTop, 0.1, 0.27, 0.8, 0.1);
+		//GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.65), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
-		float y = 0.44f;
+		float y = 0.32f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
 			CarStatistic cs = kvp.Value;
 			string inBrackets = "";
@@ -22,28 +30,19 @@ public class ScreenAdvModeStart : BaseScreen {
 			} else if (cs.CanUpgrade(state.Coins)){
 				inBrackets = "(Upgrade for "+cs.UpgradeCost()+")";
 			}
-			GuiHelper.DrawButton (cs.Type.Name()+": "+ string.Format("{0:0.00}", cs.Value) + " " + inBrackets, GuiHelper.MicroFontLeft, 0.1, y, 0.6, 0.04, delegate() {
+			string text = cs.Type.Name()+": "+ cs.ValueFormatted + " " + inBrackets;
+			GuiHelper.ButtonWithText(0.5, y, 1, 0.15, text, SpriteManager.GetRectangleButton(), GuiHelper.MicroFont, delegate() {
 				ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
 				su.PrepareWith(cs);
 				Destroy(this);
 			});
-			y += 0.06f;
+			y += 0.093f;
 		}
 
 
 		GuiHelper.YesButton(delegate() {
-			ScreenSelectMission ssm = gameObject.AddComponent<ScreenSelectMission>();
-			ssm.Prepare(delegate() {
-				ScreenAdvModeStart sams = ssm.gameObject.AddComponent<ScreenAdvModeStart> ();
-				sams.Prepare(delegate() {
-					sams.gameObject.AddComponent<ScreenSplash>();
-					Destroy(sams);
-				});
-				Destroy (ssm);
-			});
-
-
+			ScreenStartingMission ssm = gameObject.AddComponent<ScreenStartingMission>();
 			Destroy(this);
-		}, "Select Mission");
+		}, "Race");
 	}
 }

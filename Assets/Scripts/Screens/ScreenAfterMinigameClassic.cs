@@ -13,6 +13,8 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 	private Mission Mission;
 	private PlayerState Player;
 
+	override protected void StartInner (){
+	}
 
 	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameClassic samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameClassic> ();

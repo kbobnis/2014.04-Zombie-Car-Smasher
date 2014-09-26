@@ -19,6 +19,7 @@ public class GuiHelper : MonoBehaviour {
 	public static GUIStyle SmallFontTop;
 	public static GUIStyle CustomButton ;
 	public static GUIStyle SmallFontBrown = new GUIStyle ();
+	public static GUIStyle MicroFontBrown;
 	public static GUIStyle MicroFont;
 	public static GUIStyle MicroFontLeft;
 	public static GUIStyle MicroFontTop;
@@ -85,6 +86,14 @@ public class GuiHelper : MonoBehaviour {
 			SmallFontBrown.font = (Font)Resources.Load ("Fluf");
 			SmallFontBrown.normal.textColor = new Color (41 / 255f, 41 / 255f, 41 / 255f);
 			SmallFontBrown.alignment = TextAnchor.MiddleCenter;
+			SmallFontBrown.wordWrap = true;
+
+			MicroFontBrown = new GUIStyle();//("button");
+			MicroFontBrown.fontSize = 20 * Screen.width / 480;
+			MicroFontBrown.font = (Font)Resources.Load ("Fluf");
+			MicroFontBrown.normal.textColor = new Color (41 / 255f, 41 / 255f, 41 / 255f);
+			MicroFontBrown.alignment = TextAnchor.MiddleCenter;
+			MicroFontBrown.wordWrap = true;
 		}
 	}
 

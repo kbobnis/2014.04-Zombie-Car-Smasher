@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 public class ScreenQuit : BaseScreen {
 
+	override protected void StartInner (){
+	}
+
 	override protected void OnGUIInner(){
 		GuiHelper.DrawAtTop ("Quit");
 

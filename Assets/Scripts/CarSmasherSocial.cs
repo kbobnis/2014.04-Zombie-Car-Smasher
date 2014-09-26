@@ -205,6 +205,8 @@ public static class ScoreTypeMethods{
 			case SCORE_TYPE.DISTANCE: return "Distance";
 			case SCORE_TYPE.COINS: return "Coins";
 			case SCORE_TYPE.FUEL_PICKED: return "Fuel";
+			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return "Fuel picked when low";	
+			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return "Fuel picked when low";
 			default: return s.ToString();
 		}
 	}

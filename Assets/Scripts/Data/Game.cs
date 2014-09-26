@@ -7,6 +7,7 @@ public class Game{
 	public PlayerState Player;
 	public CarConfig ClassicCarConfig;
 	public Environment ClassicEnvironment;
+	public int ClosestGui = 10;
 
 	static Game(){
 		Me = new Game ();

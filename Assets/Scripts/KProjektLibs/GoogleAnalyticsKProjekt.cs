@@ -35,7 +35,7 @@ public class GoogleAnalyticsKProjekt {
 	}
 
 	public static void LogScreen(string name){
-		if (GoogleAnalytics.instance) {
+		if (GoogleAnalytics.instance && !Application.isEditor) {
 			GoogleAnalytics.instance.LogScreen (name);
 			Debug.Log("logged screen: " + name);
 		}

@@ -28,6 +28,10 @@ public class CarStatistic
 		set { ManuallySetValue = value; }
 	}
 
+	public string ValueFormatted{
+		get { return string.Format("{0:0.00}", Value); }
+	}
+
 
 	public bool CanUpgrade(int coins){
 		bool canAfford = Type.UpgradeCost(Level+1) < coins;

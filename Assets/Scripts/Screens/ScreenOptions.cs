@@ -3,8 +3,11 @@ using System.Collections;
 
 public class ScreenOptions : BaseScreen {
 
+	override protected void StartInner (){
+	}
+
 	override protected void OnGUIInner(){
-		GUI.depth = -1;
+
 		GuiHelper.DrawAtTop ("Settings");
 
 		Texture soundButton = Sounds.IsMuted()?SpriteManager.GetSoundButtonMuted():SpriteManager.GetSoundButton();
@@ -27,6 +30,5 @@ public class ScreenOptions : BaseScreen {
 			PlayerPrefs.DeleteAll();
 			Game.Me.Player.Reset();
 		}
-		GUI.depth = 0;
 	}
 }

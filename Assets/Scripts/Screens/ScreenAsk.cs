@@ -7,6 +7,9 @@ public class ScreenAsk : BaseScreen {
 
 	private AfterYesM AfterYes;
 
+	override protected void StartInner (){
+	}
+
 	public void PrepareMe(AfterYesM afterYes, AfterButton afterNo){
 		AfterYes = afterYes;
 		Prepare (afterNo);

@@ -4,15 +4,15 @@ using GooglePlayGames;
 
 
 public class ScreenSplash : BaseScreen {
-
 	// Use this for initialization
-	void Start () {
+	override protected void StartInner (){
+		GuiDepth = Game.Me.ClosestGui;
 		FB.Init(delegate {});
 
 		if (!CarSmasherSocial.Authenticated && CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.NeverAsked || CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.Accepted){
 			CarSmasherSocial.InitializeSocial (false, null, null, this);
 		}
-		Game.Me.Player.Load ();
+
 		Sounds.LoadSounds ();
 
 		Prepare(delegate() {
@@ -42,12 +42,7 @@ public class ScreenSplash : BaseScreen {
 
 		GuiHelper.ButtonWithText(0.75, 0.85, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 
-			ScreenAdvModeStart sams = gameObject.AddComponent<ScreenAdvModeStart>();
-			sams.Prepare(delegate() {
-				sams.gameObject.AddComponent<ScreenSplash>();
-				Destroy(sams);
-			});
-
+			gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
 		});
 

@@ -1,12 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MissionId{
-	D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, DREN,
-	F1, F2, F3, FREN,
-	CLASSIC
-}
-
 public class Mission{
 
 	private List<AchievQuery> InGameReqs = new List<AchievQuery>();
@@ -15,16 +9,11 @@ public class Mission{
 	public string Title, Description;
 	private Environment _Env;
 	private bool Renewable;
-	/**
-	 * Id is used to save data if this mission was done
-	 **/
-	public MissionId Id;
+	public string Id = "theId";
 
-	public Mission(MissionId id, AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env, bool renewable=false){
+	public Mission(AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env, bool renewable=false){
 		Renewable = renewable;
 		_Env = env;
-		Id = id;
-
 
 		if (inGameReqs != null) {
 			foreach(AchievQuery aq in inGameReqs){
@@ -51,6 +40,18 @@ public class Mission{
 			case SCORE_TYPE.FUEL_PICKED:
 				Description = "Collect " + gameReq.Value + " oil drops";
 				Title = "Oil drops " + gameReq.Value;
+				break;
+			case SCORE_TYPE.FUEL_PICKED_IN_ROW:
+				Description = "Collect " + gameReq.Value + " oil drops in a row";
+				Title = "Oil drops in a row " + gameReq.Value;
+				break;
+			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW:
+				Description = "Collect " + gameReq.Value + " oil drops when low";
+				Title = "Oil drops when low " + gameReq.Value;
+				break;
+			case SCORE_TYPE.TURNS:
+				Description = "Make " + gameReq.Value + " turns";
+				Title = "Make " + gameReq.Value + " turns";
 				break;
 			default:
 				throw new UnityException ("ther is no description and title for score type : " + gameReq.ScoreType);
@@ -105,7 +106,7 @@ public class Mission{
 
 
 	public static Mission Classic{
-		get { return new Mission (MissionId.CLASSIC, new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0), new Environment()); } 
+		get { return new Mission (new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0), new Environment()); } 
 	}
 
 	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){
@@ -149,6 +150,19 @@ public class Mission{
 
 	public bool IsRenewable(){
 		return Renewable;
+	}
+
+	public static Mission SearchMissionForPlayer(PlayerState player){
+
+		List<Mission> missions = new List<Mission> ();
+
+		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 20)}, new Reward (10), Environment.ClassicMission));
+		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.BIGGER_EQUAL, 2)}, new Reward (20), Environment.ClassicMission));
+		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 2)}, new Reward (20), Environment.ClassicMission));
+		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 2)}, new Reward (20), Environment.ClassicMission));
+		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 3)}, new Reward (20), Environment.ClassicMission));
+
+		return missions [Random.Range (0, missions.Count)];
 	}
 }
 
