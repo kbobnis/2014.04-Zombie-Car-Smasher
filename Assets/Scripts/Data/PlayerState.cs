@@ -5,11 +5,19 @@ using System.Collections.Generic;
 public class PlayerState  {
 
 	private int _Coins;
-	private Dictionary<string, bool> MissionsDone = new Dictionary<string, bool>();
+	private Dictionary<SCORE_TYPE, int> MissionsDone = new Dictionary<SCORE_TYPE, int>();
 	public CarConfig CarConfig;
 
 	public PlayerState(CarConfig carConfig, int coins){
 		Initialize (carConfig, coins);
+	}
+
+	public int GetNextMissionLevel(SCORE_TYPE ScoreType){
+		int next = 1;
+		if (MissionsDone.ContainsKey (ScoreType)) {
+			next = MissionsDone[ScoreType] + 1;
+		}
+		return next;
 	}
 
 	private void Initialize(CarConfig carConfig, int coins){
@@ -32,13 +40,19 @@ public class PlayerState  {
 	}
 
 	public void MissionDone(Mission m){
-		if (!MissionsDone.ContainsKey (m.Id)) {
-			MissionsDone.Add (m.Id, true);	
+		if (!MissionsDone.ContainsKey(m.ScoreType)){
+			MissionsDone.Add (m.ScoreType, m.Level);	
+		} else {
+			MissionsDone[m.ScoreType] = m.Level;
 		}
 	}
 
 	public bool IsMissionDone(Mission m){
-		return MissionsDone.ContainsKey(m.Id);
+		bool isDone = false;
+		if (MissionsDone.ContainsKey (m.ScoreType)) {
+			isDone = MissionsDone[m.ScoreType] >= m.Level;
+		}
+		return isDone;
 	}
 
 	public void RewardHim(Mission mission, Dictionary<int, Result[]> inGameAchievements, Result[] afterGameAchievements){
@@ -53,7 +67,9 @@ public class PlayerState  {
 
 		if (mission.Passed (inGameAchievements, afterGameAchievements)) {
 			GetReward(mission.Reward);
+			MissionDone (mission);
 		}
+
 	}
 
 	private void GetReward(Reward r){
@@ -63,7 +79,7 @@ public class PlayerState  {
 	private string Serialize(){
 		Dictionary<string, string> dict = new Dictionary<string, string> ();
 		dict ["coins"] = ""+_Coins;
-		dict ["missionsDone"] = MiniJSON.Json.Serialize (MissionsDone);
+		dict ["missionsDone"] = MiniJSON.Json.Serialize ( MissionsDone);
 		dict ["carConfig"] = CarConfig.Serialize ();
 		string state = MiniJSON.Json.Serialize (dict);
 		Debug.Log ("serialize player state: " + state);
@@ -81,14 +97,16 @@ public class PlayerState  {
 	}
 
 	private void Deserialize(string serialized){
+		Debug.Log ("Deserializing: " + serialized);
 		Dictionary<string, object> dict =  (Dictionary<string, object>)MiniJSON.Json.Deserialize (serialized);
 		_Coins = int.Parse( (string)dict ["coins"]);
 		Dictionary<string, object> tmp = (Dictionary<string, object>)MiniJSON.Json.Deserialize ((string)dict ["missionsDone"]);
 		foreach (KeyValuePair<string, object> kvp in tmp) {
-			//MissionId parsed = (MissionId)System.Enum.Parse(typeof(MissionId), kvp.Key);
-			string parsed = (string)kvp.Key;
+
+			SCORE_TYPE parsed = (SCORE_TYPE)System.Enum.Parse(typeof(SCORE_TYPE), kvp.Key);
+			object value = kvp.Value;
 			if (!MissionsDone.ContainsKey(parsed)){
-				MissionsDone.Add(parsed, true);
+				MissionsDone.Add(parsed, int.Parse(string.Format("{0}", value)));
 			}
 		}
 		CarConfig.Deserialize((string)dict["carConfig"]);

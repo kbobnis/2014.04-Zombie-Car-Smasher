@@ -40,7 +40,7 @@ abstract public class BaseScreen : MonoBehaviour {
 		if (ShowBackground){
 			GuiHelper.DrawBackground (delegate() {
 				AfterButton();
-			});
+			}, false);
 		}
 		OnGUIInner ();
 		GUI.depth = GuiDepth + 1;

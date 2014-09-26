@@ -12,8 +12,7 @@ public class ScreenSplash : BaseScreen {
 		if (!CarSmasherSocial.Authenticated && CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.NeverAsked || CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.Accepted){
 			CarSmasherSocial.InitializeSocial (false, null, null, this);
 		}
-
-		Sounds.LoadSounds ();
+		Game.Me.Player.Load ();
 
 		Prepare(delegate() {
 			ScreenQuit sq = gameObject.AddComponent<ScreenQuit>();

@@ -8,11 +8,42 @@ public class Mission{
 	private Reward _Reward;
 	public string Title, Description;
 	private Environment _Env;
-	private bool Renewable;
-	public string Id = "theId";
+	public SCORE_TYPE ScoreType;
+	public int Level;
 
-	public Mission(AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env, bool renewable=false){
-		Renewable = renewable;
+
+	public Mission(SCORE_TYPE scoreType, int level){
+		ScoreType = scoreType;
+		Level = level;
+		Initialize (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (scoreType, SIGN.BIGGER_EQUAL, GetValueForScore (scoreType, level))}, GetRewardForLevel(level), Environment.ClassicMission);
+	}
+
+	private static int GetValueForScore(SCORE_TYPE scoreType, int level){
+		switch (scoreType) {
+			case SCORE_TYPE.DISTANCE: return CumulativePercent(20, 0.1f, level);
+			case SCORE_TYPE.COINS: return CumulativePercent(2, 0.1f, level);
+			case SCORE_TYPE.FUEL_PICKED: return CumulativePercent(2, 0.1f, level);
+			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return CumulativePercent(2, 0.1f, level);
+			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return CumulativePercent(1, 0.1f, level);
+			case SCORE_TYPE.TURNS: return CumulativePercent(4, 0.1f, level);
+		default: 
+			throw new UnityException("There is no value for score type: " + scoreType);
+		}
+	}
+
+	private static Reward GetRewardForLevel(int level){
+		return new Reward (CumulativePercent(10, 0.1f, level));
+	}
+
+	private static int CumulativePercent(float baseValue, float percent, int cumulations){
+		float sum = baseValue;
+		for (int i=0; i < cumulations; i++) {
+			sum *= 1.1f;
+		}
+		return (int)sum;
+	}
+
+	private void Initialize(AchievQuery[] inGameReqs, AchievQuery[] afterGameReqs, Reward reward, Environment env){
 		_Env = env;
 
 		if (inGameReqs != null) {
@@ -106,7 +137,7 @@ public class Mission{
 
 
 	public static Mission Classic{
-		get { return new Mission (new AchievQuery[]{}, new AchievQuery[]{}, new Reward (0), new Environment()); } 
+		get { return new Mission (SCORE_TYPE.DISTANCE, 1); } 
 	}
 
 	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){
@@ -148,19 +179,15 @@ public class Mission{
 		return allIsOk;
 	}
 
-	public bool IsRenewable(){
-		return Renewable;
-	}
-
 	public static Mission SearchMissionForPlayer(PlayerState player){
 
 		List<Mission> missions = new List<Mission> ();
 
-		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.DISTANCE, SIGN.BIGGER_EQUAL, 20)}, new Reward (10), Environment.ClassicMission));
-		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED, SIGN.BIGGER_EQUAL, 2)}, new Reward (20), Environment.ClassicMission));
-		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 2)}, new Reward (20), Environment.ClassicMission));
-		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, SIGN.BIGGER_EQUAL, 2)}, new Reward (20), Environment.ClassicMission));
-		missions.Add (new Mission (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 3)}, new Reward (20), Environment.ClassicMission));
+		missions.Add (new Mission (SCORE_TYPE.DISTANCE, player.GetNextMissionLevel (SCORE_TYPE.DISTANCE)));
+		missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED)));
+		missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_IN_ROW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_IN_ROW)));
+		missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
+		missions.Add (new Mission (SCORE_TYPE.TURNS, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
 
 		return missions [Random.Range (0, missions.Count)];
 	}

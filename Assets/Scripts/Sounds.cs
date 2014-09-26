@@ -15,7 +15,7 @@ public class Sounds : MonoBehaviour {
 
 	private static bool isMuted;
 
-	public static void LoadSounds(){
+	static Sounds(){
 		if (CartonImpact == null) {
 			CartonImpact = Resources.Load<AudioClip> ("Audio/car_crash3");
 			PickUpFuel = Resources.Load<AudioClip> ("Audio/water_drop");
