@@ -187,7 +187,7 @@ public class Minigame : MonoBehaviour {
 				if (amountFull != 0){
 					MissionInfo = amountType + ": " + amountDone + " / " + amountFull;
 					if (amountDone >= amountFull && !FanfarePlayed){
-						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position);
+						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position, 0.5f);
 						FanfarePlayed = true;
 					}
 				}

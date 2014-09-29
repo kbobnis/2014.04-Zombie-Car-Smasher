@@ -34,15 +34,36 @@ public class ScreenSplash : BaseScreen {
 		int x = (Screen.width - width) / 2;
 		GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
 
-		GuiHelper.ButtonWithText(0.3, 0.85, 0.3, 0.3, "Classic", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.3, 0.8, 0.3, 0.3, "Classic", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			Minigame m = gameObject.AddComponent<Minigame>();
 			Destroy(this);
 			m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 		});
 
-		GuiHelper.ButtonWithText(0.75, 0.85, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.29, 0.95, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+			ScreenText m = gameObject.AddComponent<ScreenText>();
+			m.Prepare(delegate() {
+				m.gameObject.AddComponent<ScreenSplash>();
+				Destroy(m);
+			}, "Classic mode", "In classic mode you drive as far as you get. " +
+				"Pick up oil stains to have fuel, avoid other obstacles."+
+				"\n\nThere are google leaderboards and achievements with global scores, connect to it if you want to compare with others.");
+			Destroy(this);
+		});
+
+		GuiHelper.ButtonWithText(0.75, 0.8, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 
 			gameObject.AddComponent<ScreenAdvModeStart>();
+			Destroy(this);
+		});
+		GuiHelper.ButtonWithText(0.74, 0.95, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+			ScreenText m = gameObject.AddComponent<ScreenText>();
+			m.Prepare(delegate() {
+				m.gameObject.AddComponent<ScreenSplash>();
+				Destroy(m);
+			}, "Adventure mode", "In adventure mode you have your own car. Make missions, collect coins to upgrade car and drive further. " +
+			"Pick up oil stains to have fuel, avoid other obstacles."+
+			"\n\nThere are google leaderboards with global scores, connect to it if you want to compare with others.");
 			Destroy(this);
 		});
 
