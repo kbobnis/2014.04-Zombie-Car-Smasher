@@ -185,10 +185,18 @@ public class Mission{
 		List<Mission> missions = new List<Mission> ();
 
 		missions.Add (new Mission (SCORE_TYPE.DISTANCE, player.GetNextMissionLevel (SCORE_TYPE.DISTANCE)));
-		missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED)));
-		missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_IN_ROW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_IN_ROW)));
-		missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
-		missions.Add (new Mission (SCORE_TYPE.TURNS, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
+
+		if (player.EverEarnedCoins > 30){
+			missions.Add (new Mission (SCORE_TYPE.TURNS, player.GetNextMissionLevel (SCORE_TYPE.TURNS)));
+		}
+		if (player.EverEarnedCoins > 50) {
+			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED)));
+		}
+		if (player.EverEarnedCoins > 100) {
+			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_IN_ROW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_IN_ROW)));
+			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
+		}
+
 
 		return missions [Random.Range (0, missions.Count)];
 	}

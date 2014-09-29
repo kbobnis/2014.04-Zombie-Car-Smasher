@@ -5,11 +5,16 @@ using System.Collections.Generic;
 public class PlayerState  {
 
 	private int _Coins;
+	private int _EverEarnedCoins;
 	private Dictionary<SCORE_TYPE, int> MissionsDone = new Dictionary<SCORE_TYPE, int>();
 	public CarConfig CarConfig;
 
 	public PlayerState(CarConfig carConfig, int coins){
 		Initialize (carConfig, coins);
+	}
+
+	public int EverEarnedCoins{
+		get { return _EverEarnedCoins; }
 	}
 
 	public int GetNextMissionLevel(SCORE_TYPE ScoreType){
@@ -22,7 +27,7 @@ public class PlayerState  {
 
 	private void Initialize(CarConfig carConfig, int coins){
 		CarConfig = carConfig;
-		_Coins = coins;
+		_EverEarnedCoins = _Coins = coins;
 	}
 
 	public void Reset(){
@@ -37,6 +42,13 @@ public class PlayerState  {
 
 	public int Coins{
 		get { return _Coins; }
+		set {
+			int diff = value - _Coins;
+			if (diff > 0){
+				_EverEarnedCoins += diff;
+			}
+			_Coins = value;
+		}
 	}
 
 	public void MissionDone(Mission m){
@@ -60,7 +72,7 @@ public class PlayerState  {
 		foreach (Result result in afterGameAchievements) {
 			switch(result.ScoreType){
 			case SCORE_TYPE.COINS:
-				_Coins += result.Value;
+				Coins += result.Value;
 				break;
 			}
 		}
@@ -73,12 +85,13 @@ public class PlayerState  {
 	}
 
 	private void GetReward(Reward r){
-		_Coins += r.Coins;
+		Coins += r.Coins;
 	}
 
 	private string Serialize(){
 		Dictionary<string, string> dict = new Dictionary<string, string> ();
-		dict ["coins"] = ""+_Coins;
+		dict ["coins"] = ""+Coins;
+		dict ["everEarnedCoins"] = ""+_EverEarnedCoins;
 		dict ["missionsDone"] = MiniJSON.Json.Serialize ( MissionsDone);
 		dict ["carConfig"] = CarConfig.Serialize ();
 		string state = MiniJSON.Json.Serialize (dict);
@@ -99,7 +112,11 @@ public class PlayerState  {
 	private void Deserialize(string serialized){
 		Debug.Log ("Deserializing: " + serialized);
 		Dictionary<string, object> dict =  (Dictionary<string, object>)MiniJSON.Json.Deserialize (serialized);
+		//we don't want here to increase the ever earned coins field
 		_Coins = int.Parse( (string)dict ["coins"]);
+		if (dict.ContainsKey("everEarnedCoins")){
+			_EverEarnedCoins = int.Parse( (string)dict ["everEarnedCoins"]);
+		}
 		Dictionary<string, object> tmp = (Dictionary<string, object>)MiniJSON.Json.Deserialize ((string)dict ["missionsDone"]);
 		foreach (KeyValuePair<string, object> kvp in tmp) {
 
