@@ -75,6 +75,7 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void GameOver(string reason){
+		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
 		IsGameOver = true;
 		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.FAIL);
 

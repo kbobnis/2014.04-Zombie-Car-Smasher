@@ -40,7 +40,7 @@ public class GoogleMobileAdsKProjekt : MonoBehaviour {
 		#endif
 		
 		// Create a 320x50 banner at the top of the screen.
-		bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Bottom);
+		bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
 		// Register for ad events.
 		//bannerView.AdLoaded += HandleAdLoaded;
 		//bannerView.AdFailedToLoad += HandleAdFailedToLoad;
@@ -56,14 +56,9 @@ public class GoogleMobileAdsKProjekt : MonoBehaviour {
 	// Returns an ad request with custom ad targeting.
 	private AdRequest CreateAdRequest()
 	{
-		return new AdRequest.Builder()/*
-			.AddTestDevice(AdRequest.TestDeviceSimulator)
-				.AddTestDevice("0123456789ABCDEF0123456789ABCDEF")
-				.AddKeyword("game")
-				.SetGender(Gender.Male)
-				.SetBirthday(new DateTime(1985, 1, 1))
-				.TagForChildDirectedTreatment(false)
-				.AddExtra("color_bg", "9B30FF")*/
-				.Build();
+		return new AdRequest.Builder ()
+			.AddTestDevice (AdRequest.TestDeviceSimulator)
+				.AddTestDevice ("6F40308545B64E7C558974067F213E12")
+				.Build ();
 	}
 }

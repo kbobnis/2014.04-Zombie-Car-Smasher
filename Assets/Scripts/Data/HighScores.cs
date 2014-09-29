@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum HighScoreType{
+	Adventure, Classic
+}
 public class HighScores  {
 
-	static private List<int> Scores = new List<int>(); 
+	static private Dictionary<HighScoreType,  List<int>> Scores = new Dictionary<HighScoreType, List<int>> (); 
 	static private int TrimScores = 100;
 	static private int Version = 1;
 
@@ -16,17 +19,18 @@ public class HighScores  {
 		return Scores.Count;
 	}
 
-	public static List<int> GetTopScores(int howMany){
+	public static List<int> GetTopScores(int howMany, HighScoreType hst){
 		howMany = Scores.Count > howMany ? howMany : Scores.Count;
-		return Scores.GetRange (0, howMany);
+		return Scores[hst].GetRange (0, howMany);
 	}
 
-	public static void AddScore(int score){
-		Scores.Add (score);
-		Scores.Sort ();
-		Scores.Reverse ();
-		if (Scores.Count > TrimScores) {
-			Scores.RemoveRange (TrimScores, Scores.Count-TrimScores);
+	public static void AddScore(int score, HighScoreType hst){
+		List<int> scores = Scores [hst];
+		scores.Add (score);
+		scores.Sort ();
+		scores.Reverse ();
+		if (scores.Count > TrimScores) {
+			scores.RemoveRange (TrimScores, Scores.Count-TrimScores);
 		}
 
 		SaveScores ();

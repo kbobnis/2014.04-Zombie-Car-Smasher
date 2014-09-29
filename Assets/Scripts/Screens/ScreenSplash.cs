@@ -23,6 +23,7 @@ public class ScreenSplash : BaseScreen {
 			Destroy(this);
 		}, false);
 
+
 	}
 
 	override protected void OnGUIInner(){

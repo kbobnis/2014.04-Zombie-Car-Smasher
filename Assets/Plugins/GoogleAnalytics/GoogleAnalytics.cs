@@ -13,10 +13,11 @@ public class GoogleAnalytics : MonoBehaviour {
 	public string bundleID;
 	public string appName;
 	public string appVersion;
-	
+	public bool test = true;
+
 	private string screenRes;
 	private string clientID;
-	
+
 	void Awake()
 	{
 		if(instance)
@@ -36,6 +37,9 @@ public class GoogleAnalytics : MonoBehaviour {
 			uniqueId = PlayerPrefs.GetString(key);
 		} else {
 			uniqueId = System.Guid.NewGuid ().ToString();
+			if (Application.platform == RuntimePlatform.WindowsEditor){
+				uniqueId = "windowsEditor";
+			}
 			PlayerPrefs.SetString(key, uniqueId);
 			PlayerPrefs.Save();
 		}
@@ -53,9 +57,13 @@ public class GoogleAnalytics : MonoBehaviour {
 
 	public void LogScreen(string title)
 	{
-		title = WWW.EscapeURL(title);
-		var url = "http://www.google-analytics.com/collect?v=1&ul=en-us&t=appview&sr="+screenRes+"&an="+WWW.EscapeURL(appName)+"&a=448166238&tid="+propertyID+"&aid="+bundleID+"&cid="+WWW.EscapeURL(clientID)+"&_u=.sB&av="+appVersion+"&_v=ma1b3&cd="+title+"&qt=2500&z=185";
-		WWW request = new WWW(url);
+		if (test) {
+			Debug.Log("this is a test: " + title);
+		} else {
+			title = WWW.EscapeURL(title);
+			var url = "http://www.google-analytics.com/collect?v=1&ul=en-us&t=appview&sr="+screenRes+"&an="+WWW.EscapeURL(appName)+"&a=448166238&tid="+propertyID+"&aid="+bundleID+"&cid="+WWW.EscapeURL(clientID)+"&_u=.sB&av="+appVersion+"&_v=ma1b3&cd="+title+"&qt=2500&z=185";
+			WWW request = new WWW(url);
+		}
 	}
 	
 	

@@ -11,7 +11,7 @@ public delegate void AfterAuthenticateD ();
 public class CarSmasherSocial : MonoBehaviour {
 
 	private static List<GoogleAchievement> Achievements = new List<GoogleAchievement> ();
-	public static GoogleLeaderboard LeaderBoards = new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
+	public static GoogleLeaderboard ClassicLeaderboard = new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
 	public static GoogleLeaderboard AdventureLeaderboard = new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV);
 
 	internal delegate int ProcessScore (int score);
@@ -123,37 +123,44 @@ public class CarSmasherSocial : MonoBehaviour {
 	}
 
 
-	public static void UpdateAchievements (Result[] results){
+	public static void UpdateAchievementsClassic (Result[] results){
 		foreach (GoogleAchievement ach in Achievements) {
 			ach.Update(results);
 		}
+		UpdateLeaderboard (ClassicLeaderboard.Id, results);
 
-		UpdateLeaderBoards (results);
+	}
 
+	public static void UpdateLeaderboard(string leaderboardId, Result[] results){
+		foreach (Result r in results) {
+			if (r.ScoreType == SCORE_TYPE.DISTANCE){
+				Social.ReportScore((int)r.Value, leaderboardId, (bool success) => {});
+			}
+		}
 	}
 	/**
 	 * On some occasions we don't want to increment achievements, because in the end they would be incremented twice for one race.
 	 **/
-	public static void UnlockAchievements(Result[] results){
+	public static void UnlockAchievementsClassic(Result[] results){
 		foreach (GoogleAchievement ach in Achievements) {
 			if (ach.Type == ACHIEVEMENT_TYPE.UNLOCKABLE){
 				ach.Update(results);
 			}
 		}
-		UpdateLeaderBoards (results);
+		UpdateLeaderboard (ClassicLeaderboard.Id, results);
 	}
 
-	public static void ShowLeaderBoard(string leaderboardId){
+	public static void ShowLeaderBoard(string id){
 
 		if (Authenticated) {
-			ShowLeaderBoardInner(leaderboardId);
+			ShowLeaderBoardInner(id);
 		}else {
-			InitializeSocial(true, delegate { ShowLeaderBoardInner(leaderboardId); } , delegate(){});
+			InitializeSocial(true, delegate { ShowLeaderBoardInner(id); } , delegate(){});
 		}
 	}
 
-	private static void ShowLeaderBoardInner(GoogleLeaderboard gl){
-		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (gl.Id);
+	private static void ShowLeaderBoardInner(string id){
+		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (id);
 	}
 
 	public static void ShowAchievements(){
@@ -198,7 +205,7 @@ public static class ScoreTypeMethods{
 			case SCORE_TYPE.DISTANCE: return "Distance";
 			case SCORE_TYPE.COINS: return "Coins";
 			case SCORE_TYPE.FUEL_PICKED: return "Fuel";
-			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return "Fuel picked when low";	
+			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return "Fuel picked in a row";	
 			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return "Fuel picked when low";
 			default: return s.ToString();
 		}

@@ -38,6 +38,8 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 		if (Passed = Mission.Passed (InGameResults, AfterGameResults)) {
 			player.MissionDone (Mission);
 		}
+		CarSmasherSocial.UpdateLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV, afterGameResults);
+
 		foreach(AchievQuery aq in Mission.AfterGameReqs){
 			TaskToBeDone = aq.ScoreType;
 			TaskToBeDoneAmount = aq.Value;
@@ -76,10 +78,19 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 		}
 		text += "" + TaskDoneAmount + " / " + TaskToBeDoneAmount + " ( "+ Mission.Description + " )\n\n";
 
-		text += "Coins collected: " + CoinsCollected + "\n";
-		//text += "Distance driven: " + Distance + "\n\n";
+		text += "Coins collected: " + CoinsCollected + "\n\n";
+
+
+		text += "Distance driven: " + Distance + "\n";
+		text += "Best distance: " + HighScores.AddScore (Distance, HighScores.ADVENTURE);
 
 		GuiHelper.DrawBeneathLine(text);
+
+
+		Texture leaderBoard = SpriteManager.GetLeaderboard();
+		if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.8), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
+			CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV);
+		}
 	}
 }
 

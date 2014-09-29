@@ -39,12 +39,10 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 			}
 		}
 
-		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
-
 		foreach (KeyValuePair<int, Result[]> result in inGameResults) {
-			CarSmasherSocial.UnlockAchievements(result.Value);
+			CarSmasherSocial.UnlockAchievementsClassic(result.Value);
 		}
-		CarSmasherSocial.UpdateAchievements (afterGameResults);
+		CarSmasherSocial.UpdateAchievementsClassic (afterGameResults);
 
 		foreach (Result result in afterGameResults) {
 			switch(result.ScoreType){
@@ -123,7 +121,7 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 				
 				Texture leaderBoard = SpriteManager.GetLeaderboard();
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.28), GuiHelper.PercentH(0.56), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowLeaderBoard();
+					CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES);
 				}
 				
 				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.67), GuiHelper.PercentW(0.45), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){

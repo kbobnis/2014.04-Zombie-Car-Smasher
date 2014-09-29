@@ -43,10 +43,5 @@ public class ScreenAdvModeStart : BaseScreen {
 			Destroy(this);
 		}, "Race");
 
-		Texture leaderBoard = SpriteManager.GetLeaderboard();
-		if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.8), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
-			CarSmasherSocial.ShowLeaderBoardAdv();
-		}
-
 	}
 }
