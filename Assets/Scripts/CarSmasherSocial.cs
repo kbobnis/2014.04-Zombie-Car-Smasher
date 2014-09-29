@@ -11,7 +11,8 @@ public delegate void AfterAuthenticateD ();
 public class CarSmasherSocial : MonoBehaviour {
 
 	private static List<GoogleAchievement> Achievements = new List<GoogleAchievement> ();
-	private static List<GoogleLeaderboard> LeaderBoards = new List<GoogleLeaderboard> ();
+	public static GoogleLeaderboard LeaderBoards = new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
+	public static GoogleLeaderboard AdventureLeaderboard = new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV);
 
 	internal delegate int ProcessScore (int score);
 
@@ -54,8 +55,6 @@ public class CarSmasherSocial : MonoBehaviour {
 
 		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 50), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 5), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 100) })));
 		Achievements.Add (new GoogleAchievement (GoogleAchievement.ACHIEV_COMBO_MARATHON, ACHIEVEMENT_TYPE.UNLOCKABLE, SCORE_TYPE.DISTANCE, new List<AchievQuery> (new AchievQuery[] { new AchievQuery (SCORE_TYPE.TURNS, SIGN.BIGGER_EQUAL, 100), new AchievQuery(SCORE_TYPE.FUEL_PICKED_IN_ROW, SIGN.BIGGER_EQUAL, 9), new AchievQuery(SCORE_TYPE.DISTANCE, SIGN.SMALLER_EQUAL, 200) })));
-
-		LeaderBoards.Add (new GoogleLeaderboard (GoogleLeaderboard.LEADERB_BEST_DISTANCES));
 	}
 
 	public static void InitializeOrLogOut(bool forceUI, AfterAuthenticateD afterSuccess=null, AfterAuthenticateD afterFailure=null, MonoBehaviour mb=null){
@@ -132,13 +131,6 @@ public class CarSmasherSocial : MonoBehaviour {
 		UpdateLeaderBoards (results);
 
 	}
-
-	private static void UpdateLeaderBoards(Result[] r){
-		foreach (GoogleLeaderboard l in LeaderBoards) {
-			l.Update(r);
-		}
-	}
-
 	/**
 	 * On some occasions we don't want to increment achievements, because in the end they would be incremented twice for one race.
 	 **/
@@ -151,17 +143,17 @@ public class CarSmasherSocial : MonoBehaviour {
 		UpdateLeaderBoards (results);
 	}
 
-	public static void ShowLeaderBoard(){
+	public static void ShowLeaderBoard(string leaderboardId){
 
 		if (Authenticated) {
-			ShowLeaderBoardInner();
+			ShowLeaderBoardInner(leaderboardId);
 		}else {
-			InitializeSocial(true, ShowLeaderBoardInner, delegate(){});
+			InitializeSocial(true, delegate { ShowLeaderBoardInner(leaderboardId); } , delegate(){});
 		}
 	}
 
-	private static void ShowLeaderBoardInner(){
-		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (GoogleLeaderboard.LEADERB_BEST_DISTANCES);
+	private static void ShowLeaderBoardInner(GoogleLeaderboard gl){
+		((PlayGamesPlatform)Social.Active).ShowLeaderboardUI (gl.Id);
 	}
 
 	public static void ShowAchievements(){
@@ -178,8 +170,9 @@ public class CarSmasherSocial : MonoBehaviour {
 }
 public class GoogleLeaderboard{
 	public const string LEADERB_BEST_DISTANCES = "CgkI0eO__P0OEAIQAQ";
+	public const string LEADERB_BEST_DISTANCES_ADV = "CgkI0eO__P0OEAIQGw";
 
-	private string Id;
+	public string Id;
 		
 	public GoogleLeaderboard(string id){
 		Id = id;

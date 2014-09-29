@@ -18,8 +18,6 @@ public class ScreenAdvModeStart : BaseScreen {
 
 		GuiHelper.DrawAtTop ("Adventure mode");
 		GuiHelper.DrawText ("Available coins: " + state.Coins, GuiHelper.SmallFontTop, 0.1, 0.2, 0.8, 0.1);
-		//GuiHelper.DrawText ("Earn coins, upgrade car, complete all missions.", GuiHelper.SmallFontTop, 0.1, 0.27, 0.8, 0.1);
-		//GUI.DrawTexture (new Rect (GuiHelper.PercentW(0.65), GuiHelper.PercentH (0.45), GuiHelper.PercentW (0.3), GuiHelper.PercentH (0.25)), state.CarConfig.CarTexture);
 
 		float y = 0.32f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
@@ -44,5 +42,11 @@ public class ScreenAdvModeStart : BaseScreen {
 			ScreenStartingMission ssm = gameObject.AddComponent<ScreenStartingMission>();
 			Destroy(this);
 		}, "Race");
+
+		Texture leaderBoard = SpriteManager.GetLeaderboard();
+		if (GUI.Button(new Rect(GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.8), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
+			CarSmasherSocial.ShowLeaderBoardAdv();
+		}
+
 	}
 }
