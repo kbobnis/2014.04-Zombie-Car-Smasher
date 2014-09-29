@@ -134,7 +134,9 @@ public class CarSmasherSocial : MonoBehaviour {
 	public static void UpdateLeaderboard(string leaderboardId, Result[] results){
 		foreach (Result r in results) {
 			if (r.ScoreType == SCORE_TYPE.DISTANCE){
-				Social.ReportScore((int)r.Value, leaderboardId, (bool success) => {});
+				if (Authenticated){
+					Social.ReportScore((int)r.Value, leaderboardId, (bool success) => {});
+				}
 			}
 		}
 	}
@@ -207,6 +209,7 @@ public static class ScoreTypeMethods{
 			case SCORE_TYPE.FUEL_PICKED: return "Fuel";
 			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return "Fuel picked in a row";	
 			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return "Fuel picked when low";
+			case SCORE_TYPE.TURNS: return "Turns";
 			default: return s.ToString();
 		}
 	}

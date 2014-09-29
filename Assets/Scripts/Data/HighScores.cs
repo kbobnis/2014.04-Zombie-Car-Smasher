@@ -5,14 +5,26 @@ using System.Collections.Generic;
 public enum HighScoreType{
 	Adventure, Classic
 }
+public static class HighScoreTypeMethods{
+	public static string KeyName(this HighScoreType hst, int place){
+		string prefix = "HighScores";
+		switch(hst){
+			case HighScoreType.Classic: return prefix + "1" + place;
+			default: 
+				return prefix + hst.ToString() + place;
+		}
+			
+	}
+}
 public class HighScores  {
 
 	static private Dictionary<HighScoreType,  List<int>> Scores = new Dictionary<HighScoreType, List<int>> (); 
 	static private int TrimScores = 100;
-	static private int Version = 1;
 
 	static HighScores(){
-		LoadScores ();
+
+		Scores[HighScoreType.Adventure] =  LoadScores (HighScoreType.Adventure);
+		Scores[HighScoreType.Classic] =  LoadScores (HighScoreType.Classic);
 	}
 
 	public static int GetTopScoresCount(){
@@ -22,6 +34,9 @@ public class HighScores  {
 	public static List<int> GetTopScores(int howMany, HighScoreType hst){
 		howMany = Scores.Count > howMany ? howMany : Scores.Count;
 		return Scores[hst].GetRange (0, howMany);
+	}
+	public static int TopScore(HighScoreType hst){
+		return Scores [hst].Count > 0 ? Scores [hst] [0] : 0;
 	}
 
 	public static void AddScore(int score, HighScoreType hst){
@@ -33,33 +48,34 @@ public class HighScores  {
 			scores.RemoveRange (TrimScores, Scores.Count-TrimScores);
 		}
 
-		SaveScores ();
+		SaveScores (hst);
 	}
 
-	public static int GetPlaceFor(int score){
-		for (int i=0; i < Scores.Count; i++) {
-			if (score >= Scores[i]){
+	public static int GetPlaceFor(int score, HighScoreType hst){
+		for (int i=0; i < Scores[hst].Count; i++) {
+			if (score >= Scores[hst][i]){
 				return i+1;
 			}
 		}
 		return 0;
 	}
 
-	private static void LoadScores(){
+	private static List<int> LoadScores(HighScoreType hst){
 		int i = 0; 
 		int lastScore = 0;
-		while ((lastScore = PlayerPrefs.GetInt ("HighScores" + Version + ++i)) != 0) {
-			Scores.Add(lastScore);
+		List<int> tmp = new List<int> ();
+		while ((lastScore = PlayerPrefs.GetInt (hst.KeyName(++i))) != 0) {
+			tmp.Add(lastScore);
 		};
-		Scores.Sort ();
-		Scores.Reverse ();
-
+		tmp.Sort ();
+		tmp.Reverse ();
+		return tmp;
 	}
 
-	private static void SaveScores(){
+	private static void SaveScores(HighScoreType hst){
 		int i = 0; 
-		foreach(int score2 in Scores){
-			PlayerPrefs.SetInt("HighScores" + Version + ++i, score2);
+		foreach(int score2 in Scores[hst]){
+			PlayerPrefs.SetInt(hst.KeyName(++i), score2);
 		}
 
 

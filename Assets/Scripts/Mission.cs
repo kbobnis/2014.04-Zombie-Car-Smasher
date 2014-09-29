@@ -15,7 +15,7 @@ public class Mission{
 	public Mission(SCORE_TYPE scoreType, int level){
 		ScoreType = scoreType;
 		Level = level;
-		Initialize (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (scoreType, SIGN.BIGGER_EQUAL, GetValueForScore (scoreType, level))}, GetRewardForLevel(level), Environment.ClassicMission);
+		Initialize (new AchievQuery[] { }, new AchievQuery[] { new AchievQuery (scoreType, SIGN.BIGGER_EQUAL, GetValueForScore (scoreType, level))}, GetRewardForLevel(level), Environment.AdventureMission);
 	}
 
 	private static int GetValueForScore(SCORE_TYPE scoreType, int level){
@@ -132,12 +132,13 @@ public class Mission{
 
 	public Environment Env{
 		get { return _Env; }
+		set { _Env = value; }
 	}
 
 
 
 	public static Mission Classic{
-		get { return new Mission (SCORE_TYPE.DISTANCE, 1); } 
+		get { Mission m = new Mission (SCORE_TYPE.COINS, 0); m.AfterGameReqs = new List<AchievQuery>(); m.Env = Environment.ClassicMission; return m;} 
 	}
 
 	public bool Passed(Dictionary<int, Result[]> InGameResults, Result[] AfterGameResults){

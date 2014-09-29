@@ -54,7 +54,7 @@ public class CarConfig
 	public float StartingCarSpeed{
 		get {
 			//checking tutorial mode
-			List<int> topScores = HighScores.GetTopScores (1);
+			List<int> topScores = HighScores.GetTopScores (1, HighScoreType.Classic);
 			float bestScore =  topScores.Count==0?0:topScores[0];
 			float carStartingSpeed = DefaultCarStartingSpeed;
 			if (bestScore < 200){

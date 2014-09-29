@@ -26,6 +26,10 @@ public class Environment{
 
 
 	public static Environment ClassicMission{
+		get { return new Environment (); }
+	}
+
+	public static Environment AdventureMission{
 		get { return new Environment (0.02f, 0.02f); }
 	}
 }

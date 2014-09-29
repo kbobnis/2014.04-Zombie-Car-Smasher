@@ -185,7 +185,7 @@ public class Minigame : MonoBehaviour {
 				string amountType = Mission.GetAmountType().HumanName();
 
 				if (amountFull != 0){
-					MissionInfo = "" + amountDone + " / " + amountFull + " " + amountType;
+					MissionInfo = amountType + ": " + amountDone + " / " + amountFull;
 					if (amountDone >= amountFull && !FanfarePlayed){
 						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position);
 						FanfarePlayed = true;
@@ -204,8 +204,11 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (!IsGameOver){
-			string m = MissionInfo != null ? MissionInfo : "Distance: " + Distance;
-			GUI.Label (new Rect (GuiHelper.oneTenthW/2, GuiHelper.oneTenthH/2, Screen.width, Screen.height), m, GuiHelper.SmallFontLeft);
+			if (MissionInfo != null){
+				GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH/4, Screen.width, Screen.height), MissionInfo, GuiHelper.SmallFontLeft);
+			}
+
+			GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
 		}
 
 	}

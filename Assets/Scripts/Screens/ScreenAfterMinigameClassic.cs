@@ -30,8 +30,8 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 		GameOverReason = reason;
 		Mission = mission;
 		Player = player;
-		HighScores.AddScore (distance);
-		int place = HighScores.GetPlaceFor (distance);
+		HighScores.AddScore (distance, HighScoreType.Classic);
+		int place = HighScores.GetPlaceFor (distance, HighScoreType.Classic);
 		if (place == 1) {
 			PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.gameObject.transform.position, 0.2f);
 			if (distance > 50){
@@ -138,21 +138,15 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 
 	}
 
-
-		private void BackToSplash(){
-			ScreenSplash ss = gameObject.AddComponent<ScreenSplash> ();
-			Destroy (this);
-		}
-
-	private bool IsBetterDrawDrivingTips(){
-		List<int> scores = HighScores.GetTopScores (1);
-		return scores.Count > 0 && scores[0] < 200;
+	private void BackToSplash(){
+		ScreenSplash ss = gameObject.AddComponent<ScreenSplash> ();
+		Destroy (this);
 	}
-	
+
 	private void DrawTopScores(float y){
-		int place = HighScores.GetPlaceFor (Distance);
+		int place = HighScores.GetPlaceFor (Distance, HighScoreType.Classic);
 		bool isInTop = place <= HowManyInTopScores;
-		List<int> top = HighScores.GetTopScores (HowManyInTopScores);
+		List<int> top = HighScores.GetTopScores (HowManyInTopScores, HighScoreType.Classic);
 		bool yourWasSet = false;
 		string topScores = "Best Distances:";
 		for(int i=0; i < HowManyInTopScores && top.Count > i; i++){
