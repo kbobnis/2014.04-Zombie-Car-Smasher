@@ -27,7 +27,7 @@ public class ScreenAdvModeStart : BaseScreen {
 				if (!cs.Type.AboveMinimum(cs.Type.ValueForLevel( cs.Level+1))){
 					inBrackets = "(Best)";
 				} else if (cs.CanUpgrade(state.Coins)){
-					inBrackets = "(Upgrade for "+cs.UpgradeCost()+")";
+					inBrackets = "(Upg for "+cs.UpgradeCost()+")";
 				}
 				string text = cs.Type.Name()+": "+ cs.ValueFormatted + " " + inBrackets;
 				GuiHelper.ButtonWithText(0.5, y, 1, 0.15, text, SpriteManager.GetRectangleButton(), GuiHelper.MicroFont, delegate() {

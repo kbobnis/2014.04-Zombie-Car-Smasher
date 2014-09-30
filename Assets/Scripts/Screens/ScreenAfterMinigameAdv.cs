@@ -65,17 +65,11 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 		});
 
 
-		GuiHelper.DrawAtTop ("Mission " + (Passed ? "Completed" : "Failed"));
+		GuiHelper.DrawAtTop ("Mission (" + Mission.Description +") " + (Passed ? "Completed" : "Failed"));
 		string text = "";
 
-		if (Passed) {
-			text += "Mission completed, reward:  " + Mission.Reward.Description+"\n";
-		} else {
-			text += "Mission failed\n";
-		}
-		text += "" + TaskDoneAmount + " / " + TaskToBeDoneAmount + " ( "+ Mission.Description + " )\n\n";
-
-		text += "Coins collected: " + CoinsCollected + "\n\n";
+		int sumOfCoins = CoinsCollected + (Passed?Mission.Reward.Coins:0);
+		text += "Coins: +" +  sumOfCoins + " (reward: " + (Passed?Mission.Reward.Coins:0) + ", collected: " + CoinsCollected + ") \n\n";
 
 
 		text += "Distance: "+ Distance;
@@ -92,9 +86,9 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 
 
 		Texture leaderBoard = SpriteManager.GetLeaderboard();
-		if (GUI.Button(new Rect(GuiHelper.PercentW(0.06), GuiHelper.PercentH(0.44), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
+		GuiHelper.ButtonWithText(0.5, 0.5, 0.2, 0.2, "Scores", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV);
-		}
+		});
 	}
 }
 

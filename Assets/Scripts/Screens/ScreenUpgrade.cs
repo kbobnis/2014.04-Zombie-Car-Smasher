@@ -31,20 +31,22 @@ public class ScreenUpgrade : BaseScreen {
 		}
 		bool minimumOk = CarStatistic.Type.AboveMinimum (CarStatistic.Type.ValueForLevel (CarStatistic.Level + 1));
 
-		if (canAffordUpgrade && dependenciesOk && minimumOk){
+		if (dependenciesOk && minimumOk){
 			text += "Coins: " + ps.Coins + " - " + CarStatistic.UpgradeCost() + " = " + (ps.Coins - CarStatistic.UpgradeCost()) +"\n";
 			float valueBefore = CarStatistic.Value;
 			float valueAfter = CarStatistic.Type.ValueForLevel(CarStatistic.Level+1);
 			float valueDiff = valueAfter - valueBefore;
 			text += CarStatistic.Type.Name () + ": " + CarStatistic.ValueFormatted+" + " + string.Format("{0:0.00}", valueDiff) + " = "  +string.Format("{0:0.00}", valueAfter)+ "\n\n";
-			text += "Upgrade?";
+			if (canAffordUpgrade){
+				text += "Upgrade?";
+			} else {
+				text += "You have not enough coins";
+			}
 		} else if (!minimumOk){
 			text += "This statistic has best possible value";
 		} else if (!dependenciesOk){
 			text += dependencyText;
-		} else if (!canAffordUpgrade){
-			text +=  "You need " + CarStatistic.UpgradeCost() +" coins to upgrade this";
-		}
+		} 
 
 		GuiHelper.DrawBeneathLine (text);
 		if (canAffordUpgrade) {

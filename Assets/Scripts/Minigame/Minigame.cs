@@ -209,6 +209,10 @@ public class Minigame : MonoBehaviour {
 			}
 
 			GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
+			int coins = Car.GetComponent<Car>().PickedUpCoins;
+			if (coins > 0){
+				GuiHelper.ButtonWithText(0.08, 0.75, 0.15, 0.15, ""+coins, SpriteManager.GetCoin(), GuiHelper.SmallFont, delegate(){});
+			}
 		}
 
 	}
