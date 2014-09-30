@@ -32,7 +32,7 @@ public class HighScores  {
 	}
 
 	public static List<int> GetTopScores(int howMany, HighScoreType hst){
-		howMany = Scores.Count > howMany ? howMany : Scores.Count;
+		howMany = Scores[hst].Count > howMany ? howMany : Scores[hst].Count;
 		return Scores[hst].GetRange (0, howMany);
 	}
 	public static int TopScore(HighScoreType hst){

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ShieldCompo : MonoBehaviour {
 
-	private CarStatistic ShieldStatistic;
+	private int shieldValue;
 	private GameObject ShieldRenderer;
 
 	// Use this for initialization
@@ -13,13 +13,13 @@ public class ShieldCompo : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (ShieldStatistic.Value < 1) {	
+		if (shieldValue < 1) {	
 			Destroy(this);
 		}
 	}
 
 	public void Prepare(CarStatistic shield){
-		ShieldStatistic = shield;
+		shieldValue = (int)shield.Value;
 		ShieldRenderer = new GameObject ();
 		SpriteRenderer r = ShieldRenderer.AddComponent<SpriteRenderer>();
 		Texture2D shieldT = (Texture2D)SpriteManager.GetShield ();
@@ -36,7 +36,7 @@ public class ShieldCompo : MonoBehaviour {
 	}
 
 	public bool TakeThis(Tile tile){
-		ShieldStatistic.Downgrade (1);
+		shieldValue--;
 		PlaySingleSound.SpawnSound (Sounds.DoorSlam, gameObject.transform.position);
 		GetComponent<Car> ().ShieldsUsed++;
 		BeingHit bh = tile.gameObject.AddComponent<BeingHit> ();
@@ -44,8 +44,8 @@ public class ShieldCompo : MonoBehaviour {
 		return true;
 	}
 	void OnGUI(){
-		if ((int)ShieldStatistic.Value > 0){
-			GuiHelper.DrawText("shield: "+(int)ShieldStatistic.Value, GuiHelper.SmallFontLeft, 0.1, 0.1, 0.3, 0.15);
+		if ((int)shieldValue > 0){
+			GuiHelper.DrawText("shield: "+shieldValue, GuiHelper.SmallFontLeft, 0.11, 0.17, 0.3, 0.15);
 		}
 	}
 

@@ -15,14 +15,39 @@ public class ScreenUpgrade : BaseScreen {
 	override protected void OnGUIInner(){
 
 		PlayerState ps = Game.Me.Player;
-		bool canUpgrade = CarStatistic.CanUpgrade (ps.Coins);
+		bool canAffordUpgrade = CarStatistic.CanUpgrade (ps.Coins);
 
-		GuiHelper.DrawAtTop (CarStatistic.TopText ());
+		GuiHelper.DrawAtTop ("Upgrade " +  CarStatistic.Type.Name());
 
-		string text = CarStatistic.Type.Name () + ": " + CarStatistic.ValueFormatted+"\n\n";
-		text += CarStatistic.Info (canUpgrade);
+		string text = CarStatistic.Type.Description()+"\n\n";
+
+		bool dependenciesOk = true;
+		string dependencyText = "";
+		foreach (Dependency dependency in CarStatistic.Dependencies) {
+			if (!dependency.IsMet()){
+				dependenciesOk = false;
+				dependencyText = dependency.FailText;
+			}
+		}
+		bool minimumOk = CarStatistic.Type.AboveMinimum (CarStatistic.Type.ValueForLevel (CarStatistic.Level + 1));
+
+		if (canAffordUpgrade && dependenciesOk && minimumOk){
+			text += "Coins: " + ps.Coins + " - " + CarStatistic.UpgradeCost() + " = " + (ps.Coins - CarStatistic.UpgradeCost()) +"\n";
+			float valueBefore = CarStatistic.Value;
+			float valueAfter = CarStatistic.Type.ValueForLevel(CarStatistic.Level+1);
+			float valueDiff = valueAfter - valueBefore;
+			text += CarStatistic.Type.Name () + ": " + CarStatistic.ValueFormatted+" + " + string.Format("{0:0.00}", valueDiff) + " = "  +string.Format("{0:0.00}", valueAfter)+ "\n\n";
+			text += "Upgrade?";
+		} else if (!minimumOk){
+			text += "This statistic has best possible value";
+		} else if (!dependenciesOk){
+			text += dependencyText;
+		} else if (!canAffordUpgrade){
+			text +=  "You need " + CarStatistic.UpgradeCost() +" coins to upgrade this";
+		}
+
 		GuiHelper.DrawBeneathLine (text);
-		if (canUpgrade) {
+		if (canAffordUpgrade) {
 			GuiHelper.YesButton(delegate() {
 				ps.BuyAndUpgrade(CarStatistic);
 				ps.Save();

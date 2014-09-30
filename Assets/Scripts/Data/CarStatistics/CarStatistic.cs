@@ -4,13 +4,17 @@ using UnityEngine;
 public class CarStatistic
 {
 	public CarStatisticType Type;
-	private List<Dependency> Dependencies = new List<Dependency> ();
+	private List<Dependency> _Dependencies = new List<Dependency> ();
 	private int _Level;
 	private float ManuallySetValue = -1;
 
 	public CarStatistic(CarStatisticType type){
 		Type = type;
 		Level = 1;
+	}
+
+	public List<Dependency> Dependencies {
+		get { return _Dependencies; } 
 	}
 
 	public int Level{
@@ -34,10 +38,10 @@ public class CarStatistic
 
 
 	public bool CanUpgrade(int coins){
-		bool canAfford = Type.UpgradeCost(Level+1) < coins;
+		bool canAfford = Type.UpgradeCost(Level+1) <= coins;
 
 		bool dependenciesOk = true;
-		foreach (Dependency dependency in Dependencies) {
+		foreach (Dependency dependency in _Dependencies) {
 			if (!dependency.IsMet()){
 				dependenciesOk = false;
 			}
@@ -52,24 +56,12 @@ public class CarStatistic
 		return Type.UpgradeCost (Level + 1);
 	}
 
-	public string TopText(){
-		return "Upgrade " + Type.Name();
-	}
-
 	public void AddDependency(Dependency dependency){
-		Dependencies.Add (dependency);
-	}
-
-	protected string NotAffordText(){
-		return "You need " + UpgradeCost() +" coins to upgrade this";
+		_Dependencies.Add (dependency);
 	}
 
 	public void Upgrade (){
 		Level++;
-	}
-
-	public void Downgrade(int howManyLevels){ 
-		Level -= howManyLevels;
 	}
 
 	public string Serialize(){
@@ -90,34 +82,5 @@ public class CarStatistic
 		return cs;
 	}
 
-	public string Info(bool canAffordUpgrade){
-		
-		string text = Type.Description()+"\n\n";
-		bool dependenciesOk = true;
-		string dependencyText = "";
-		foreach (Dependency dependency in Dependencies) {
-			if (!dependency.IsMet()){
-				dependenciesOk = false;
-				dependencyText = dependency.FailText;
-			}
-		}
-		bool minimumOk = Type.AboveMinimum (Type.ValueForLevel (Level + 1));
-
-		if (canAffordUpgrade && dependenciesOk && minimumOk){
-			text += Type.UpgradeText();
-		} else if (!minimumOk){
-			text += "This statistic has best possible value";
-		} else if (!dependenciesOk){
-			text += dependencyText;
-		} else if (!canAffordUpgrade){
-			text += NotAffordText();
-		}
-
-
-		text = text.Replace("{value}", ""+string.Format("{0:0.00}", Value));
-		text = text.Replace("{valueAfterUpgrade}", ""+string.Format("{0:0.00}", Type.ValueForLevel(Level+1)));
-		text = text.Replace("{upgradeCost}", ""+UpgradeCost());
-		return text;
-	}
 }
 

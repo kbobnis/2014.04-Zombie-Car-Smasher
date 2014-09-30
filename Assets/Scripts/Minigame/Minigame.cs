@@ -52,7 +52,7 @@ public class Minigame : MonoBehaviour {
 		Car.name = "car";
 		Car tmp = Car.AddComponent<Car>();
 
-		tmp.Prepare(chosenCar, Streets);
+		tmp.Prepare(chosenCar, Streets, mission);
 		Destroy(Camera.main.camera.gameObject.GetComponent<FollowGM>());
 		FollowGM fgm = Camera.main.gameObject.AddComponent<FollowGM> ();
 		fgm.FollowWhom = Car;

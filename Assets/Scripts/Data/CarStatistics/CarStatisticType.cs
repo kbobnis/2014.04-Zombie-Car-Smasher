@@ -22,7 +22,7 @@ static public class CarStatisticTypeMethods{
 		switch(type){
 		case CarStatisticType.COMBUSTION: return "Combustion determines how much oil will be used to drive one distance.";
 		case CarStatisticType.FUEL_TANK: return "Fuel tank lets you gather more fuel at a time.";
-		case CarStatisticType.SHIELD: return "Shield destroys an obstacle. One shield is for one use only.";
+		case CarStatisticType.SHIELD: return "Shield destroys an obstacle. Shields regenerate after each race.";
 		case CarStatisticType.WHEEL: return "Wheel determines how fast the car is changing lanes.";
 		case CarStatisticType.STARTING_OIL: return "Starting oil determines how much oil is in the car at start of the race.";
 		default:
@@ -69,9 +69,9 @@ static public class CarStatisticTypeMethods{
 	
 	public static int UpgradeCost(this CarStatisticType type, int level){
 		switch(type){
-		case CarStatisticType.COMBUSTION: return 10 + level * 15;
+		case CarStatisticType.COMBUSTION: return 10 + level * level;
 		case CarStatisticType.FUEL_TANK: return Mathf.RoundToInt( type.ValueForLevel(level) / 5 );
-		case CarStatisticType.SHIELD: return 10 * level;
+		case CarStatisticType.SHIELD: return 100 + level * level * level;
 		case CarStatisticType.WHEEL: return 15 * level ;
 		case CarStatisticType.STARTING_OIL: return 1 * level;
 		default: 
@@ -81,10 +81,10 @@ static public class CarStatisticTypeMethods{
 
 	public static bool AboveMinimum(this CarStatisticType type, float value){
 		switch(type){
-		case CarStatisticType.COMBUSTION: return value > 0.6;
+		case CarStatisticType.COMBUSTION: return value > 0.45;
 		case CarStatisticType.FUEL_TANK: return true;
 		case CarStatisticType.SHIELD: return true;
-		case CarStatisticType.WHEEL: return value < 3;
+		case CarStatisticType.WHEEL: return value < 2.5;
 		case CarStatisticType.STARTING_OIL: return true;
 		default: 
 			throw new UnityException("there is no type: " + type);

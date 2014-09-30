@@ -189,10 +189,10 @@ public class Mission{
 		if (player.EverEarnedCoins > 30){
 			missions.Add (new Mission (SCORE_TYPE.TURNS, player.GetNextMissionLevel (SCORE_TYPE.TURNS)));
 		}
-		if (player.EverEarnedCoins > 50) {
+		if (player.EverEarnedCoins > 80) {
 			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED)));
 		}
-		if (player.EverEarnedCoins > 100) {
+		if (player.EverEarnedCoins > 150) {
 			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_IN_ROW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_IN_ROW)));
 			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
 		}

@@ -20,7 +20,7 @@ public class Car : MonoBehaviour {
 	void Update(){
 	}
 
-	public void Prepare(CarConfig carConfig, Dictionary<int, GameObject> streets){
+	public void Prepare(CarConfig carConfig, Dictionary<int, GameObject> streets, Mission mission){
 		Streets = streets;
 
 		SpriteRenderer carRenderer = gameObject.AddComponent<SpriteRenderer>();
@@ -38,7 +38,7 @@ public class Car : MonoBehaviour {
 		}
 	
 		Speeder speeder = gameObject.AddComponent<Speeder>();
-		speeder.Prepare(carConfig.CarStatistics[CarStatisticType.COMBUSTION], carConfig.StartingCarSpeed);
+		speeder.Prepare(carConfig.CarStatistics[CarStatisticType.COMBUSTION], mission.Env.DefaultCarStartingSpeed);
 
 		Fuel fuel = gameObject.AddComponent<Fuel>(); 
 		fuel.Prepare (carConfig.CarStatistics [CarStatisticType.FUEL_TANK], carConfig.CarStatistics [CarStatisticType.STARTING_OIL]);
@@ -62,7 +62,7 @@ public class Car : MonoBehaviour {
 		carTurner.Prepare (carConfig.CarStatistics [CarStatisticType.WHEEL]);
 
 		Accelerator accelerator = gameObject.AddComponent<Accelerator> ();
-		accelerator.Prepare (carConfig.MaxCarSpeed, 300);
+		accelerator.Prepare (mission.Env.CarMaxSpeed, mission.Env.MaxSpeedDistance);
 
 		gameObject.AddComponent<HurtTaker> ();
 	}
