@@ -35,8 +35,13 @@ public class ShieldCompo : MonoBehaviour {
 		BeingHit bh = tile.gameObject.AddComponent<BeingHit> ();
 		bh.Prepare (GetComponent<Speeder> ().v);
 		if (shieldValue < 1) {
-			Handheld.Vibrate ();
+			gameObject.AddComponent<MinigameNotification> ().Prepare("Shield END", null, Camera.main.WorldToScreenPoint (tile.gameObject.transform.position));
+			if (Parameter.IsOn(ParameterType.VIBRATION)){
+				Handheld.Vibrate ();
+			}
 			Destroy (this);
+		} else {
+			gameObject.AddComponent<MinigameNotification> ().Prepare("-1 Shield", null, Camera.main.WorldToScreenPoint (tile.gameObject.transform.position));
 		}
 		return true;
 	}

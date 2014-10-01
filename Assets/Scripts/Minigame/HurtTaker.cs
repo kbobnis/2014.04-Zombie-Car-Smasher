@@ -20,11 +20,7 @@ public class HurtTaker : MonoBehaviour {
 		}
 	}
 
-
 	public void TakeHurt(Tile fromWhat){
-
-
-
 		ShieldCompo sc = GetComponent<ShieldCompo> ();
 		if (sc == null || !sc.TakeThis(fromWhat)){
 			Die (fromWhat);
@@ -33,7 +29,9 @@ public class HurtTaker : MonoBehaviour {
 	}
 
 	private void Die(Tile fromWhat){
-		Handheld.Vibrate ();
+		if (Parameter.IsOn(ParameterType.VIBRATION)){
+			Handheld.Vibrate ();
+		}
 		//null is when out of oil
 		if (fromWhat != null && (fromWhat.TileContent == TileContent.WALL || fromWhat.TileContent == TileContent.HOLE) ) {
 			PlaySingleSound.SpawnSound (Sounds.CartonImpact, Camera.main.transform.position);	

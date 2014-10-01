@@ -90,7 +90,7 @@ public class Speeder : MonoBehaviour
 		}
 
 		if (tile.TileContent == TileContent.COIN) {
-			GetComponent<Car>().PickedUpCoin();
+			GetComponent<Car>().PickedUpCoin(tile);
 			tile.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 			tile.TileContent = TileContent.NONE;
 		}

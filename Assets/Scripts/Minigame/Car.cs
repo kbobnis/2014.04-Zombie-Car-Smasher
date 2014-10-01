@@ -68,6 +68,8 @@ public class Car : MonoBehaviour {
 	}
 
 	public void PickedUpFuel(Tile fuelTile){
+		gameObject.AddComponent<MinigameNotification> ().Prepare("+"+(int)fuelTile.Value+" Fuel", null, Camera.main.WorldToScreenPoint (fuelTile.gameObject.transform.position));
+		//mn.Prepare ("Fuel +" + (int)fuelTile.Value, );
 		FuelPickedUpThisGame ++;
 		_FuelPickedUpInARow ++;
 		if (GetComponent<Fuel> ().IsLowFuel ()) {
@@ -99,7 +101,8 @@ public class Car : MonoBehaviour {
 		TurnsMade ++;
 	}
 
-	public void PickedUpCoin(){
+	public void PickedUpCoin(Tile coinTile){
+		gameObject.AddComponent<MinigameNotification> ().Prepare("+1 Coin", null, Camera.main.WorldToScreenPoint (coinTile.gameObject.transform.position));
 		PickedUpCoins ++;
 		PlaySingleSound.SpawnSound (Sounds.Coin, gameObject.transform.position);
 	}

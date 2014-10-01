@@ -25,7 +25,7 @@ public class Mission{
 			case SCORE_TYPE.FUEL_PICKED: return CumulativePercent(2, 0.1f, level);
 			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return CumulativePercent(2, 0.1f, level);
 			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return CumulativePercent(1, 0.1f, level);
-			case SCORE_TYPE.TURNS: return CumulativePercent(8, 0.2f, level);
+			case SCORE_TYPE.TURNS: return CumulativePercent(8, 0.1f, level);
 		default: 
 			throw new UnityException("There is no value for score type: " + scoreType);
 		}
