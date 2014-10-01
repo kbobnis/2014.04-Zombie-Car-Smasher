@@ -3,7 +3,7 @@ using System.Collections;
 
 public class HurtTaker : MonoBehaviour {
 
-	private float FadeTime = 3;
+	private float FadeTime = 2;
 	private float LostTime;
 	public bool HasLost;
 	public string LostReason;
@@ -22,6 +22,7 @@ public class HurtTaker : MonoBehaviour {
 
 
 	public void TakeHurt(Tile fromWhat){
+		Handheld.Vibrate ();
 
 		ShieldCompo sc = GetComponent<ShieldCompo> ();
 		if (sc == null || !sc.TakeThis(fromWhat)){

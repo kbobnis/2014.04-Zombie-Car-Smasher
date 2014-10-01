@@ -14,14 +14,14 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 	private PlayerState Player;
 
 	override protected void StartInner (){
+		Prepare (delegate() {
+			gameObject.AddComponent<ScreenSplash> ();
+			Destroy (this);
+		}, false);
 	}
 
 	public static void PrepareScreen(Dictionary<int, Result[]> inGameResults, Result[] afterGameResults, string reason, int distance, Mission mission, PlayerState player){
 		ScreenAfterMinigameClassic samc = Camera.main.gameObject.AddComponent<ScreenAfterMinigameClassic> ();
-		samc.Prepare (delegate() {
-			ScreenSplash ss = samc.gameObject.AddComponent<ScreenSplash> ();
-			Destroy (samc);
-		});
 		samc.PrepareMe (inGameResults, afterGameResults, reason, distance, mission, player);
 	}
 
@@ -38,11 +38,6 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 				ShowNewHighScoreScreen = true;
 			}
 		}
-
-		foreach (KeyValuePair<int, Result[]> result in inGameResults) {
-			CarSmasherSocial.UnlockAchievementsClassic(result.Value);
-		}
-		CarSmasherSocial.UpdateAchievementsClassic (afterGameResults);
 
 		foreach (Result result in afterGameResults) {
 			switch(result.ScoreType){
@@ -72,69 +67,67 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 
 	override protected void OnGUIInner(){
 			
-			if (ShowNewHighScoreScreen){
-				
-				GuiHelper.DrawBackground(delegate() {
-					ShowNewHighScoreScreen = false;
-				});
-				
-				GuiHelper.DrawText ("New High Score!", GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
-				GuiHelper.DrawText ("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?", GuiHelper.SmallFontTop, 0.1, 0.2, 0.77, 0.07);
-				
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.11)), SpriteManager.GetFbShareButton(), GuiHelper.CustomButton)){
-					CarSmasherSocial.FB.FeedHighScore(Distance);
-					ShowNewHighScoreScreen = false;
-				}
-				
-			} else if (ShowRideInfoScreen){
-				GuiHelper.DrawBackground(delegate() {
-					ShowRideInfoScreen = false;
-				});
+		if (ShowNewHighScoreScreen){
+			
+			GuiHelper.DrawBackground(delegate() {
+				ShowNewHighScoreScreen = false;
+			});
+			
+			GuiHelper.DrawAtTop("New High Score!");
+			GuiHelper.DrawBeneathLine("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?");
 
-
-				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
-				
-				GuiHelper.DrawText ("Collect oil drops to replenish fuel tank. Avoid obstacles.\n"+
-				                    "\nDistance made: "+Distance+
-				                    "\nTurns made: "+Turns+
-				                    "\nFuel picked up: "+FuelPickedUp+" "+
-				                    "(in a row: "+FuelPickedUpInARow+") "+
-				                    "(when low: "+FuelPickedUpWhenLow+") "
-				                    , GuiHelper.SmallFont, 0.1, 0.5, 0.75, 0.07);
-			} else {
-
-				GuiHelper.DrawBackground(delegate() {
-					gameObject.AddComponent<ScreenSplash>();
-					Destroy(this);
-				});
-
-				GuiHelper.DrawText (GameOverReason, GuiHelper.SmallFontLeft, 0.1, 0.08, 0.8, 0.07);
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.75), GuiHelper.PercentH(0.08), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.1)), "help", GuiHelper.SmallFont)){
-					ShowRideInfoScreen = true;
-				}
-				DrawTopScores(0.2f);
-				
-				Texture achievements = SpriteManager.GetAchievements();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.07), GuiHelper.PercentH(0.6), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowAchievements();
-				}
-				
-				Texture leaderBoard = SpriteManager.GetLeaderboard();
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.28), GuiHelper.PercentH(0.56), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
-					CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES);
-				}
-				
-				if (GUI.Button(new Rect(GuiHelper.PercentW(0.27), GuiHelper.PercentH(0.67), GuiHelper.PercentW(0.45), GuiHelper.PercentH(0.3)), SpriteManager.GetStartButton(), GuiHelper.CustomButton)){
-					Minigame m = gameObject.AddComponent<Minigame>();
-					m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
-					Destroy(this);
-				}
-				
-				GuiHelper.ButtonWithText(0.9, 0.92, 0.4, 0.2, "", SpriteManager.GetBackButton(), GuiHelper.CustomButton, delegate() {
-					BackToSplash();
-					
-				});
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.11)), SpriteManager.GetFbShareButton(), GuiHelper.CustomButton)){
+				CarSmasherSocial.FB.FeedHighScore(Distance);
+				ShowNewHighScoreScreen = false;
 			}
+			
+		} else if (ShowRideInfoScreen){
+			GuiHelper.DrawBackground(delegate() {
+				ShowRideInfoScreen = false;
+			});
+
+			GuiHelper.DrawAtTop(GameOverReason);
+			GuiHelper.DrawBeneathLine(
+				"Collect oil drops to replenish fuel tank. Avoid obstacles.\n"+
+            	"\nDistance made: "+Distance+
+	            "\nTurns made: "+Turns+
+	            "\nFuel picked up: "+FuelPickedUp+" "+
+	            "(in a row: "+FuelPickedUpInARow+") "+
+	            "(when low: "+FuelPickedUpWhenLow+") ");
+		} else {
+
+			GuiHelper.DrawBackground(delegate() {
+				gameObject.AddComponent<ScreenSplash>();
+				Destroy(this);
+			});
+			GuiHelper.DrawAtTop(GameOverReason);
+
+
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.8), GuiHelper.PercentH(0.13), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.1)), "help", GuiHelper.SmallFont)){
+				ShowRideInfoScreen = true;
+			}
+			DrawTopScores(0.3f);
+			
+			Texture achievements = SpriteManager.GetAchievements();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.07), GuiHelper.PercentH(0.65), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), achievements, GuiHelper.CustomButton)){
+				CarSmasherSocial.ShowAchievements();
+			}
+			
+			Texture leaderBoard = SpriteManager.GetLeaderboard();
+			if (GUI.Button(new Rect(GuiHelper.PercentW(0.28), GuiHelper.PercentH(0.61), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), leaderBoard, GuiHelper.CustomButton)){
+				CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES);
+			}
+
+			GuiHelper.YesButton(delegate(){
+				Minigame m = gameObject.AddComponent<Minigame>();
+				m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
+				Destroy(this);
+			}, "Start");
+			
+			GuiHelper.ButtonWithText(0.9, 0.92, 0.4, 0.2, "", SpriteManager.GetBackButton(), GuiHelper.CustomButton, delegate() {
+				BackToSplash();
+			});
+		}
 
 	}
 
@@ -165,8 +158,6 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 			} else {
 				topScores += "Top " + (i+1) + ". " + s + "";
 			}
-			
-			
 		}
 		
 		if (!yourWasSet){
@@ -177,7 +168,7 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 		
 		Texture fbButton = SpriteManager.GetFbShareButton();
 		int bestScore = top.Count>0?top[0]:0;
-		if (GUI.Button(new Rect(GuiHelper.PercentW(0.545), GuiHelper.PercentH(0.215), GuiHelper.PercentW(0.35), GuiHelper.PercentH(0.18)), fbButton, GuiHelper.CustomButton)){
+		if (GUI.Button(new Rect(GuiHelper.PercentW(0.545), GuiHelper.PercentH(y), GuiHelper.PercentW(0.35), GuiHelper.PercentH(0.18)), fbButton, GuiHelper.CustomButton)){
 			CarSmasherSocial.FB.FeedHighScore(bestScore);
 		}
 	}

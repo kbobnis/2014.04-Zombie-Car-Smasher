@@ -31,7 +31,7 @@ public class PlayerState  {
 	}
 
 	public void Reset(){
-		Initialize (new CarConfig (CarConfig.MODE_ADV), 1500);
+		Initialize (new CarConfig (CarConfig.MODE_ADV), 30);
 		MissionsDone.Clear ();
 	}
 

@@ -38,7 +38,7 @@ public class Car : MonoBehaviour {
 		}
 	
 		Speeder speeder = gameObject.AddComponent<Speeder>();
-		speeder.Prepare(carConfig.CarStatistics[CarStatisticType.COMBUSTION], mission.Env.DefaultCarStartingSpeed);
+		speeder.Prepare(carConfig.CarStatistics[CarStatisticType.COMBUSTION], mission.Env.CarStartingSpeed);
 
 		Fuel fuel = gameObject.AddComponent<Fuel>(); 
 		fuel.Prepare (carConfig.CarStatistics [CarStatisticType.FUEL_TANK], carConfig.CarStatistics [CarStatisticType.STARTING_OIL]);

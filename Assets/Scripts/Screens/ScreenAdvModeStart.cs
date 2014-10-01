@@ -17,12 +17,12 @@ public class ScreenAdvModeStart : BaseScreen {
 		PlayerState state = Game.Me.Player;
 
 		GuiHelper.DrawAtTop ("Adventure mode");
-		GuiHelper.DrawText ("Available coins: " + state.Coins, GuiHelper.SmallFontTop, 0.1, 0.2, 0.8, 0.1);
+		GuiHelper.DrawBeneathLine ("Available coins: " + state.Coins);//, GuiHelper.SmallFontTop, 0.1, 0.2, 0.8, 0.1);
 
-		float y = 0.32f;
+		float y = 0.38f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
 			CarStatistic cs = kvp.Value;
-			if (cs.Type != CarStatisticType.SHIELD || state.EverEarnedCoins > 1500){
+			if (cs.Type != CarStatisticType.SHIELD || state.EverEarnedCoins > 1000){
 				string inBrackets = "";
 				if (!cs.Type.AboveMinimum(cs.Type.ValueForLevel( cs.Level+1))){
 					inBrackets = "(Best)";

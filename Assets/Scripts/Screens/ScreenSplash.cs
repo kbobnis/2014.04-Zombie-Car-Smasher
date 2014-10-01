@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using GooglePlayGames;
+using System.Collections.Generic;
 
 
 public class ScreenSplash : BaseScreen {
@@ -23,7 +24,6 @@ public class ScreenSplash : BaseScreen {
 			Destroy(this);
 		}, false);
 
-
 	}
 
 	override protected void OnGUIInner(){
@@ -32,15 +32,15 @@ public class ScreenSplash : BaseScreen {
 		int height =  Mathf.RoundToInt( scale * texture.height);
 		int width = Mathf.RoundToInt( scale * texture.width);
 		int x = (Screen.width - width) / 2;
-		GUI.DrawTexture(new Rect(x, 0 , width, height), texture);
+		GUI.DrawTexture(new Rect(x, GuiHelper.PercentH(0.1), width, height), texture);
 
-		GuiHelper.ButtonWithText(0.3, 0.8, 0.3, 0.3, "Classic", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.3, 0.9, 0.3, 0.3, "Classic", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			Minigame m = gameObject.AddComponent<Minigame>();
 			Destroy(this);
 			m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 		});
 
-		GuiHelper.ButtonWithText(0.29, 0.95, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.15, 0.8, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			ScreenText m = gameObject.AddComponent<ScreenText>();
 			m.Prepare(delegate() {
 				m.gameObject.AddComponent<ScreenSplash>();
@@ -51,12 +51,12 @@ public class ScreenSplash : BaseScreen {
 			Destroy(this);
 		});
 
-		GuiHelper.ButtonWithText(0.75, 0.8, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.7, 0.9, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 
 			gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
 		});
-		GuiHelper.ButtonWithText(0.74, 0.95, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.85, 0.8, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			ScreenText m = gameObject.AddComponent<ScreenText>();
 			m.Prepare(delegate() {
 				m.gameObject.AddComponent<ScreenSplash>();
@@ -69,14 +69,10 @@ public class ScreenSplash : BaseScreen {
 
 		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.SPLASH);
 
-		GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.1, 0, 0.8, 0.17);
+		GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.1, 0.1, 0.8, 0.17);
 
 		if (GUI.Button(new Rect(GuiHelper.PercentW(0.79), GuiHelper.PercentH(0.21), GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.2)), SpriteManager.GetSettingsIcon(), GuiHelper.CustomButton)){
-			ScreenOptions so = gameObject.AddComponent<ScreenOptions>();
-			so.Prepare(delegate(){
-				so.gameObject.AddComponent<ScreenSplash>();
-				Destroy(so);
-			});
+			gameObject.AddComponent<ScreenOptions>();
 
 			Destroy(this);
 		}

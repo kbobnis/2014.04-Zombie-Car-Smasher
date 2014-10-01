@@ -4,26 +4,31 @@ using System.Collections;
 public class ScreenOptions : BaseScreen {
 
 	override protected void StartInner (){
+		Prepare(delegate(){
+			gameObject.AddComponent<ScreenSplash>();
+			Destroy(this);
+		});
 	}
 
 	override protected void OnGUIInner(){
 
 		GuiHelper.DrawAtTop ("Settings");
 
-		float textY = 0.25f;
+		float textY = 0.3f;
 		float buttonY = 0.04f;
+		float diff = 0.1f;
 		GuiHelper.DrawText ("Sound is " + (Sounds.IsMuted () ? "off" : "on") + ".", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
-		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.2, 0.2, (Sounds.IsMuted()?"on":"off"), SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate(){
+		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.2, 0.15, (Sounds.IsMuted()?"on":"off"), SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate(){
 			Sounds.Mute(!Sounds.IsMuted());
 		});
 
-		textY += 0.15f;
+		textY += diff;
 		GuiHelper.DrawText ("Visit fb fan page", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
-		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.15, 0.15, "", SpriteManager.GetFbIcon(), GuiHelper.SmallFont, delegate(){
+		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.13, 0.13, "", SpriteManager.GetFbIcon(), GuiHelper.SmallFont, delegate(){
 			CarSmasherSocial.FB.Like();
 		});
 
-		textY += 0.15f;
+		textY += diff;
 		string isNow = CarSmasherSocial.Authenticated ? "on" : "off";
 		string willBe = CarSmasherSocial.Authenticated ? "disconnect" : "connect";
 		GuiHelper.DrawText( "Google games is " + isNow + ". Click to ", GuiHelper.MicroFontLeft, 0.1, textY, 0.8, 0.1);
@@ -32,13 +37,26 @@ public class ScreenOptions : BaseScreen {
 			CarSmasherSocial.InitializeOrLogOut(true, null, null, this);
 		});
 
-		textY += 0.15f;
+		textY += diff;
+		bool vibrationsOn = Parameter.IsOn(ParameterType.VIBRATION);
+		GuiHelper.DrawText ("Vibrations are " + (vibrationsOn ? "on" : "off"), GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.ButtonWithText (0.8, textY + buttonY, 0.2, 0.15, "Turn " + (vibrationsOn ? "off" : "on"), SpriteManager.GetRoundButton (), GuiHelper.MicroFont, delegate() {
+			ParameterType.VIBRATION.Switch(!vibrationsOn);
+		});
 
-		if (GUI.Button(new Rect(GuiHelper.PercentW(0.12), GuiHelper.PercentH(0.7), GuiHelper.PercentW(0.15), GuiHelper.PercentH(0.14)), SpriteManager.GetRemoveIcon (), GuiHelper.CustomButton)){
-			//Game.Me.Player.Reset();
-			//Game.Me.Player.Save();
-			PlayerPrefs.DeleteAll();
-			Game.Me.Player.Reset();
-		}
+		textY += diff;
+		bool fasterStart = Parameter.IsOn (ParameterType.FASTER_START);
+		GuiHelper.DrawText ("Faster start is " + (fasterStart ? "on" : "off"), GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.ButtonWithText (0.8, textY + buttonY, 0.2, 0.15, "Turn " + (fasterStart ? "off" : "on"), SpriteManager.GetRoundButton (), GuiHelper.MicroFont, delegate() {
+			ParameterType.FASTER_START.Switch(!fasterStart);
+		});
+		GuiHelper.ButtonWithText (0.66, textY + buttonY, 0.2, 0.1, "i", SpriteManager.GetRoundButton (), GuiHelper.MicroFont, delegate() {
+			ScreenText st = gameObject.AddComponent<ScreenText>();
+			Destroy(this);
+			st.Prepare(delegate(){
+				st.gameObject.AddComponent<ScreenOptions>();
+				Destroy(st);
+			}, "Faster start", "If your high score is good, your car will be faster in first 300 distance to save you time.");
+		});
 	}
 }

@@ -20,12 +20,12 @@ public class Mission{
 
 	private static int GetValueForScore(SCORE_TYPE scoreType, int level){
 		switch (scoreType) {
-			case SCORE_TYPE.DISTANCE: return CumulativePercent(20, 0.1f, level);
+			case SCORE_TYPE.DISTANCE: return CumulativePercent(20, 0.11f, level);
 			case SCORE_TYPE.COINS: return CumulativePercent(2, 0.1f, level);
 			case SCORE_TYPE.FUEL_PICKED: return CumulativePercent(2, 0.1f, level);
 			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return CumulativePercent(2, 0.1f, level);
 			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return CumulativePercent(1, 0.1f, level);
-			case SCORE_TYPE.TURNS: return CumulativePercent(4, 0.1f, level);
+			case SCORE_TYPE.TURNS: return CumulativePercent(8, 0.2f, level);
 		default: 
 			throw new UnityException("There is no value for score type: " + scoreType);
 		}
@@ -37,8 +37,8 @@ public class Mission{
 
 	private static int CumulativePercent(float baseValue, float percent, int cumulations){
 		float sum = baseValue;
-		for (int i=0; i < cumulations; i++) {
-			sum *= 1.1f;
+		for (int i=1; i < cumulations; i++) {
+			sum *= 1 + percent;
 		}
 		return (int)sum;
 	}
@@ -192,7 +192,7 @@ public class Mission{
 		if (player.EverEarnedCoins > 80) {
 			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED)));
 		}
-		if (player.EverEarnedCoins > 150) {
+		if (player.EverEarnedCoins > 250) {
 			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_IN_ROW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_IN_ROW)));
 			missions.Add (new Mission (SCORE_TYPE.FUEL_PICKED_WHEN_LOW, player.GetNextMissionLevel (SCORE_TYPE.FUEL_PICKED_WHEN_LOW)));
 		}

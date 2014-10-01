@@ -17,6 +17,7 @@ public class GuiHelper : MonoBehaviour {
 	public static GUIStyle SmallFont ;
 	public static GUIStyle SmallFontLeft;
 	public static GUIStyle SmallFontTop;
+	public static GUIStyle SmallFontBlack;
 	public static GUIStyle CustomButton ;
 	public static GUIStyle SmallFontBrown = new GUIStyle ();
 	public static GUIStyle MicroFontBrown;
@@ -37,22 +38,31 @@ public class GuiHelper : MonoBehaviour {
 	// Use this for initialization
 	private void Load () {
 		if (SmallFont == null) {
+
+			int normalSize = 35;
 			SmallFont = new GUIStyle();
-			SmallFont.fontSize = 37 * Screen.width / 480;
+			SmallFont.fontSize = normalSize * Screen.width / 480;
 			SmallFont.font = (Font)Resources.Load ("Fluf");
 			SmallFont.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			SmallFont.alignment = TextAnchor.MiddleCenter;
 			SmallFont.wordWrap = true;
 
+			SmallFontBlack = new GUIStyle();
+			SmallFontBlack.fontSize = normalSize * Screen.width / 480;
+			SmallFontBlack.font = (Font)Resources.Load ("Fluf");
+			SmallFontBlack.normal.textColor = new Color (0 / 255f, 0 / 255f, 0 / 255f);
+			SmallFontBlack.alignment = TextAnchor.MiddleCenter;
+			SmallFontBlack.wordWrap = true;
+
 			SmallFontTop = new GUIStyle();
-			SmallFontTop.fontSize = 37 * Screen.width / 480;
+			SmallFontTop.fontSize = normalSize * Screen.width / 480;
 			SmallFontTop.font = (Font)Resources.Load ("Fluf");
 			SmallFontTop.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 			SmallFontTop.alignment = TextAnchor.UpperCenter;
 			SmallFontTop.wordWrap = true;
 
 			SmallFontLeft = new GUIStyle();
-			SmallFontLeft.fontSize = 37 * Screen.width / 480;
+			SmallFontLeft.fontSize = normalSize * Screen.width / 480;
 			SmallFontLeft.font = (Font)Resources.Load ("Fluf");
 			SmallFontLeft.normal.textColor = new Color (255 / 255f, 255 / 255f, 255 / 255f);
 
@@ -82,7 +92,7 @@ public class GuiHelper : MonoBehaviour {
 			CustomButton.font = (Font)Resources.Load ("Fluf");
 			CustomButton.alignment = TextAnchor.MiddleCenter;
 
-			SmallFontBrown.fontSize = 37 * Screen.width / 480;
+			SmallFontBrown.fontSize = normalSize * Screen.width / 480;
 			SmallFontBrown.font = (Font)Resources.Load ("Fluf");
 			SmallFontBrown.normal.textColor = new Color (41 / 255f, 41 / 255f, 41 / 255f);
 			SmallFontBrown.alignment = TextAnchor.MiddleCenter;
@@ -201,8 +211,8 @@ public class GuiHelper : MonoBehaviour {
 		}
 	}
 
-	public static void DrawBackground(AfterButton afterButton, bool showSettings=true){
-		GuiHelper.DrawElement("Images/popupWindow", 0.01, 0.03, 0.98, 1);
+	public static void DrawBackground(AfterButton afterButton, bool showSettings=false){
+		GuiHelper.DrawElement("Images/popupWindow", 0.02, 0.1, 1, 0.94);
 		GuiHelper.ButtonWithText (0.9, 0.92, 0.4, 0.2, "", SpriteManager.GetBackButton (), GuiHelper.CustomButton, afterButton);
 
 		if (showSettings && GUI.Button(new Rect(GuiHelper.PercentW(0.8), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.2)), SpriteManager.GetSettingsIcon(), GuiHelper.CustomButton)){
@@ -214,10 +224,10 @@ public class GuiHelper : MonoBehaviour {
 	}
 
 	public static void DrawAtTop(string text){
-		GuiHelper.DrawText (text, GuiHelper.SmallFont, 0.1, 0.08, 0.8, 0.07);
+		GuiHelper.DrawText (text, GuiHelper.SmallFont, 0.1, 0.15, 0.8, 0.07);
 	}
 	public static void DrawBeneathLine(string text){
-		GuiHelper.DrawText (text, GuiHelper.MicroFontTop, 0.1, 0.25, 0.75, 0.07);
+		GuiHelper.DrawText (text, GuiHelper.MicroFontTop, 0.1, 0.28, 0.75, 0.07);
 	}
 	public static void DrawMissionLabel(int slot, string name, string detail, string reward, AfterButton afterButton){
 		double y = 0.1 + slot * 0.15;
@@ -228,7 +238,7 @@ public class GuiHelper : MonoBehaviour {
 	}
 
 	public static void YesButton(AfterYesM afterYes, string text="Yes"){
-		GuiHelper.ButtonWithText(0.5, 0.85, 0.4, 0.3, text, SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
+		GuiHelper.ButtonWithText(0.5, 0.88, 0.4, 0.3, text, SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
 			afterYes();
 		});
 	}

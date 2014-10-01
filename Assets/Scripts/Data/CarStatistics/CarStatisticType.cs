@@ -71,7 +71,7 @@ static public class CarStatisticTypeMethods{
 		switch(type){
 		case CarStatisticType.COMBUSTION: return 10 + level * level;
 		case CarStatisticType.FUEL_TANK: return Mathf.RoundToInt( type.ValueForLevel(level) / 5 );
-		case CarStatisticType.SHIELD: return 100 + level * level * level;
+		case CarStatisticType.SHIELD: return 100 + level * level * 4;
 		case CarStatisticType.WHEEL: return 15 * level ;
 		case CarStatisticType.STARTING_OIL: return 1 * level;
 		default: 

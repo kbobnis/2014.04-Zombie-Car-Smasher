@@ -10,7 +10,6 @@ public class Speeder : MonoBehaviour
 
 	public float _v;
 	public float RideCost;
-	public float Decelerate = 0.3f;
 
 	public float v {
 		set{

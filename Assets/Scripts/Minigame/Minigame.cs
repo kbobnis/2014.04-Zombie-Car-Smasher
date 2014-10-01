@@ -98,6 +98,12 @@ public class Minigame : MonoBehaviour {
 			Destroy (Car.GetComponent<ShieldCompo> ());
 		}
 
+		foreach (KeyValuePair<int, Result[]> result in InGameAchievements) {
+			CarSmasherSocial.UnlockAchievementsClassic(result.Value);
+		}
+		CarSmasherSocial.UpdateAchievementsClassic (afterGameAchievements);
+
+
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
 	}
 
@@ -186,8 +192,11 @@ public class Minigame : MonoBehaviour {
 
 				if (amountFull != 0){
 					MissionInfo = amountType + ": " + amountDone + " / " + amountFull;
+					if (amountDone > amountFull){
+						MissionInfo = amountType + ": success";
+					}
 					if (amountDone >= amountFull && !FanfarePlayed){
-						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position, 0.5f);
+						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position, 0.3f);
 						FanfarePlayed = true;
 					}
 				}
@@ -211,7 +220,7 @@ public class Minigame : MonoBehaviour {
 			GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
 			int coins = Car.GetComponent<Car>().PickedUpCoins;
 			if (coins > 0){
-				GuiHelper.ButtonWithText(0.08, 0.75, 0.15, 0.15, ""+coins, SpriteManager.GetCoin(), GuiHelper.SmallFont, delegate(){});
+				GuiHelper.ButtonWithText(0.07, 0.75, 0.18, 0.18, ""+coins, SpriteManager.GetCoin(), GuiHelper.SmallFontBlack, delegate(){});
 			}
 		}
 

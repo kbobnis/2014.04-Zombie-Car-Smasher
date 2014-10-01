@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -35,8 +35,19 @@ public class HighScores  {
 		howMany = Scores[hst].Count > howMany ? howMany : Scores[hst].Count;
 		return Scores[hst].GetRange (0, howMany);
 	}
-	public static int TopScore(HighScoreType hst){
+	public static int GetTopScore(HighScoreType hst){
 		return Scores [hst].Count > 0 ? Scores [hst] [0] : 0;
+	}
+
+	public static int GetTopScoreAll(){
+		int top = 0;
+		foreach (KeyValuePair<HighScoreType, List<int>> kvp in Scores) {
+			int tmpTop = GetTopScore( kvp.Key );
+			if (tmpTop > top){
+				top = tmpTop;
+			}
+		}
+		return top;
 	}
 
 	public static void AddScore(int score, HighScoreType hst){

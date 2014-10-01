@@ -58,14 +58,14 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 	}
 
 	override protected void OnGUIInner(){
-		
-		GuiHelper.ButtonWithText(0.5, 0.8, 0.3, 0.3, "Continue", SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate() {
+
+		GuiHelper.YesButton(delegate() {
 			ScreenAdvModeStart sams = gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
-		});
+		}, "Continue");
 
 
-		GuiHelper.DrawAtTop ("Mission (" + Mission.Description +") " + (Passed ? "Completed" : "Failed"));
+		GuiHelper.DrawAtTop ("Mission "+ (Passed ? "Completed" : "Failed") + " (" + Mission.Description +")");
 		string text = "";
 
 		int sumOfCoins = CoinsCollected + (Passed?Mission.Reward.Coins:0);
@@ -73,9 +73,9 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 
 
 		text += "Distance: "+ Distance;
-		int best = HighScores.TopScore (HighScoreType.Adventure);
+		int best = HighScores.GetTopScore (HighScoreType.Adventure);
 		if (Distance == best){
-			text += " New Record!";
+			text += " New Record!!!!!!!!!!!!!!!!!!";
 		} else {
 			text += ", best: " + best +"";
 		}
@@ -86,7 +86,7 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 
 
 		Texture leaderBoard = SpriteManager.GetLeaderboard();
-		GuiHelper.ButtonWithText(0.5, 0.5, 0.2, 0.2, "Scores", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.5, 0.53, 0.2, 0.2, "Scores", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV);
 		});
 	}
