@@ -30,7 +30,7 @@ public class HurtTaker : MonoBehaviour {
 
 	private void Die(Tile fromWhat){
 		if (Parameter.IsOn(ParameterType.VIBRATION)){
-			Handheld.Vibrate ();
+			//Handheld.Vibrate (); no vibration on die
 		}
 		//null is when out of oil
 		if (fromWhat != null && (fromWhat.TileContent == TileContent.WALL || fromWhat.TileContent == TileContent.HOLE) ) {

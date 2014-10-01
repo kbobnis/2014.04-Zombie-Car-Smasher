@@ -27,6 +27,13 @@ public class Minigame : MonoBehaviour {
 	public void PrepareRace(PlayerState player, AfterMinigameF afterMinigame, Mission mission, CarConfig chosenCar){
 		if (Me != null) {
 			Me.UnloadResources();
+			//unload previous minigames
+			Minigame[] allMinigames = Camera.main.gameObject.GetComponents<Minigame> ();
+			foreach (Minigame m in allMinigames) {
+				if (m != this){
+					Destroy(m);
+				}
+			}
 		}
 		Me = this;
 		AfterMinigame = afterMinigame;
@@ -108,19 +115,13 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void UnloadResources(){
-		Speeder s = Car.gameObject.GetComponent<Speeder> ();
-		Destroy (s);
+		Destroy (Car.gameObject);
 		//remove all previous objects 
 		Dictionary<int, GameObject> str = Streets;
 		Streets = null;
 		foreach(KeyValuePair<int, GameObject> tmp2 in str){
 			UnloadStreet(tmp2.Value);
 		}
-
-		//remove car
-		Destroy(Car);
-
-		Car = null;
 	}
 
 
@@ -153,6 +154,7 @@ public class Minigame : MonoBehaviour {
 
 		//car should be always in the middle of the road
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
+		Debug.Log ("car is at: " + carIsAt + ", last car was at: " + LastCarWasAt);
 		if (carIsAt != LastCarWasAt){
 
 			Distance  = LastCarWasAt = carIsAt;
