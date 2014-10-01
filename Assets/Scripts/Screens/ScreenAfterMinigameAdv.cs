@@ -60,9 +60,9 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 	override protected void OnGUIInner(){
 
 		GuiHelper.YesButton(delegate() {
-			ScreenAdvModeStart sams = gameObject.AddComponent<ScreenAdvModeStart>();
+			ScreenStartingMission ssm = gameObject.AddComponent<ScreenStartingMission>();
 			Destroy(this);
-		}, "Continue");
+		}, "Race");
 
 
 		GuiHelper.DrawAtTop ("Mission "+ (Passed ? "Completed" : "Failed") + " (" + Mission.Description +")");

@@ -56,7 +56,8 @@ public class ScreenOptions : BaseScreen {
 			st.Prepare(delegate(){
 				st.gameObject.AddComponent<ScreenOptions>();
 				Destroy(st);
-			}, "Faster start", "If your high score is good, your car will be faster in first 300 distance to save you time.");
+			}, "Faster start", "If your high score is good, your car will be faster in first 300 distance to save you time."
+			+ "\n\nUse this when you want to show this game to a new person, he will have slower start");
 		});
 	}
 }

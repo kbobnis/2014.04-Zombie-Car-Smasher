@@ -232,7 +232,7 @@ public class GuiHelper : MonoBehaviour {
 	}
 
 	public static void YesButton(AfterYesM afterYes, string text="Yes"){
-		GuiHelper.ButtonWithText(0.5, 0.88, 0.4, 0.3, text, SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
+		GuiHelper.ButtonWithText(0.5, 0.89, 0.4, 0.3, text, SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate() {
 			afterYes();
 		});
 	}

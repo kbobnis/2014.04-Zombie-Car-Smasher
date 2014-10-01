@@ -40,7 +40,7 @@ public class ScreenSplash : BaseScreen {
 			m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 		});
 
-		GuiHelper.ButtonWithText(0.15, 0.8, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.14, 0.78, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			ScreenText m = gameObject.AddComponent<ScreenText>();
 			m.Prepare(delegate() {
 				m.gameObject.AddComponent<ScreenSplash>();
@@ -56,13 +56,17 @@ public class ScreenSplash : BaseScreen {
 			gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
 		});
-		GuiHelper.ButtonWithText(0.85, 0.8, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.85, 0.78, 0.15, 0.15, "?", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			ScreenText m = gameObject.AddComponent<ScreenText>();
 			m.Prepare(delegate() {
 				m.gameObject.AddComponent<ScreenSplash>();
 				Destroy(m);
-			}, "Adventure mode", "In adventure mode you have your own car. Make missions, collect coins to upgrade car and drive further. " +
-			"Pick up oil stains to have fuel, avoid other obstacles."+
+			}, "Adventure mode", 
+			"In adventure mode you have your own car. Upgrade it with coins. " +
+			"Make missions, collect coins in race. Drive further. " +
+			"The farther you get the more coins there will be. " +
+			"Pick up oil stains to have fuel, avoid other obstacles. "+
+			"At some point shields will be available. " +
 			"\n\nThere are google leaderboards with global scores, connect to it if you want to compare with others.");
 			Destroy(this);
 		});

@@ -27,13 +27,7 @@ public class Minigame : MonoBehaviour {
 	public void PrepareRace(PlayerState player, AfterMinigameF afterMinigame, Mission mission, CarConfig chosenCar){
 		if (Me != null) {
 			Me.UnloadResources();
-			//unload previous minigames
-			Minigame[] allMinigames = Camera.main.gameObject.GetComponents<Minigame> ();
-			foreach (Minigame m in allMinigames) {
-				if (m != this){
-					Destroy(m);
-				}
-			}
+			Destroy(Me);
 		}
 		Me = this;
 		AfterMinigame = afterMinigame;
