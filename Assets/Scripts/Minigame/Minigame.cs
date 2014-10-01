@@ -92,7 +92,6 @@ public class Minigame : MonoBehaviour {
 		};
 
 		Player.RewardHim (Mission, InGameAchievements, afterGameAchievements);
-		CarConfig.UpdateCar (afterGameAchievements);
 		Player.Save ();
 		Destroy (Car.GetComponent<Fuel> ());
 		if (Car.GetComponent<ShieldCompo>() != null){
@@ -100,9 +99,9 @@ public class Minigame : MonoBehaviour {
 		}
 
 		foreach (KeyValuePair<int, Result[]> result in InGameAchievements) {
-			CarSmasherSocial.UnlockAchievementsClassic(result.Value);
+			CarSmasherSocial.UnlockAchievements(result.Value);
 		}
-		CarSmasherSocial.UpdateAchievementsClassic (afterGameAchievements);
+		CarSmasherSocial.UpdateAchievements (afterGameAchievements);
 
 
 		AfterMinigame (InGameAchievements, afterGameAchievements, reason, Distance, Mission, Player);
@@ -146,9 +145,7 @@ public class Minigame : MonoBehaviour {
 
 		}
 
-		//car should be always in the middle of the road
 		int carIsAt = Mathf.RoundToInt( Car.GetComponent<InGamePosition>().y);
-		Debug.Log ("car is at: " + carIsAt + ", last car was at: " + LastCarWasAt);
 		if (carIsAt != LastCarWasAt){
 
 			Distance  = LastCarWasAt = carIsAt;
@@ -192,7 +189,7 @@ public class Minigame : MonoBehaviour {
 						MissionInfo = null; 
 					}
 					if (amountDone >= amountFull && !FanfarePlayed){
-						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position, 0.3f);
+						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position, 0.05f);
 						FanfarePlayed = true;
 					}
 				}

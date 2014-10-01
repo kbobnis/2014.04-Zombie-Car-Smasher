@@ -123,12 +123,10 @@ public class CarSmasherSocial : MonoBehaviour {
 	}
 
 
-	public static void UpdateAchievementsClassic (Result[] results){
+	public static void UpdateAchievements (Result[] results){
 		foreach (GoogleAchievement ach in Achievements) {
 			ach.Update(results);
 		}
-		UpdateLeaderboard (ClassicLeaderboard.Id, results);
-
 	}
 
 	public static void UpdateLeaderboard(string leaderboardId, Result[] results){
@@ -143,13 +141,12 @@ public class CarSmasherSocial : MonoBehaviour {
 	/**
 	 * On some occasions we don't want to increment achievements, because in the end they would be incremented twice for one race.
 	 **/
-	public static void UnlockAchievementsClassic(Result[] results){
+	public static void UnlockAchievements(Result[] results){
 		foreach (GoogleAchievement ach in Achievements) {
 			if (ach.Type == ACHIEVEMENT_TYPE.UNLOCKABLE){
 				ach.Update(results);
 			}
 		}
-		UpdateLeaderboard (ClassicLeaderboard.Id, results);
 	}
 
 	public static void ShowLeaderBoard(string id){

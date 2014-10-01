@@ -56,7 +56,7 @@ public class HighScores  {
 		scores.Sort ();
 		scores.Reverse ();
 		if (scores.Count > TrimScores) {
-			scores.RemoveRange (TrimScores, Scores.Count-TrimScores);
+			scores.RemoveRange (TrimScores, scores.Count-TrimScores);
 		}
 
 		SaveScores (hst);

@@ -43,13 +43,8 @@ public class CarConfig
 		}
 	}
 
-
-	
 	public Texture CarTexture{
 		get { return _CarTexture; }
-	}
-
-	public void UpdateCar(Result[] afterGameResults){
 	}
 
 	internal string Serialize(){
