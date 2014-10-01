@@ -11,13 +11,6 @@ public class ShieldCompo : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		if (shieldValue < 1) {	
-			Destroy(this);
-		}
-	}
-
 	public void Prepare(CarStatistic shield){
 		shieldValue = (int)shield.Value;
 		ShieldRenderer = new GameObject ();
@@ -41,6 +34,10 @@ public class ShieldCompo : MonoBehaviour {
 		GetComponent<Car> ().ShieldsUsed++;
 		BeingHit bh = tile.gameObject.AddComponent<BeingHit> ();
 		bh.Prepare (GetComponent<Speeder> ().v);
+		if (shieldValue < 1) {
+			Handheld.Vibrate ();
+			Destroy (this);
+		}
 		return true;
 	}
 	void OnGUI(){

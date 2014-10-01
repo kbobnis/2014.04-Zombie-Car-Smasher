@@ -192,8 +192,8 @@ public class Minigame : MonoBehaviour {
 
 				if (amountFull != 0){
 					MissionInfo = amountType + ": " + amountDone + " / " + amountFull;
-					if (amountDone > amountFull){
-						MissionInfo = amountType + ": success";
+					if (amountDone >= amountFull){
+						MissionInfo = null; 
 					}
 					if (amountDone >= amountFull && !FanfarePlayed){
 						PlaySingleSound.SpawnSound(Sounds.Fanfare, Camera.main.transform.position, 0.3f);
@@ -213,11 +213,13 @@ public class Minigame : MonoBehaviour {
 	void OnGUI () {
 
 		if (!IsGameOver){
-			if (MissionInfo != null){
-				GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH/4, Screen.width, Screen.height), MissionInfo, GuiHelper.SmallFontLeft);
-			}
+			if (MissionInfo == null){
+				GUI.Label (new Rect (GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.05), Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
+			} else {
+				GUI.Label (new Rect (GuiHelper.PercentW(0.1), GuiHelper.PercentH(0.05), Screen.width, Screen.height), MissionInfo, GuiHelper.SmallFontLeft);
+			} 
 
-			GUI.Label (new Rect (GuiHelper.oneTenthW, GuiHelper.oneTenthH, Screen.width, Screen.height), "Distance: " + Distance, GuiHelper.SmallFontLeft);
+
 			int coins = Car.GetComponent<Car>().PickedUpCoins;
 			if (coins > 0){
 				GuiHelper.ButtonWithText(0.07, 0.75, 0.18, 0.18, ""+coins, SpriteManager.GetCoin(), GuiHelper.SmallFontBlack, delegate(){});

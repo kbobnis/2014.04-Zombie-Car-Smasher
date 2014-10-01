@@ -27,7 +27,6 @@ public class Environment{
 	public float GetCoinChance(int distance){
 		float _2logxlogx =  distance ;
 		float coinChance = _CoinChance>0?_CoinChance + _2logxlogx / 30000f:0;
-		Debug.Log ("coin chance: " + coinChance);
 		return coinChance;
 	}
 

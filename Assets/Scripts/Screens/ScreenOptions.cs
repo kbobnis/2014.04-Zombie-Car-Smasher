@@ -17,13 +17,13 @@ public class ScreenOptions : BaseScreen {
 		float textY = 0.3f;
 		float buttonY = 0.04f;
 		float diff = 0.1f;
-		GuiHelper.DrawText ("Sound is " + (Sounds.IsMuted () ? "off" : "on") + ".", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
-		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.2, 0.15, (Sounds.IsMuted()?"on":"off"), SpriteManager.GetRoundButton(), GuiHelper.SmallFont, delegate(){
+		GuiHelper.DrawText ("Sounds", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.2, 0.15, (Sounds.IsMuted()?" Turn on":"Turn off"), SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			Sounds.Mute(!Sounds.IsMuted());
 		});
 
 		textY += diff;
-		GuiHelper.DrawText ("Visit fb fan page", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.DrawText ("Fb fan page", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
 		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.13, 0.13, "", SpriteManager.GetFbIcon(), GuiHelper.SmallFont, delegate(){
 			CarSmasherSocial.FB.Like();
 		});
@@ -31,22 +31,22 @@ public class ScreenOptions : BaseScreen {
 		textY += diff;
 		string isNow = CarSmasherSocial.Authenticated ? "on" : "off";
 		string willBe = CarSmasherSocial.Authenticated ? "disconnect" : "connect";
-		GuiHelper.DrawText( "Google games is " + isNow + ". Click to ", GuiHelper.MicroFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.DrawText( "Google games are " + isNow, GuiHelper.MicroFontLeft, 0.1, textY, 0.8, 0.1);
 		Texture googlePlay = CarSmasherSocial.Authenticated ? SpriteManager.GetGooglePlay () : SpriteManager.GetInactiveGooglePlay ();
-		GuiHelper.ButtonWithText(0.8, textY + buttonY-0.015, 0.2, 0.2, willBe, googlePlay, GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.8, textY + buttonY-0.015, 0.25, 0.2, willBe, googlePlay, GuiHelper.MicroFont, delegate(){
 			CarSmasherSocial.InitializeOrLogOut(true, null, null, this);
 		});
 
 		textY += diff;
 		bool vibrationsOn = Parameter.IsOn(ParameterType.VIBRATION);
-		GuiHelper.DrawText ("Vibrations are " + (vibrationsOn ? "on" : "off"), GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.DrawText ("Vibrations", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
 		GuiHelper.ButtonWithText (0.8, textY + buttonY, 0.2, 0.15, "Turn " + (vibrationsOn ? "off" : "on"), SpriteManager.GetRoundButton (), GuiHelper.MicroFont, delegate() {
 			ParameterType.VIBRATION.Switch(!vibrationsOn);
 		});
 
 		textY += diff;
 		bool fasterStart = Parameter.IsOn (ParameterType.FASTER_START);
-		GuiHelper.DrawText ("Faster start is " + (fasterStart ? "on" : "off"), GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
+		GuiHelper.DrawText ("Faster start", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
 		GuiHelper.ButtonWithText (0.8, textY + buttonY, 0.2, 0.15, "Turn " + (fasterStart ? "off" : "on"), SpriteManager.GetRoundButton (), GuiHelper.MicroFont, delegate() {
 			ParameterType.FASTER_START.Switch(!fasterStart);
 		});

@@ -81,7 +81,7 @@ static public class CarStatisticTypeMethods{
 
 	public static bool AboveMinimum(this CarStatisticType type, float value){
 		switch(type){
-		case CarStatisticType.COMBUSTION: return value > 0.45;
+		case CarStatisticType.COMBUSTION: return value > 0.55;
 		case CarStatisticType.FUEL_TANK: return true;
 		case CarStatisticType.SHIELD: return true;
 		case CarStatisticType.WHEEL: return value < 2.5;

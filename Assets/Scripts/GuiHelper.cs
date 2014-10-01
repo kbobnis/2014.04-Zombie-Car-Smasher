@@ -8,12 +8,6 @@ public class GuiHelper : MonoBehaviour {
 	private static List<MyKeyValue> blinking = new List<MyKeyValue>();
 	private static Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
 
-	public static int oneThirdW = Screen.width/3;
-	public static int oneThirdH = Screen.height/3;
-	public static int oneTenthW = Screen.width/10;
-	public static int oneTenthH = Screen.height/10;
-	public static int twentyPercent = Screen.height / 5;
-
 	public static GUIStyle SmallFont ;
 	public static GUIStyle SmallFontLeft;
 	public static GUIStyle SmallFontTop;
