@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
-	private int _FuelPickedUpInARow;
-	private int _FuelPickedUpInARowBest;
+	public int FuelPickedUpInARow;
+	public int FuelPickedUpInARowBest;
 	public int FuelPickedUpThisGame;
 	public int FuelPickedUpWhenLow;
 	public int TurnsMade;
@@ -12,10 +12,6 @@ public class Car : MonoBehaviour {
 	public int PickedUpCoins;
 	public int ShieldsUsed;
 
-
-	public int FuelPickedUpInARow{
-		get { return _FuelPickedUpInARow>_FuelPickedUpInARowBest?_FuelPickedUpInARow:_FuelPickedUpInARowBest; }
-	}
 
 	void Update(){
 	}
@@ -71,7 +67,10 @@ public class Car : MonoBehaviour {
 		gameObject.AddComponent<MinigameNotification> ().Prepare("+"+(int)fuelTile.Value+" Fuel", null, Camera.main.WorldToScreenPoint (fuelTile.gameObject.transform.position));
 		//mn.Prepare ("Fuel +" + (int)fuelTile.Value, );
 		FuelPickedUpThisGame ++;
-		_FuelPickedUpInARow ++;
+		FuelPickedUpInARow ++;
+		if (FuelPickedUpInARow > FuelPickedUpInARowBest) {
+			FuelPickedUpInARowBest = FuelPickedUpInARow;
+		}
 		if (GetComponent<Fuel> ().IsLowFuel ()) {
 			FuelPickedUpWhenLow ++;
 		}
@@ -87,10 +86,7 @@ public class Car : MonoBehaviour {
 				foreach(KeyValuePair<int, GameObject> tilePair in street.Value.GetComponent<Street>().Tiles){
 					Tile tile = tilePair.Value.GetComponent<Tile>();
 					if (tile.TileContent == TileContent.BUFF_OIL){
-						if (_FuelPickedUpInARow > _FuelPickedUpInARowBest){
-							_FuelPickedUpInARowBest = _FuelPickedUpInARow;
-						}
-						_FuelPickedUpInARow = 0;
+						FuelPickedUpInARow = 0;
 					}
 				}
 			}

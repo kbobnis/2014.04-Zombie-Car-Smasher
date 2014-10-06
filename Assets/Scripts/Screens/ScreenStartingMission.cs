@@ -15,9 +15,8 @@ public class ScreenStartingMission : BaseScreen {
 
 	override protected void OnGUIInner(){
 
-		GuiHelper.DrawAtTop ("Preparing race");
-		string text = "Mission: " + Mission.Description + ", " +
-			"Reward: " + Mission.Reward.Description + 
+		GuiHelper.DrawAtTop (Mission.Description);
+		string text = "Reward: " + Mission.Reward.Description + 
 			"\n\n Your best distance: " + HighScores.GetTopScore(HighScoreType.Adventure);
 
 		GuiHelper.DrawBeneathLine (text);

@@ -75,7 +75,7 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 		text += "Distance: "+ Distance;
 		int best = HighScores.GetTopScore (HighScoreType.Adventure);
 		if (Distance == best){
-			text += " New Record!!!!!!!!!!!!!!!!!!";
+			text += " New Record!!!";
 		} else {
 			text += ", best: " + best +"";
 		}

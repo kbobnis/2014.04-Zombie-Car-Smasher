@@ -13,7 +13,7 @@ public class FPSDisplay : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		FPSDisplay.UpdateFrom ("followGM");
 	}
 

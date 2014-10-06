@@ -85,7 +85,7 @@ public class Minigame : MonoBehaviour {
 			new Result(SCORE_TYPE.DISTANCE, Distance), 
 			new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car> ().FuelPickedUpThisGame), 
 			new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car> ().FuelPickedUpWhenLow),
-			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car> ().FuelPickedUpInARow),
+			new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car> ().FuelPickedUpInARowBest),
 			new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car> ().TurnsMade),
 			new Result(SCORE_TYPE.COINS, Car.GetComponent<Car>().PickedUpCoins),
 			new Result(SCORE_TYPE.SHIELDS_USED, Car.GetComponent<Car>().ShieldsUsed)
@@ -139,7 +139,7 @@ public class Minigame : MonoBehaviour {
 				new Result(SCORE_TYPE.TURNS, Car.GetComponent<Car>().TurnsMade),
 				new Result(SCORE_TYPE.DISTANCE, Distance),
 				new Result(SCORE_TYPE.FUEL_PICKED, Car.GetComponent<Car>().FuelPickedUpThisGame),
-				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car>().FuelPickedUpInARow),
+				new Result(SCORE_TYPE.FUEL_PICKED_IN_ROW, Car.GetComponent<Car>().FuelPickedUpInARowBest),
 				new Result(SCORE_TYPE.FUEL_PICKED_WHEN_LOW, Car.GetComponent<Car>().FuelPickedUpWhenLow),
 			});
 

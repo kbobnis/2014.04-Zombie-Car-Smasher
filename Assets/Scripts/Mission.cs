@@ -35,7 +35,7 @@ public class Mission{
 		return new Reward (CumulativePercent(10, 0.1f, level));
 	}
 
-	private static int CumulativePercent(float baseValue, float percent, int cumulations){
+	public static int CumulativePercent(float baseValue, float percent, int cumulations){
 		float sum = baseValue;
 		for (int i=1; i < cumulations; i++) {
 			sum *= 1 + percent;

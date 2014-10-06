@@ -60,6 +60,7 @@ public class GoogleMobileAdsKProjekt : MonoBehaviour {
 			.AddTestDevice (AdRequest.TestDeviceSimulator)
 				.AddTestDevice ("6F40308545B64E7C558974067F213E12")
 				.AddTestDevice("1E02B70CE2CB41B6A7B3E674ACB07BA8")
+				.AddTestDevice("AE27A3312978A75326F52FE0E4D65736")
 				.Build ();
 	}
 }
