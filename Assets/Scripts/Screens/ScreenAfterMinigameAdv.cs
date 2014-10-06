@@ -69,7 +69,7 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 		string text = "";
 
 		int sumOfCoins = CoinsCollected + (Passed?Mission.Reward.Coins:0);
-		text += "Coins: +" +  sumOfCoins + " (reward: " + (Passed?Mission.Reward.Coins:0) + ", collected: " + CoinsCollected + ") \n\n";
+		text += "Coins: +" +  sumOfCoins + " (reward: " + (Passed?Mission.Reward.Coins:0) + ", collected: " + CoinsCollected + ") \n\n\n\n";
 
 
 		text += "Distance: "+ Distance;
@@ -84,11 +84,11 @@ public class ScreenAfterMinigameAdv : BaseScreen {
 
 		GuiHelper.DrawBeneathLine(text);
 
-
 		Texture leaderBoard = SpriteManager.GetLeaderboard();
-		GuiHelper.ButtonWithText(0.5, 0.53, 0.2, 0.2, "Scores", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
+		GuiHelper.ButtonWithText(0.85, 0.487, 0.2, 0.15, "Scores", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			CarSmasherSocial.ShowLeaderBoard(GoogleLeaderboard.LEADERB_BEST_DISTANCES_ADV);
 		});
+
 	}
 }
 

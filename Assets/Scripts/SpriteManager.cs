@@ -29,6 +29,7 @@ class SpriteManager {
 	private static Texture RemoveIcon;
 	private static Texture SettingsIcon;
 	private static Texture RectangleButton;
+	private static Texture UpArrow;
 
 	static SpriteManager(){
 		Atlas = Resources.LoadAll<Sprite>("Images/atlas");
@@ -56,7 +57,13 @@ class SpriteManager {
 		RemoveIcon = Resources.Load<Texture> ("Images/remove");
 		SettingsIcon = Resources.Load<Texture> ("Images/settings");
 		RectangleButton = Resources.Load<Texture> ("Images/rectangleButton");
+		UpArrow = Resources.Load<Texture> ("Images/up_arrow");
 	}
+
+	static public Texture GetUpArrow(){
+		return UpArrow;
+	}
+
 	static public Texture GetRectangleButton(){
 		return RectangleButton;
 	}

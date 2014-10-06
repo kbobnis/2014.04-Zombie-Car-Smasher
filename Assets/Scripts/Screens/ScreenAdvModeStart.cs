@@ -22,7 +22,14 @@ public class ScreenAdvModeStart : BaseScreen {
 		float y = 0.38f;
 		foreach(KeyValuePair<CarStatisticType, CarStatistic> kvp in state.CarConfig.CarStatistics){
 			CarStatistic cs = kvp.Value;
-			if (cs.Type != CarStatisticType.SHIELD || state.EverEarnedCoins > 1000){
+			if (cs.IsUnlockedFor(state)){
+
+				AfterButton upgrade = delegate() {
+					ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
+					su.PrepareWith(cs);
+					Destroy(this);
+				};
+
 				string inBrackets = "";
 				if (!cs.Type.AboveMinimum(cs.Type.ValueForLevel( cs.Level+1))){
 					inBrackets = "(Best)";
@@ -30,11 +37,13 @@ public class ScreenAdvModeStart : BaseScreen {
 					inBrackets = "(Upg for "+cs.UpgradeCost()+")";
 				}
 				string text = cs.Type.Name()+": "+ cs.ValueFormatted + " " + inBrackets;
-				GuiHelper.ButtonWithText(0.5, y, 1, 0.15, text, SpriteManager.GetRectangleButton(), GuiHelper.MicroFont, delegate() {
-					ScreenUpgrade su = gameObject.AddComponent<ScreenUpgrade>();
-					su.PrepareWith(cs);
-					Destroy(this);
-				});
+				GuiHelper.ButtonWithText(0.5, y, 1, 0.15, text, SpriteManager.GetRectangleButton(), GuiHelper.MicroFont, upgrade);
+
+
+				//this has to be drawn after button with text because of overlay
+				if (cs.CanUpgrade(state.Coins)){
+					GuiHelper.ButtonWithText(0.9, y, 0.15, 0.15, "", SpriteManager.GetUpArrow(), GuiHelper.MicroFont, upgrade);
+				}
 				y += 0.093f;
 			}
 		}

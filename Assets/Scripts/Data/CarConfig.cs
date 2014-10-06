@@ -17,6 +17,10 @@ public class CarConfig
 		CarStatistic wheel = new CarStatistic (CarStatisticType.WHEEL);
 		CarStatistic startingOil = new CarStatistic ( CarStatisticType.STARTING_OIL);
 		CarStatistic shield = new CarStatistic (CarStatisticType.SHIELD);
+		shield.AddUnlockable(delegate(PlayerState ps, CarStatistic cs){
+			return ps.EverEarnedCoins > 1000;
+		});
+
 		startingOil.AddDependency (new Dependency (fuelTank, CarStatisticParam.Value, SIGN.BIGGER, startingOil));
 
 		CarStatistics.Add (CarStatisticType.COMBUSTION, combustion);
@@ -68,6 +72,12 @@ public class CarConfig
 		CarStatistic startingOil = CarStatistics[CarStatisticType.STARTING_OIL];
 		CarStatistic fuelTank = CarStatistics[CarStatisticType.FUEL_TANK];
 		startingOil.AddDependency (new Dependency (fuelTank, CarStatisticParam.Value, SIGN.BIGGER, startingOil));
+
+		//unlockables. 
+		CarStatistic shield = CarStatistics [CarStatisticType.SHIELD];
+		shield.AddUnlockable(delegate(PlayerState ps, CarStatistic cs){
+			return ps.EverEarnedCoins > 1000;
+		});
 	}
 }
 

@@ -1,16 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate bool IsUnlocked(PlayerState ps, CarStatistic cs);
+
 public class CarStatistic
 {
 	public CarStatisticType Type;
 	private List<Dependency> _Dependencies = new List<Dependency> ();
+	private List<IsUnlocked> _Unlockables = new List<IsUnlocked>();
 	private int _Level;
 	private float ManuallySetValue = -1;
 
 	public CarStatistic(CarStatisticType type){
 		Type = type;
 		Level = 1;
+	}
+
+	public bool IsUnlockedFor(PlayerState ps){
+		foreach (IsUnlocked isUnlocked in _Unlockables) {
+			if (!isUnlocked(ps, this)){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void AddUnlockable(IsUnlocked isUnlocked){
+		_Unlockables.Add (isUnlocked);
 	}
 
 	public List<Dependency> Dependencies {
