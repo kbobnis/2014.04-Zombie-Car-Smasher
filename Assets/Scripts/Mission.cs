@@ -20,15 +20,26 @@ public class Mission{
 
 	private static int GetValueForScore(SCORE_TYPE scoreType, int level){
 		switch (scoreType) {
-			case SCORE_TYPE.DISTANCE: return CumulativePercent(20, 0.11f, level);
+			case SCORE_TYPE.DISTANCE: return CumulativePercentCombination(18, 0.11f, level, 30, 0.03f);
 			case SCORE_TYPE.COINS: return CumulativePercent(2, 0.1f, level);
-			case SCORE_TYPE.FUEL_PICKED: return CumulativePercent(2, 0.1f, level);
-			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return CumulativePercent(2, 0.1f, level);
-			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return CumulativePercent(1, 0.1f, level);
-			case SCORE_TYPE.TURNS: return CumulativePercent(8, 0.1f, level);
+			case SCORE_TYPE.FUEL_PICKED: return CumulativePercentCombination(2, 0.1f, level, 30, 0.03f);
+			case SCORE_TYPE.FUEL_PICKED_IN_ROW: return CumulativePercentCombination(2, 0.1f, level, 30, 0.03f);
+			case SCORE_TYPE.FUEL_PICKED_WHEN_LOW: return CumulativePercentCombination(1, 0.1f, level, 30, 0.03f);
+			case SCORE_TYPE.TURNS: return CumulativePercentCombination(8, 0.1f, level, 30, 0.03f);
 		default: 
 			throw new UnityException("There is no value for score type: " + scoreType);
 		}
+	}
+
+	private static int CumulativePercentCombination(int v1, float p1, int level, int g, float p2){
+		int first = level<=g?level:g;
+		int one = Mission.CumulativePercent(v1, p1, first);
+		int	two = level>g?level-g:0;
+		int second = one;
+		if (two > 0) {
+			second = Mission.CumulativePercent (one, p2, two);
+		}
+		return second;
 	}
 
 	private static Reward GetRewardForLevel(int level){
@@ -37,7 +48,7 @@ public class Mission{
 
 	public static int CumulativePercent(float baseValue, float percent, int cumulations){
 		float sum = baseValue;
-		for (int i=1; i < cumulations; i++) {
+		for (int i=0; i < cumulations; i++) {
 			sum *= 1 + percent;
 		}
 		return (int)sum;

@@ -24,22 +24,6 @@ public class ScreenSplash : BaseScreen {
 			Destroy(this);
 		}, false);
 
-		for (int i=5; i < 15; i ++) {
-			Debug.Log("i: " + i + ", value: " + f (i, 10));
-		}
-
-	}
-
-
-	private int f(int level, int g){
-		int first = level<g?level:g;
-		int one = Mission.CumulativePercent(20, 0.11f, level);
-		int	two = level>g?level-g:0;
-		int second = one;
-		if (two > 0) {
-			second = Mission.CumulativePercent (one, 0.05f, two);
-		}
-		return second;
 	}
 
 	override protected void OnGUIInner(){
