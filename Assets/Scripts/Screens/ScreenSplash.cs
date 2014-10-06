@@ -24,6 +24,22 @@ public class ScreenSplash : BaseScreen {
 			Destroy(this);
 		}, false);
 
+		for (int i=5; i < 15; i ++) {
+			Debug.Log("i: " + i + ", value: " + f (i, 10));
+		}
+
+	}
+
+
+	private int f(int level, int g){
+		int first = level<g?level:g;
+		int one = Mission.CumulativePercent(20, 0.11f, level);
+		int	two = level>g?level-g:0;
+		int second = one;
+		if (two > 0) {
+			second = Mission.CumulativePercent (one, 0.05f, two);
+		}
+		return second;
 	}
 
 	override protected void OnGUIInner(){
@@ -37,6 +53,7 @@ public class ScreenSplash : BaseScreen {
 		GuiHelper.ButtonWithText(0.3, 0.9, 0.3, 0.3, "Classic", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			Minigame m = gameObject.AddComponent<Minigame>();
 			Destroy(this);
+			GoogleAnalyticsKProjekt.LogScreenOnce(AnalyticsScreen.GameClassic);
 			m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 		});
 
@@ -52,7 +69,6 @@ public class ScreenSplash : BaseScreen {
 		});
 
 		GuiHelper.ButtonWithText(0.7, 0.9, 0.3, 0.3, "Adventure", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
-
 			gameObject.AddComponent<ScreenAdvModeStart>();
 			Destroy(this);
 		});
@@ -70,8 +86,6 @@ public class ScreenSplash : BaseScreen {
 			"\n\nThere are google leaderboards with global scores, connect to it if you want to compare with others.");
 			Destroy(this);
 		});
-
-		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.SPLASH);
 
 		GuiHelper.DrawText("K Bobnis: Design, Programming\nM Bartynski: Design, Concept", GuiHelper.MicroFont, 0.1, 0.1, 0.8, 0.17);
 

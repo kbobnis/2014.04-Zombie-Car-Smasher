@@ -59,8 +59,6 @@ public class Minigame : MonoBehaviour {
 		fgm.FollowWhom = Car;
 		fgm.Offset.y = -0.5f;
 		GetComponent<GoogleMobileAdsKProjekt> ().HideBanner ();
-
-		GoogleAnalyticsKProjekt.LogScreenOnce(ANALYTICS_SCREENS.GAME);
 	}
 
 	void OnApplicationFocus(bool pauseStatus){
@@ -78,8 +76,6 @@ public class Minigame : MonoBehaviour {
 	public void GameOver(string reason){
 		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
 		IsGameOver = true;
-		GoogleAnalyticsKProjekt.LogScreenOnce (ANALYTICS_SCREENS.FAIL);
-
 		//results to unlock and increment achievements (we don't want to increment achievements several times for one ride)
 		Result[] afterGameAchievements = new Result[]{
 			new Result(SCORE_TYPE.DISTANCE, Distance), 
