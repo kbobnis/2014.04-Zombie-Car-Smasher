@@ -179,7 +179,7 @@ public class Minigame : MonoBehaviour {
 				int amountFull = Mission.GetAmountFull();
 				string amountType = Mission.GetAmountType().HumanName();
 
-				if (amountFull != 0){
+				if (amountFull != 0 && !FanfarePlayed){
 					MissionInfo = amountType + ": " + amountDone + " / " + amountFull;
 					if (amountDone >= amountFull){
 						MissionInfo = null; 
