@@ -1,33 +1,19 @@
-# README #
+Zombie Car Smasher, a game created in 2014
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Authors
+Krzysztof Bobnis (Programming),
+Michal Bartynski (Design),
 
-### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Code is not playable. Stripped from all 3rd party plugins.
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
 
-### Contribution guidelines ###
+![](docs/zcs.gif)
 
-* Writing tests
-* Code review
-* Other guidelines
 
-### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
 
-### Installing plugins ###
 
-leaderboards https://github.com/playgameservices/play-games-plugin-for-unity
+
+

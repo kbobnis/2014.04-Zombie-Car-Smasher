@@ -11,7 +11,7 @@ public class PlaySingleSound : MonoBehaviour
 		if (sound_start == 0f) {
 			sound_start = Time.realtimeSinceStartup;
 		}
-		if(audio != null && Time.realtimeSinceStartup - sound_start > audio.clip.length ) {
+		if(GetComponent<AudioSource>() != null && Time.realtimeSinceStartup - sound_start > GetComponent<AudioSource>().clip.length ) {
 			GameObject.Destroy( gameObject );
 		}
 	}

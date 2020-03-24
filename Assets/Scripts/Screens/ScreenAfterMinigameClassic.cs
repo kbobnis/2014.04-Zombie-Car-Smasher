@@ -78,7 +78,6 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 			GuiHelper.DrawBeneathLine("You just beat your high score with distance "+Distance+". \n\n Like to tell your friends about it?");
 
 			if (GUI.Button(new Rect(GuiHelper.PercentW(0.2), GuiHelper.PercentH(0.70), GuiHelper.PercentW(0.6), GuiHelper.PercentH(0.11)), SpriteManager.GetFbShareButton(), GuiHelper.CustomButton)){
-				CarSmasherSocial.FB.FeedHighScore(Distance);
 				ShowNewHighScoreScreen = false;
 			}
 			
@@ -170,7 +169,6 @@ public class ScreenAfterMinigameClassic : BaseScreen {
 		Texture fbButton = SpriteManager.GetFbShareButton();
 		int bestScore = top.Count>0?top[0]:0;
 		if (GUI.Button(new Rect(GuiHelper.PercentW(0.545), GuiHelper.PercentH(y), GuiHelper.PercentW(0.35), GuiHelper.PercentH(0.18)), fbButton, GuiHelper.CustomButton)){
-			CarSmasherSocial.FB.FeedHighScore(bestScore);
 		}
 	}
 }

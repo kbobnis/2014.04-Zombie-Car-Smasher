@@ -82,8 +82,8 @@ public class Fuel : MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		if (audio && audio.isPlaying) {
-			audio.Stop();
+		if (GetComponent<AudioSource>() && GetComponent<AudioSource>().isPlaying) {
+			GetComponent<AudioSource>().Stop();
 		}
 		if (LowFuelAudioSource != null) {
 			LowFuelAudioSource.Stop();

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using GooglePlayGames;
 using System.Collections.Generic;
 
 
@@ -8,7 +7,6 @@ public class ScreenSplash : BaseScreen {
 	// Use this for initialization
 	override protected void StartInner (){
 		GuiDepth = Game.Me.ClosestGui;
-		FB.Init(delegate {});
 
 		if (!CarSmasherSocial.Authenticated && CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.NeverAsked || CarSmasherSocial.GetPreviousAnswer() == CarSmasherSocial.AuthenticationAnswer.Accepted){
 			CarSmasherSocial.InitializeSocial (false, null, null, this);
@@ -37,7 +35,6 @@ public class ScreenSplash : BaseScreen {
 		GuiHelper.ButtonWithText(0.3, 0.9, 0.3, 0.3, "Classic", SpriteManager.GetRoundButton(), GuiHelper.MicroFont, delegate(){
 			Minigame m = gameObject.AddComponent<Minigame>();
 			Destroy(this);
-			GoogleAnalyticsKProjekt.LogScreenOnce(AnalyticsScreen.GameClassic);
 			m.PrepareRace(Game.Me.Player, ScreenAfterMinigameClassic.PrepareScreen, Mission.Classic, Game.Me.ClassicCarConfig);
 		});
 

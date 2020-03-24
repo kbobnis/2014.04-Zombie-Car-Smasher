@@ -47,7 +47,6 @@ public class ScreenStartingMission : BaseScreen {
 		GuiHelper.YesButton(delegate(){
 			Minigame mi = gameObject.AddComponent<Minigame>();
 			Destroy(this);
-			GoogleAnalyticsKProjekt.LogScreenOnce(AnalyticsScreen.GameAdv);
 			mi.PrepareRace(Game.Me.Player, ScreenAfterMinigameAdv.PrepareScreen, Mission, Game.Me.Player.CarConfig);
 		}, "Start");
 

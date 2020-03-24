@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
-using Facebook;
 
 public class Minigame : MonoBehaviour {
 
@@ -54,15 +52,13 @@ public class Minigame : MonoBehaviour {
 		Car tmp = Car.AddComponent<Car>();
 
 		tmp.Prepare(chosenCar, Streets, mission);
-		Destroy(Camera.main.camera.gameObject.GetComponent<FollowGM>());
+		Destroy(Camera.main.GetComponent<Camera>().gameObject.GetComponent<FollowGM>());
 		FollowGM fgm = Camera.main.gameObject.AddComponent<FollowGM> ();
 		fgm.FollowWhom = Car;
 		fgm.Offset.y = -0.5f;
-		GetComponent<GoogleMobileAdsKProjekt> ().HideBanner ();
 	}
 
 	void OnApplicationFocus(bool pauseStatus){
-		GoogleAnalyticsKProjekt.LogIsActive(pauseStatus);
 	}
 
 	private GameObject CreateStreet(int inGameY, GameObject previousStreet, bool noObstacles, Environment env){
@@ -74,7 +70,6 @@ public class Minigame : MonoBehaviour {
 	}
 
 	public void GameOver(string reason){
-		GetComponent<GoogleMobileAdsKProjekt> ().ShowBanner ();
 		IsGameOver = true;
 		//results to unlock and increment achievements (we don't want to increment achievements several times for one ride)
 		Result[] afterGameAchievements = new Result[]{

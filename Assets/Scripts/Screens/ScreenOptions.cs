@@ -25,7 +25,6 @@ public class ScreenOptions : BaseScreen {
 		textY += diff;
 		GuiHelper.DrawText ("Fb fan page", GuiHelper.SmallFontLeft, 0.1, textY, 0.8, 0.1);
 		GuiHelper.ButtonWithText(0.8, textY + buttonY, 0.13, 0.13, "", SpriteManager.GetFbIcon(), GuiHelper.SmallFont, delegate(){
-			CarSmasherSocial.FB.Like();
 		});
 
 		textY += diff;
